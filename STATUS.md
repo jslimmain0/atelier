@@ -1,6 +1,6 @@
 # atelier 작업 현황 (이어서 작업하기용)
 
-> 기준일: 2026-10-11 · 마지막 커밋: `4d3c974` (main)
+> 기준일: 2026-10-11 · 원격 저장소: https://github.com/jslimmain0/atelier (public, main)
 > 상세 설계는 [DESIGN.md](DESIGN.md) (v1.1), 앱 사용법은 [app/README.md](app/README.md)
 
 ---
@@ -123,7 +123,7 @@ npm test
 - DESIGN.md §3의 예전 사이드바 문구를 하단 탭 구조에 맞게 수정
 - 변경 후 캐시 갱신을 세밀하게 (현재는 변경할 때마다 전체 갱신)
 - git 사용자 정보 설정: 첫 커밋은 `jslim <jslim.main0@gmail.com>`으로 개별 지정함, 전역 설정은 안 함
-- 원격 저장소 없음 (push 안 함)
+- 원격 저장소: `origin` = https://github.com/jslimmain0/atelier (public). 작업 후 `git push`
 
 ---
 
