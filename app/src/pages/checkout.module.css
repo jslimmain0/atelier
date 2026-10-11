@@ -1,0 +1,15 @@
+/* 구매하기 (atelier-mockup 04) */
+.item { display: flex; gap: 14px; padding: 16px 18px; }
+.itemArt { width: 72px; height: 90px; border-radius: 8px; flex: none; }
+.itemText { flex: 1; font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+.itemText b { display: block; font-family: var(--serif); font-size: 16px; color: var(--ink); font-weight: 600; margin-bottom: 2px; }
+.itemText :global(.won) { color: var(--ink); font-weight: 800; font-size: 15px; margin-top: 6px; display: block; }
+.hr { height: 8px; background: var(--paper-2); }
+.sec { padding: 18px 18px 4px; }
+.free { color: var(--ok); font-weight: 600; font-size: 11px; }
+.months { display: flex; gap: 6px; margin: -2px 0 12px; }
+.months button { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 12px; font-weight: 600; color: var(--ink-2); }
+.months button[aria-checked="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.hint { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 11px; color: var(--muted); }
+.doneArt { width: 120px; height: 150px; border-radius: 12px; margin: 0 auto 22px; }
+.doneBtns { display: flex; gap: 8px; justify-content: center; }

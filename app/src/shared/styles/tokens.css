@@ -1,0 +1,27 @@
+/* atelier-mockup.html 디자인 토큰 */
+:root {
+  --canvas: #E9E6DF;
+  --paper: #FAF8F4;
+  --paper-2: #F2EFE8;
+  --ink: #1B1A17;
+  --ink-2: #4A4740;
+  --muted: #8C877D;
+  --line: #E3DED4;
+  --accent: #C2412A;      /* vermilion: 구매·좋아요 */
+  --accent-soft: #F6E2DC;
+  --patron: #2F3E8F;      /* ultramarine: 후원 */
+  --patron-soft: #E4E7F5;
+  --ok: #3E7A55;
+  --ok-soft: #E1EEE5;
+  --warn: #B07A1C;
+  --warn-soft: #F5EBD6;
+  --danger: #A3321F;
+  --danger-soft: #F5DDD8;
+  --serif: "Noto Serif KR", "Fraunces", serif;
+  --display: "Fraunces", "Noto Serif KR", serif;
+  --sans: "Pretendard", -apple-system, "Apple SD Gothic Neo", sans-serif;
+  --r: 14px;
+  --shell-w: 430px;
+  --tabbar-h: 64px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}

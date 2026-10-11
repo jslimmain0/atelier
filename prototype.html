@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>atelier 화면 시안</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ===== 디자인 토큰: atelier-mockup.html 기준 ===== */
+:root{
+  --canvas:#E9E6DF;--paper:#FAF8F4;--paper-2:#F2EFE8;--ink:#1B1A17;--ink-2:#4A4740;--muted:#8C877D;--line:#E3DED4;
+  --accent:#C2412A;--accent-soft:#F6E2DC;      /* vermilion: 구매·좋아요 */
+  --patron:#2F3E8F;--patron-soft:#E4E7F5;      /* ultramarine: 후원 */
+  --ok:#3E7A55;--ok-soft:#E1EEE5;--warn:#B07A1C;--warn-soft:#F5EBD6;--danger:#A3321F;
+  --note:#FFF4C2;--note-ink:#5B4A00;
+  --serif:"Noto Serif KR","Fraunces",serif;--display:"Fraunces","Noto Serif KR",serif;
+  --sans:"Pretendard",-apple-system,"Apple SD Gothic Neo",sans-serif;--r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--canvas);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit;background:none;border:0}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+svg.i.sm{width:16px;height:16px}
+svg.i.xs{width:13px;height:13px;stroke-width:2}
+:focus-visible{outline:2px solid var(--patron);outline-offset:2px}
+
+/* ===== 문서 레이아웃 (왼쪽 설명 + 오른쪽 폰) ===== */
+.doc{max-width:1180px;margin:0 auto;padding:40px 32px;display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:56px;align-items:start}
+.side{position:sticky;top:32px;max-height:calc(100vh - 64px);overflow:auto;padding-right:6px}
+.side .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.side h1{font-family:var(--display);font-weight:400;font-size:52px;line-height:1;letter-spacing:-.02em}
+.side h1 em{color:var(--accent)}
+.side .lead{color:var(--ink-2);font-size:14px;line-height:1.7;margin-top:12px;max-width:520px}
+.label{display:flex;align-items:baseline;gap:12px;margin:30px 0 12px;padding-top:24px;border-top:1px solid #D6D1C6}
+.label .n{font-family:var(--display);font-style:italic;font-size:30px;color:var(--accent);line-height:1}
+.label h2{font-size:18px;font-weight:700}
+.label small{font-size:12px;color:var(--muted);margin-left:auto}
+.notes{font-size:13.5px;line-height:1.7;color:var(--ink-2);list-style:none}
+.notes li{padding-left:14px;position:relative;margin-bottom:5px}
+.notes li::before{content:"";position:absolute;left:0;top:.75em;width:6px;height:1px;background:var(--muted)}
+.notes b{color:var(--ink)}
+.ctrl{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ctrl h4{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:600}
+.ctrl select{width:100%;padding:9px 10px;border:1px solid #D6D1C6;border-radius:10px;background:var(--paper);font-size:13px}
+.ctrl label.sw{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2);margin-top:8px}
+.scr-list{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.scr-list button{text-align:left;padding:8px 10px;border-radius:10px;background:var(--paper);border:1px solid transparent;font-size:12px;line-height:1.35;color:var(--ink-2)}
+.scr-list button b{display:block;font-family:var(--display);font-style:italic;font-weight:500;color:var(--accent);font-size:14px}
+.scr-list button.on{border-color:var(--ink);color:var(--ink)}
+.scr-list button:hover{background:#fff}
+
+/* ===== 폰 프레임 ===== */
+.phone{width:390px;height:min(844px,calc(100vh - 80px));min-height:640px;background:var(--paper);border-radius:46px;overflow:hidden;position:relative;
+  box-shadow:0 0 0 10px #151412,0 0 0 11px #3a3833,0 40px 80px -20px rgba(40,30,20,.35),0 18px 30px -12px rgba(40,30,20,.25);display:flex;flex-direction:column;margin-top:11px}
+.status{height:50px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 30px 0 34px;font-size:15px;font-weight:600;position:relative;z-index:6;background:var(--paper)}
+.status::after{content:"";position:absolute;left:50%;top:11px;transform:translateX(-50%);width:120px;height:34px;background:#0d0d0c;border-radius:20px}
+.status .sys{display:flex;gap:6px;align-items:center}
+.status .bat{width:25px;height:12px;border:1.5px solid currentColor;border-radius:4px;position:relative;opacity:.9}
+.status .bat::after{content:"";position:absolute;inset:1.5px;right:5px;background:currentColor;border-radius:1.5px}
+.body{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+.body.has-bar{padding-bottom:110px}
+.tabbar{height:84px;flex:none;border-top:1px solid var(--line);background:rgba(250,248,244,.96);display:flex;justify-content:space-around;padding:10px 12px 0;position:relative;z-index:5}
+.tab{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:var(--muted);width:60px}
+.tab.on{color:var(--ink);font-weight:600}
+.tab .plus{width:42px;height:32px;border-radius:11px;background:var(--ink);color:var(--paper);display:grid;place-items:center;margin-top:-2px}
+.home-ind{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--ink);z-index:20}
+
+/* ===== 공통 컴포넌트 (mockup 그대로) ===== */
+.appbar{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;gap:12px}
+.appbar .title{font-size:17px;font-weight:700;flex:1;text-align:center}
+.appbar .title.left{text-align:left;font-size:22px;letter-spacing:-.03em}
+.appbar .spacer{width:22px}
+.icons{display:flex;gap:18px;align-items:center}
+.logo{font-family:var(--display);font-style:italic;font-size:27px;letter-spacing:-.03em}
+.logo i{color:var(--accent);font-style:normal}
+.dot-badge{position:relative}
+.dot-badge::after{content:"";position:absolute;top:1px;right:0;width:7px;height:7px;background:var(--accent);border-radius:50%;border:1.5px solid var(--paper)}
+.av{border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:600;font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.chip.sale{background:var(--ink);color:var(--paper)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.patron{background:var(--patron-soft);color:var(--patron)}
+.chip.accent{background:var(--accent-soft);color:var(--accent)}
+.chip.line{border:1px solid var(--line);color:var(--ink-2);font-weight:500}
+.chip.danger{background:#F5DDD8;color:var(--danger)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:46px;border-radius:12px;font-weight:700;font-size:15px;padding:0 18px;white-space:nowrap}
+.btn.dark{background:var(--ink);color:var(--paper)}
+.btn.accent{background:var(--accent);color:#fff}
+.btn.patron{background:var(--patron);color:#fff}
+.btn.ghost{border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.btn.danger{border:1px solid #E5B8AE;color:var(--danger);background:var(--paper)}
+.btn.sm{height:34px;font-size:13px;border-radius:10px;padding:0 14px}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.seg{display:flex;gap:22px;padding:0 18px;border-bottom:1px solid var(--line);align-items:center}
+.seg button{padding:10px 0 11px;font-size:14.5px;color:var(--muted);font-weight:500;position:relative}
+.seg button.on{color:var(--ink);font-weight:700}
+.seg button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink)}
+.seg .view{margin-left:auto;display:flex;gap:10px;color:var(--muted)}
+.seg .view button{padding:8px 0}
+.seg .view button.on{color:var(--ink)}
+.seg .view button.on::after{display:none}
+.serif{font-family:var(--serif)}
+.sec-t{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.hr{height:8px;background:var(--paper-2)}
+.won{font-variant-numeric:tabular-nums}
+.pad{padding:18px}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.row{display:flex;align-items:center;gap:8px}
+.verified{width:17px;height:17px;border-radius:50%;background:var(--ink);color:var(--paper);display:inline-grid;place-items:center;flex:none;vertical-align:-3px}
+.verified svg{width:10px;height:10px;stroke-width:3}
+.verified.s{width:14px;height:14px}.verified.s svg{width:8px;height:8px}
+
+/* ===== CSS로 그린 가상의 작품 (mockup) ===== */
+.art{position:relative;overflow:hidden;background-color:#ccc}
+.art::after{content:"";position:absolute;inset:0;opacity:.32;mix-blend-mode:multiply;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .4 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.a1{background:radial-gradient(ellipse 78% 26% at 50% 27%,#C7472E 62%,transparent 70%),radial-gradient(ellipse 78% 30% at 50% 70%,#E0A43A 60%,transparent 69%),linear-gradient(#3B231C,#2B1915)}
+.a2{background:radial-gradient(circle at 36% 38%,#F2E7D0 0 21%,transparent 21.6%),radial-gradient(circle at 63% 60%,#203C74 0 27%,transparent 27.6%),linear-gradient(160deg,#D8C7A8,#C9B48F)}
+.a3{background:radial-gradient(circle at 70% 34%,#F4E9D4 0 9%,transparent 9.5%),linear-gradient(180deg,#E9C9A8 0 52%,#A9B9A6 52% 63%,#6E8A80 63% 76%,#3F5A55 76%)}
+.a4{background:conic-gradient(from 210deg at 28% 72%,#E2725B,#F3C98B,#9FB4B6,#2D3E50,#5A3A4A,#E2725B)}
+.a5{background:linear-gradient(90deg,transparent 0 58%,#1B1A17 58% 59.4%,transparent 59.4%),linear-gradient(0deg,transparent 0 34%,#1B1A17 34% 35.2%,transparent 35.2%),linear-gradient(90deg,#EFE8DA 0 58%,#D9462F 58%),#EFE8DA}
+.a5::before{content:"";position:absolute;left:0;bottom:0;width:58%;height:34%;background:#2E4E8F}
+.a6{background:radial-gradient(ellipse 40% 60% at 30% 55%,rgba(20,20,18,.85),transparent 70%),radial-gradient(ellipse 30% 20% at 70% 30%,rgba(20,20,18,.55),transparent 70%),repeating-linear-gradient(115deg,rgba(0,0,0,.06) 0 2px,transparent 2px 9px),#E8E2D6}
+.a7{background:radial-gradient(circle at 50% 50%,transparent 0 30%,#7A9A8C 30.5% 33%,transparent 33.5%),radial-gradient(circle at 50% 50%,#E9B44C 0 18%,transparent 18.5%),linear-gradient(135deg,#1F2B2A,#33463F)}
+.a8{background:repeating-linear-gradient(90deg,#B9C7D6 0 18px,#C9D3DE 18px 30px,#A8B8CB 30px 41px),#B9C7D6}
+.a8::before{content:"";position:absolute;inset:22% 18%;background:radial-gradient(ellipse at 50% 60%,#F5EFE3,#E8D9C0);border-radius:50% 50% 46% 54%/60% 55% 45% 40%;filter:blur(1px)}
+.a9{background:linear-gradient(170deg,#F2C6B4 0 30%,transparent 30%),linear-gradient(10deg,#7C4A3A 0 25%,transparent 25%),linear-gradient(180deg,#F5DCC6,#E6A98F)}
+.wip{filter:saturate(.35) contrast(.92) brightness(1.05)}
+.wip-half{filter:saturate(.65)}
+.wip-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(27,26,23,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(27,26,23,.13) 1px,transparent 1px);background-size:33.33% 33.33%}
+
+/* ===== 피드 ===== */
+.stories{display:flex;gap:14px;padding:12px 18px 10px;overflow-x:auto;scrollbar-width:none}
+.stories::-webkit-scrollbar{display:none}
+.story{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:var(--ink-2);width:62px;flex:none}
+.story .ring{width:58px;height:58px;border-radius:50%;padding:2.5px;background:conic-gradient(var(--patron) 0 var(--p),var(--line) var(--p) 100%)}
+.story .ring > div{width:100%;height:100%;border-radius:50%;border:2.5px solid var(--paper)}
+.story .ring.me{background:var(--line)}
+.story .ring.me > div{display:grid;place-items:center;background:var(--paper-2);color:var(--ink)}
+.story .ring.recruit{background:conic-gradient(var(--accent) 0 100%)}
+.story b{font-weight:500;max-width:62px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.story em{font-style:normal;font-size:9.5px;color:var(--patron);font-weight:600;margin-top:-4px}
+.post{padding-bottom:18px;border-bottom:8px solid var(--paper-2)}
+.post-head{display:flex;align-items:center;gap:10px;padding:12px 18px}
+.post-head .who{flex:1;line-height:1.25;min-width:0}
+.post-head .who b{font-size:14px;font-weight:700}
+.post-head .who small{display:block;font-size:12px;color:var(--muted)}
+.follow{font-size:13px;font-weight:700;color:var(--accent)}
+.follow.on{color:var(--muted)}
+.post-art{height:300px;cursor:pointer}
+.post-art .tag{position:absolute;left:14px;bottom:14px;z-index:2}
+.post-act{display:flex;align-items:center;gap:16px;padding:12px 18px 6px}
+.post-act button{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600}
+.post-act button.liked{color:var(--accent)}
+.post-act button.liked svg{fill:var(--accent)}
+.post-act button.saved svg{fill:var(--ink)}
+.post-act .sp{flex:1}
+.post-meta{padding:2px 18px 0}
+.post-meta h3{font-family:var(--serif);font-weight:600;font-size:18px;letter-spacing:-.02em}
+.post-meta h3 small{font-family:var(--display);font-style:italic;font-weight:400;color:var(--muted);font-size:15px;margin-left:4px}
+.post-meta .spec{font-size:12px;color:var(--muted);margin-top:3px}
+.story-quote{margin:12px 18px 0;padding:12px 14px;background:var(--paper-2);border-radius:12px;font-size:13px;line-height:1.6;color:var(--ink-2)}
+.story-quote .k{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--ink);margin-bottom:4px;letter-spacing:.02em}
+.story-quote a{color:var(--ink);font-weight:600}
+.boost{display:inline-block;font-size:10px;font-weight:700;background:var(--note);color:var(--note-ink);padding:1px 6px;border-radius:4px;margin-left:4px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px}
+.grid3 .art{aspect-ratio:4/5;cursor:pointer}
+.grid3 .sold{position:absolute;top:7px;right:7px;z-index:2;font-size:9.5px;font-weight:800;letter-spacing:.08em;background:rgba(250,248,244,.9);padding:2px 6px;border-radius:4px}
+.grid3 .px{position:absolute;left:7px;bottom:7px;z-index:2;font-size:10.5px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.4)}
+.grid3 .vb{position:absolute;right:6px;bottom:6px;z-index:2}
+.filters{display:flex;gap:6px;padding:14px 18px 6px;overflow-x:auto;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters .chip{font-size:12.5px;padding:6px 12px;cursor:pointer}
+.filters .chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.search-box{margin:4px 18px 0;display:flex;align-items:center;gap:8px;background:var(--paper-2);border-radius:12px;padding:0 12px;height:42px;color:var(--muted)}
+.search-box input{flex:1;outline:0;color:var(--ink);font-size:14px}
+
+/* ===== 작품 상세 ===== */
+.detail-hero{height:380px;position:relative;margin-top:-50px}
+.detail-hero .bar{position:absolute;top:56px;left:0;right:0;display:flex;justify-content:space-between;padding:4px 14px;z-index:3}
+.circ{width:38px;height:38px;border-radius:50%;background:rgba(250,248,244,.86);backdrop-filter:blur(8px);display:grid;place-items:center;color:var(--ink)}
+.circ.liked{color:var(--accent)}.circ.liked svg{fill:var(--accent)}
+.detail-hero .pager{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:5px;z-index:3}
+.detail-hero .pager i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5)}
+.detail-hero .pager i.on{background:#fff;width:16px;border-radius:3px}
+.d-pad{padding:18px 20px 0}
+.d-title{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:-.03em;line-height:1.3}
+.d-artist{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13.5px;color:var(--ink-2)}
+.specs{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:16px}
+.specs div{background:var(--paper);padding:10px 12px;font-size:13px;font-weight:600}
+.specs div small{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-bottom:2px}
+.prose{font-family:var(--serif);font-size:14.5px;line-height:1.8;color:var(--ink);letter-spacing:-.02em}
+.timeline{margin-top:22px}
+.tl{display:flex;gap:12px;margin-bottom:4px}
+.tl .thumb{width:58px;height:58px;border-radius:10px;flex:none}
+.tl .t{flex:1;padding-bottom:14px;font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.tl .t b{display:block;font-size:13.5px;color:var(--ink);margin-bottom:1px}
+.tl .t small{color:var(--muted);font-size:11px;margin-left:6px;font-weight:500}
+.bottombar{position:absolute;left:0;right:0;bottom:0;background:rgba(250,248,244,.97);border-top:1px solid var(--line);padding:12px 18px 30px;display:flex;align-items:center;gap:10px;z-index:8}
+.bottombar.col{flex-direction:column;align-items:stretch;gap:8px}
+.bottombar .price{flex:1;line-height:1.2}
+.bottombar .price small{font-size:11px;color:var(--muted);display:block}
+.bottombar .price b{font-size:19px;font-weight:800}
+.bottombar small.hint{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;color:var(--muted)}
+.bottombar .btn.big{height:52px;font-size:16px}
+.artist-card{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:var(--r);margin-top:20px}
+
+/* ===== 프로필 ===== */
+.cover{height:150px;position:relative;margin-top:-50px}
+.cover .bar{position:absolute;top:56px;left:14px;right:14px;display:flex;justify-content:space-between;z-index:3}
+.p-av{width:84px;height:84px;border:4px solid var(--paper);margin:-42px 0 0 18px;position:relative;z-index:2;font-size:26px;font-family:var(--serif)}
+.p-head{padding:10px 18px 0}
+.p-head .nm{display:flex;align-items:center;gap:6px;font-size:21px;font-weight:800;letter-spacing:-.03em}
+.p-head .handle{font-size:13px;color:var(--muted);margin-top:2px}
+.statement{font-family:var(--serif);font-size:14.5px;line-height:1.7;color:var(--ink);margin-top:12px;letter-spacing:-.02em}
+.p-tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.p-stats{display:flex;margin-top:16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.p-stats div{flex:1;text-align:center;padding:11px 0;font-size:11.5px;color:var(--muted)}
+.p-stats b{display:block;font-size:16px;color:var(--ink);font-weight:800}
+.p-stats div+div{border-left:1px solid var(--line)}
+.p-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 18px}
+.p-btns .btn{height:38px;font-size:13.5px;border-radius:10px}
+.verify-box{margin:0 18px 12px;padding:11px 14px;border-radius:14px;background:var(--paper-2);font-size:12.5px;color:var(--ink-2);display:flex;gap:10px;align-items:center}
+.career{list-style:none;padding:0 18px}
+.career li{display:grid;grid-template-columns:68px minmax(0,1fr) auto;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:13.5px;align-items:start}
+.career .yr{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
+.career .cat{display:block;font-size:11px;color:var(--muted)}
+.career .ok{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:var(--ink)}
+.career .ok .verified{width:15px;height:15px}
+
+/* ===== 결제 ===== */
+.co-item{display:flex;gap:14px;padding:16px 18px}
+.co-item .art{width:72px;height:90px;border-radius:8px;flex:none}
+.co-item .t{flex:1;font-size:12.5px;color:var(--muted);line-height:1.55}
+.co-item .t b{display:block;font-family:var(--serif);font-size:16px;color:var(--ink);font-weight:600;margin-bottom:2px}
+.co-item .t .won{color:var(--ink);font-weight:800;font-size:15px;margin-top:6px;display:block;font-family:var(--sans)}
+.co-sec{padding:18px 18px 4px}
+.opt{display:flex;gap:12px;border:1.5px solid var(--line);border-radius:var(--r);padding:13px 14px;margin-bottom:10px;align-items:flex-start;background:var(--paper);width:100%;text-align:left;cursor:pointer}
+.opt.on{border-color:var(--ink);background:#fff}
+.radio{width:20px;height:20px;border-radius:50%;border:1.5px solid #C9C3B7;flex:none;margin-top:1px}
+.opt.on .radio{border:6px solid var(--ink)}
+.box{width:20px;height:20px;border-radius:6px;border:1.5px solid #C9C3B7;flex:none;display:grid;place-items:center;margin-top:1px;color:transparent}
+.opt.on .box{background:var(--ink);border-color:var(--ink);color:#fff}
+.opt .t{flex:1;font-size:12.5px;color:var(--muted);line-height:1.5}
+.opt .t b{display:flex;align-items:center;gap:6px;font-size:14.5px;color:var(--ink);margin-bottom:2px}
+.opt .r{font-size:13px;font-weight:700;white-space:nowrap;text-align:right}
+.opt.patron.on{border-color:var(--patron);background:#F7F8FD}
+.opt.patron.on .radio{border-color:var(--patron)}
+.opt.leave.on{border-color:var(--ink-2)}
+.sum{margin:6px 18px 0;padding:14px 0 0;border-top:1px dashed #D6D0C4;font-size:13px}
+.sum div{display:flex;justify-content:space-between;padding:3px 0;color:var(--ink-2)}
+.sum div.free span:last-child{color:var(--ok);font-weight:600}
+.sum div.total{color:var(--ink);font-weight:800;font-size:15px;padding-top:8px}
+.months{display:flex;gap:6px;margin-top:8px}
+.months button{padding:4px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--ink-2)}
+.months button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* ===== 거래 내역 ===== */
+.toggle{margin:4px 18px 0;background:var(--paper-2);border-radius:12px;padding:4px;display:grid;grid-auto-flow:column;grid-auto-columns:1fr}
+.toggle button{text-align:center;padding:8px 0;font-size:14px;font-weight:600;color:var(--muted);border-radius:9px}
+.toggle button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.settle{margin:16px 18px 0;padding:18px;border-radius:18px;background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+.settle::before{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,#C2412A 0 40%,transparent 41%);opacity:.9}
+.settle::after{content:"";position:absolute;right:30px;top:40px;width:90px;height:90px;border-radius:50%;background:#E0A43A;mix-blend-mode:screen;opacity:.55}
+.settle.patron::before{background:radial-gradient(circle,#2F3E8F 0 40%,transparent 41%)}
+.settle.patron::after{background:#7C8CD6}
+.settle small{font-size:12px;opacity:.7;position:relative;z-index:1}
+.settle .big{font-size:28px;font-weight:800;letter-spacing:-.02em;margin-top:4px;position:relative;z-index:1}
+.settle .srow{display:flex;gap:18px;margin-top:16px;font-size:12px;position:relative;z-index:1}
+.settle .srow div{opacity:.75}
+.settle .srow b{display:block;font-size:15px;opacity:1;margin-top:2px}
+.tx{display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);align-items:center}
+.tx.top{align-items:flex-start}
+.tx .art{width:54px;height:66px;border-radius:7px;flex:none}
+.tx .t{flex:1;min-width:0;line-height:1.4}
+.tx .t b{display:block;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx .t small{font-size:12px;color:var(--muted)}
+.tx .r{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.tx .r b{font-size:14px;font-weight:800}
+.track{display:flex;align-items:center;margin-top:9px}
+.track i{width:7px;height:7px;border-radius:50%;background:var(--line);flex:none}
+.track i.on{background:var(--ink)}
+.track s{flex:1;height:2px;background:var(--line);text-decoration:none}
+.track s.on{background:var(--ink)}
+.track-l{display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted);margin-top:4px}
+.track-l .on{color:var(--ink);font-weight:700}
+
+/* ===== 후원 ===== */
+.wip-card{margin:6px 18px 14px;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--line);display:block;cursor:pointer}
+.wip-card .art{height:150px}
+.wip-card .stage{position:absolute;left:12px;top:12px;z-index:3;background:rgba(250,248,244,.92);backdrop-filter:blur(6px)}
+.wip-card .cmp{position:absolute;right:12px;top:12px;z-index:3;display:flex;gap:4px}
+.wip-card .cmp i{width:28px;height:34px;border-radius:5px;border:2px solid rgba(255,255,255,.9);display:block;overflow:hidden}
+.wip-body{padding:14px}
+.wip-body .h{display:flex;align-items:center;gap:8px}
+.wip-body .h b{font-size:14px}
+.wip-body .h small{color:var(--muted);font-size:12px;margin-left:auto;white-space:nowrap}
+.wip-body p{font-size:12.5px;line-height:1.55;color:var(--ink-2);margin-top:8px}
+.steps{display:flex;gap:4px;margin-top:12px}
+.steps i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.steps i.on{background:var(--patron)}
+.steps i.now{background:repeating-linear-gradient(90deg,var(--patron) 0 4px,var(--patron-soft) 4px 7px)}
+.steps i.late{background:var(--warn)}
+.steps-l{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:5px;gap:4px}
+.steps-l span{flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.steps-l span:first-child{text-align:left}.steps-l span:last-child{text-align:right}
+.steps-l .on{color:var(--patron);font-weight:700}
+.gate{margin:12px 18px 0;padding:12px 14px;border-radius:14px;background:var(--patron-soft)}
+.gate.warn{background:var(--warn-soft)}.gate.warn .h{color:var(--warn)}
+.gate.danger{background:#F5DDD8}.gate.danger .h{color:var(--danger)}
+.gate.plain{background:var(--paper-2)}.gate.plain .h{color:var(--ink)}
+.gate .h{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--patron)}
+.gate p{font-size:12.5px;color:var(--ink-2);margin-top:6px;line-height:1.55}
+.gate ul{list-style:none;margin-top:8px}
+.gate li{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);padding:2px 0}
+.gate li .ck{width:16px;height:16px;border-radius:50%;background:var(--patron);color:#fff;display:grid;place-items:center;flex:none}
+.gate li .ck.no{background:var(--line)}
+.gate li b{margin-left:auto;color:var(--ink);font-variant-numeric:tabular-nums}
+.gate .btn{margin-top:10px}
+.fund{margin:14px 18px 0}
+.fund .nums{display:flex;align-items:baseline;gap:6px}
+.fund .nums b{font-size:22px;font-weight:800}
+.fund .nums span{font-size:12px;color:var(--muted)}
+.fund .nums em{margin-left:auto;font-style:normal;font-weight:800;color:var(--patron);font-size:15px}
+.fund .meta{display:flex;gap:12px;font-size:11.5px;color:var(--muted);margin-top:7px;flex-wrap:wrap}
+.tiers{display:flex;gap:8px;padding:10px 18px 0;overflow-x:auto;scrollbar-width:none}
+.tier{flex:none;width:118px;border:1px solid var(--line);border-radius:12px;padding:9px 12px;background:#fff;font-size:11.5px;color:var(--muted);line-height:1.45;text-align:left;cursor:pointer}
+.tier b{display:block;font-size:15px;color:var(--ink);font-weight:800;margin-bottom:3px}
+.tier.on{border-color:var(--patron);box-shadow:inset 0 0 0 1px var(--patron)}
+.ms{display:flex;gap:12px;padding:0 18px}
+.ms .rail{display:flex;flex-direction:column;align-items:center;width:22px;flex:none}
+.ms .dot{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);background:var(--paper);display:grid;place-items:center;font-size:10.5px;font-weight:800;color:var(--muted)}
+.ms .dot.done{background:var(--patron);border-color:var(--patron);color:#fff}
+.ms .dot.now{border-color:var(--patron);color:var(--patron);box-shadow:0 0 0 4px var(--patron-soft)}
+.ms .dot.late{border-color:var(--warn);color:var(--warn)}
+.ms .line{flex:1;width:1.5px;background:var(--line);min-height:16px}
+.ms .t{flex:1;padding-bottom:18px;font-size:12.5px;color:var(--ink-2);line-height:1.5;min-width:0}
+.ms .t b{display:block;font-size:14px;color:var(--ink)}
+.ms .t small{font-size:11.5px;color:var(--muted)}
+.ms .thumbs{display:flex;gap:6px;margin-top:8px}
+.ms .thumbs .art{width:64px;height:64px;border-radius:10px}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.stepper button{width:40px;height:40px;font-size:18px}
+.stepper span{min-width:48px;text-align:center;font-weight:800}
+
+/* ===== 폼 ===== */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label,.field .lb{font-size:12.5px;font-weight:700}
+.field .req{color:var(--accent)}
+.input,.textarea,.select{width:100%;border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:11px 12px;outline:0;font-size:14px}
+.input:focus,.textarea:focus,.select:focus{border-color:var(--ink)}
+.textarea{min-height:92px;resize:vertical;line-height:1.55}
+.field .hint{font-size:11.5px;color:var(--muted)}
+.field .err{font-size:11.5px;color:var(--danger);display:none}
+.field.invalid .err{display:block}
+.field.invalid .input,.field.invalid .drop{border-color:var(--danger)}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;height:120px;border:1.5px dashed #C9C3B7;border-radius:var(--r);color:var(--muted);font-size:12.5px;cursor:pointer;text-align:center;background:var(--paper-2)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ms-row{display:grid;grid-template-columns:22px minmax(0,1fr) 128px;gap:8px;align-items:center;margin-bottom:8px}
+.ms-row .n{font-family:var(--display);font-style:italic;color:var(--patron);font-size:16px;text-align:center}
+.ms-row .input{padding:9px 10px;font-size:13px}
+.list-link{display:flex;align-items:center;gap:12px;padding:15px 18px;border-bottom:1px solid var(--line);font-size:14.5px;font-weight:600;width:100%;text-align:left}
+.list-link .i:last-child{margin-left:auto;color:var(--muted)}
+.list-link small{font-weight:500;color:var(--muted);margin-left:auto}
+.empty{padding:48px 24px;text-align:center;color:var(--muted);font-size:13px;line-height:1.6}
+.empty b{display:block;color:var(--ink);font-size:15px;margin-bottom:4px}
+.empty .btn{margin-top:14px}
+.progress{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:8px}
+.progress i{display:block;height:100%;background:var(--ink);border-radius:3px}
+.progress.patron i{background:var(--patron)}
+.doc-item{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:#fff}
+.doc-item .ph{width:40px;height:52px;border-radius:6px;background:var(--paper-2);display:grid;place-items:center;font-size:9px;color:var(--muted)}
+.check-row{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--ink-2);padding:4px 0}
+.check-row input{accent-color:var(--ink);width:16px;height:16px}
+
+/* ===== 바텀 시트 / 토스트 ===== */
+.sheet-back{position:absolute;inset:0;background:rgba(27,26,23,.4);z-index:30;display:none;align-items:flex-end}
+.sheet-back.open{display:flex}
+.sheet{background:var(--paper);width:100%;max-height:88%;overflow:auto;border-radius:22px 22px 0 0;padding:10px 18px 34px;scrollbar-width:none}
+.sheet::before{content:"";display:block;width:38px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 14px}
+.sheet h3{font-size:18px;font-weight:800;margin-bottom:6px;letter-spacing:-.02em}
+.sheet .desc{font-size:13px;color:var(--ink-2);line-height:1.6;margin-bottom:14px}
+.toast{position:absolute;left:18px;right:18px;bottom:104px;z-index:40;background:var(--ink);color:var(--paper);border-radius:12px;padding:12px 14px;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none;text-align:center}
+.toast.show{opacity:1;transform:none}
+
+/* ===== 설계 메모 (폰 안) ===== */
+.pnote{display:none;margin:10px 18px;padding:9px 12px;border-radius:10px;background:var(--note);color:var(--note-ink);font-size:11.5px;line-height:1.55}
+.pnote::before{content:"설계 메모 · ";font-weight:800}
+body.show-notes .pnote{display:block}
+body:not(.show-notes) .boost{display:none}
+
+.side-fab{display:none}
+@media (max-width:900px){
+  body{background:var(--paper)}
+  .doc{display:block;padding:0}
+  .side{position:fixed;inset:0;z-index:100;background:var(--canvas);padding:28px 20px 40px;max-height:none;display:none}
+  .side.open{display:block}
+  .phone{width:100%;height:100dvh;min-height:0;border-radius:0;box-shadow:none;margin:0}
+  .phone .status{display:none}
+  .detail-hero,.cover{margin-top:0}
+  .detail-hero .bar,.cover .bar{top:10px}
+  .home-ind{display:none}
+  .side-fab{display:flex;position:fixed;left:14px;bottom:96px;box-shadow:0 4px 14px rgba(0,0,0,.2);z-index:90;height:34px;padding:0 12px;border-radius:999px;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;align-items:center;gap:6px}
+  .scr-list{grid-template-columns:repeat(2,1fr)}
+  .ctrl{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body class="show-notes">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-9.2-9.3C1.7 7.5 3.9 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.1 0 5.3 3 4.2 6.2C19.5 15.4 12 20 12 20z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4 4.3-6 8-6s6.8 2 8 6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v13M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 21v-9"/><path d="M12 12C12 7 8 4 3 4c0 5 4 8 9 8z"/><path d="M12 14c0-4 3-7 8-7 0 4-3 7-8 7z"/></symbol>
+  <symbol id="i-archive" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-frame" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><rect x="7" y="7" width="10" height="10"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></symbol>
+  <symbol id="i-post" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="12" rx="1.5"/><path d="M4 19h16M4 22h10"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 2.5 20h19z"/><path d="M12 10v4M12 17v.5"/></symbol>
+  <symbol id="i-care" viewBox="0 0 24 24"><path d="M12 3c3 4 6 6.5 6 10a6 6 0 0 1-12 0c0-3.5 3-6 6-10z"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 6.1A9 9 0 0 1 12 6c5 0 9 6 9 6a15 15 0 0 1-2.6 3.2M6.2 7.6C4 9.2 3 12 3 12s4 6 9 6c1.5 0 2.9-.4 4.1-1"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></symbol>
+</defs></svg>
+
+<button class="side-fab" id="side-fab">시안 메뉴</button>
+
+<div class="doc">
+  <aside class="side" id="side"></aside>
+  <div class="phone" id="phone">
+    <div class="status"><span>9:41</span><span class="sys">●●● <span class="bat"></span></span></div>
+    <div class="body" id="body"></div>
+    <div id="bar-slot"></div>
+    <nav class="tabbar" id="tabbar"></nav>
+    <div class="sheet-back" id="sheet-back"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="home-ind"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   Mock data (DESIGN.md §5 타입 기준)
+   ========================================================= */
+const today='2026-10-11';
+const settings={verifiedBadgeThreshold:5,verifiedFeedBoost:1.3};
+const G={jiwoo:'linear-gradient(135deg,#C2412A,#E0A43A)',serin:'linear-gradient(135deg,#E6A98F,#7C4A3A)',moss:'linear-gradient(135deg,#33463F,#7A9A8C)',doyoon:'linear-gradient(135deg,#4A4740,#8C877D)',ian:'linear-gradient(135deg,#2D3E50,#9FB4B6)',haneul:'linear-gradient(135deg,#2F3E8F,#7C8CD6)',admin:'linear-gradient(135deg,#1B1A17,#4A4740)'};
+const users={
+  jiwoo:{handle:'jiwoo.han',key:'jiwoo',name:'한지우',isArtist:true,role:'user',cover:'a3',place:'서울 성수 작업실',tags:['유화','추상 풍경'],
+    statement:'지나간 빛이 방에 남기는 온도를 그립니다. 기억 속 오후 네 시를 캔버스 위에 오래 머물게 하고 싶어요.',followers:'12.4k',
+    career:[
+      {id:'c1',cat:'education',y1:2014,y2:2018,text:'홍익대학교 회화과 졸업',pub:true,st:'verified'},
+      {id:'c2',cat:'exhibition',y1:2022,text:'개인전 〈오후 네 시〉, 갤러리 소소',pub:true,st:'verified'},
+      {id:'c3',cat:'exhibition',y1:2026,text:'개인전 〈빛의 체류〉, 아트스페이스 휴',pub:true,st:'verified'},
+      {id:'c4',cat:'award',y1:2023,text:'제12회 청년작가 회화상 우수상',pub:true,st:'verified'},
+      {id:'c5',cat:'support_project',y1:2026,text:'후원 프로젝트 〈늦은 오후의 방〉 완성 · 마일스톤 3/3 · 후원자 52명',pub:true,st:'verified',auto:true},
+      {id:'c6',cat:'affiliation',y1:2021,text:'서울문화재단 레지던시 입주작가',pub:true,st:'verified'},
+      {id:'c7',cat:'exhibition',y1:2025,text:'단체전 〈창가의 사람들〉, 연희 아트룸',pub:true,st:'unverified'},
+    ]},
+  serin:{handle:'serin.oh',key:'serin',name:'오세린',isArtist:true,role:'user',cover:'a9',place:'부산 영도',tags:['과일 정물','유화'],
+    statement:'익어가고 무르는 것들의 색을 기록합니다.',followers:'8.1k',
+    career:[
+      {id:'c11',cat:'education',y1:2013,y2:2017,text:'부산대학교 미술학과 졸업',pub:true,st:'verified'},
+      {id:'c12',cat:'education',y1:2017,y2:2019,text:'부산대학교 대학원 서양화 석사',pub:true,st:'verified'},
+      {id:'c13',cat:'exhibition',y1:2021,text:'개인전 〈무르익음〉, 갤러리 담',pub:true,st:'verified'},
+      {id:'c14',cat:'exhibition',y1:2023,text:'아트부산 신진작가 특별전',pub:true,st:'verified'},
+      {id:'c15',cat:'award',y1:2022,text:'신진작가 공모 선정',pub:true,st:'verified'},
+    ]},
+  ian:{handle:'ian.studio',key:'ian',name:'이안',isArtist:true,role:'user',cover:'a7',place:'제주',tags:['아크릴','원형 연작'],
+    statement:'해와 정원의 원을 반복해서 그립니다.',followers:'5.6k',
+    career:[1,2,3,4,5].map(i=>({id:'c4'+i,cat:['education','exhibition','exhibition','award','affiliation'][i-1],y1:2016+i,text:['한국예술종합학교 미술원 졸업','개인전 〈둥근 정원〉','2인전 〈해의 자리〉','제주 청년미술상','제주문화예술재단 지원작가'][i-1],pub:true,st:'verified'}))},
+  moss:{handle:'moss.studio',key:'moss',name:'moss.studio',isArtist:true,role:'user',cover:'a5',place:'서울 망원',tags:['기하 추상','아크릴'],
+    statement:'면과 선으로 도시의 구획을 다시 나눕니다.',followers:'2.3k',
+    career:[
+      {id:'c21',cat:'education',y1:2017,y2:2021,text:'국민대학교 회화전공 졸업',pub:true,st:'verified'},
+      {id:'c22',cat:'exhibition',y1:2023,text:'2인전 〈구획〉, 공간 오름',pub:true,st:'verified'},
+      {id:'c23',cat:'exhibition',y1:2025,text:'개인전 〈선의 도시〉, 갤러리 물결',pub:true,st:'pending'},
+      {id:'c24',cat:'award',y1:2024,text:'서울 청년작가 공모 입선',pub:true,st:'rejected',reason:'제출한 서류에서 작가 이름을 확인할 수 없어요. 입선자 명단이나 상장을 첨부해 주세요.'},
+      {id:'c25',cat:'affiliation',y1:2022,text:'한국추상미술협회 회원',pub:false,st:'verified'},
+      {id:'c26',cat:'etc',y1:2024,text:'문예지 《선》 표지 작업',pub:true,st:'unverified'},
+    ]},
+  doyoon:{handle:'doyoon.kim',key:'doyoon',name:'김도윤',isArtist:true,role:'user',cover:'a6',place:'전주',tags:['수묵','드로잉'],
+    statement:'먹이 번지는 시간을 기다립니다.',followers:'940',
+    career:[
+      {id:'c31',cat:'education',y1:2018,y2:2022,text:'전북대학교 한국화과 졸업',pub:true,st:'pending'},
+      {id:'c32',cat:'exhibition',y1:2025,text:'단체전 〈먹의 숨〉, 전주 공간',pub:true,st:'pending'},
+    ]},
+  haneul:{handle:'haneul',key:'haneul',name:'김하늘',isArtist:false,role:'user',cover:'a8',place:'',tags:[],statement:'좋아하는 작품을 하나씩 모으는 중',followers:'24',career:[]},
+  admin:{handle:'atelier.ops',key:'admin',name:'atelier 운영팀',isArtist:false,role:'admin',career:[],tags:[],followers:'0'},
+};
+let works=[
+  {id:'w1',a:'jiwoo',title:'늦은 오후의 방',art:'a1',cat:'painting',mat:'Oil on canvas',size:'72.7 × 60.6 cm (20호)',year:2026,made:'2026.03 – 06',price:1800000,sale:'available',likes:2400,date:'2026-10-09',fromProject:'p3',
+    desc:'할머니 집 거실에 오후 네 시쯤 들던 빛을 기억하며 그렸어요. 방은 비어 있지만, 누군가 막 떠난 온기가 남아 있는 장면입니다.',
+    story:'붉은 층은 열두 번 덧칠했고, 마른 뒤 다시 긁어내며 빛이 바닥에 스미는 느낌을 만들었어요.',
+    records:[{t:'구도 스케치',d:'3월 12일',x:'창틀 그림자를 대각선으로 두고 방을 둘로 나눴습니다.',f:'wip'},{t:'붉은 층 쌓기',d:'4월 28일',x:'카드뮴 레드를 얇게 열두 번. 마른 뒤 다시 긁어냈어요.',f:'wip-half'},{t:'완성',d:'6월 20일',x:'마지막으로 노란 빛의 경계를 부드럽게 풀었습니다.',f:''}]},
+  {id:'w2',a:'jiwoo',title:'두 개의 정오',art:'a2',cat:'painting',mat:'Oil on canvas',size:'53 × 45.5 cm (10호)',year:2025,made:'2025.08 – 10',price:2400000,sale:'sold',likes:1800,date:'2026-09-30',
+    desc:'정오의 해와 그림자가 동시에 머무는 순간.',story:'같은 시간에 두 번 찾아간 공원의 기억을 겹쳤어요.',records:[]},
+  {id:'w3',a:'serin',title:'복숭아 껍질의 시간',art:'a9',cat:'painting',mat:'Oil on linen',size:'40.9 × 31.8 cm (6호)',year:2026,made:'2026.07',price:920000,sale:'sold',likes:1320,date:'2026-09-27',
+    desc:'껍질이 무르기 시작하는 사흘을 한 화면에 담았습니다.',story:'매일 아침 같은 복숭아를 관찰했어요. 색이 가장 진해진 날 붓을 멈췄습니다.',records:[]},
+  {id:'w4',a:'serin',title:'Dusk, Tidal',art:'a4',cat:'painting',mat:'Acrylic on canvas',size:'60.6 × 50 cm (12호)',year:2026,made:'2026.05',price:1350000,sale:'available',likes:980,date:'2026-10-06',
+    desc:'해 질 녘 물이 빠지는 시간의 색.',story:'영도 바닷가에서 30분 동안 바뀌는 색을 기억해 두었다가 작업실에서 옮겼어요.',records:[]},
+  {id:'w5',a:'moss',title:'구획 No.7',art:'a5',cat:'painting',mat:'Acrylic on panel',size:'45.5 × 45.5 cm',year:2026,made:'2026.09',price:680000,sale:'available',likes:412,date:'2026-10-10',
+    desc:'도시의 지도를 세 개의 면으로 줄였습니다.',story:'망원동 골목 지도를 접고 펼치기를 반복하며 구획을 찾았어요.',records:[]},
+  {id:'w6',a:'doyoon',title:'먹의 숨',art:'a6',cat:'drawing',mat:'Ink on hanji',size:'70 × 50 cm',year:2025,made:'2025.12',price:420000,sale:'available',likes:268,date:'2026-10-08',
+    desc:'먹이 종이에 스미는 속도를 그대로 두었습니다.',story:'붓을 대고 기다리는 시간이 작업의 절반이에요.',records:[]},
+  {id:'w7',a:'ian',title:'정원의 해',art:'a7',cat:'painting',mat:'Acrylic on canvas',size:'50 × 50 cm',year:2026,made:'2026.08',price:760000,sale:'reserved',likes:1105,date:'2026-10-04',
+    desc:'정원 한가운데 떠 있는 해.',story:'원을 하루에 하나씩, 백 일 동안 그렸어요. 그중 일흔세 번째입니다.',records:[]},
+  {id:'w8',a:'serin',title:'흰 그릇의 오후',art:'a8',cat:'painting',mat:'Oil on canvas',size:'33.4 × 24.2 cm (4호)',year:2026,made:'2026.06',price:560000,sale:'available',likes:640,date:'2026-10-02',
+    desc:'빈 그릇에 고인 빛.',story:'아무것도 담기지 않은 그릇이 가장 많은 빛을 담고 있었어요.',records:[]},
+  {id:'w9',a:'moss',title:'선의 도시',art:'a5',cat:'print',mat:'Silkscreen, ed. 1/20',size:'50 × 70 cm',year:2025,made:'2025.11',price:null,sale:'not_for_sale',likes:190,date:'2026-09-12',
+    desc:'전시용 판화. 판매하지 않아요.',story:'개인전을 위해 만든 포스터 판화입니다.',records:[]},
+];
+const STAGES5=['구상','스케치','채색','디테일','완성'];
+let projects=[
+  {id:'p1',a:'jiwoo',title:'〈물가의 오후〉 연작',art:'a3',status:'in_progress',created:'2026-07-28',
+    direction:'물가에서 보낸 오후를 네 폭이 이어지는 연작으로 완성하려 해요. 하늘과 물의 경계를 점점 지워 가며, 마지막 폭에서는 둘이 하나의 색이 되도록 그릴 계획입니다.',
+    rewards:[{amt:10000,t:'작업노트 전체 열람'},{amt:30000,t:'+ 완성작 뒷면에 이름 기록'},{amt:50000,t:'+ 완성작 한정 프린트'}],
+    active:38,total:46,funded:2940000,
+    ms:[
+      {id:'m1',n:1,goal:'구상',due:'2026-08-10',st:'closed',sub:{at:'2026-08-10',note:'물가 사진 40장 중 네 장면을 골라 색 메모를 붙였어요.',f:'wip'},dec:{c:44,l:2,p:0}},
+      {id:'m2',n:2,goal:'스케치',due:'2026-09-05',st:'closed',sub:{at:'2026-09-04',note:'네 폭의 수평선 높이를 조금씩 낮춰 시선이 흘러가게 했어요.',f:'wip'},dec:{c:38,l:6,p:0}},
+      {id:'m3',n:3,goal:'채색',due:'2026-10-07',st:'deciding',sub:{at:'2026-10-07',note:'하늘과 물의 경계를 두 단계로 나눌지 고민하다가, 첫 두 폭은 나누고 뒤의 두 폭은 섞기로 했어요. 다음 단계에서 붓 자국을 정리합니다.',f:'wip-half'},deadline:'2026-10-14',dec:{c:21,l:2,p:15}},
+      {id:'m4',n:4,goal:'디테일',due:'2026-11-01',st:'upcoming'},
+      {id:'m5',n:5,goal:'완성',due:'2026-11-25',st:'upcoming',final:true},
+    ]},
+  {id:'p2',a:'serin',title:'복숭아의 계절',art:'a9',status:'recruiting',created:'2026-10-05',
+    direction:'복숭아가 익고 무르는 2주를 세 장의 그림으로 남깁니다. 마지막 장은 씨만 남은 접시를 그릴 계획이에요.',
+    rewards:[{amt:10000,t:'후원자 이름 기록'},{amt:30000,t:'+ 엽서 세트'}],active:17,total:17,funded:0,
+    ms:[{id:'m21',n:1,goal:'첫째 주 드로잉',due:'2026-10-25',st:'upcoming'},{id:'m22',n:2,goal:'둘째 주 채색',due:'2026-11-12',st:'upcoming'},{id:'m23',n:3,goal:'완성',due:'2026-12-01',st:'upcoming',final:true}]},
+  {id:'p5',a:'ian',title:'백 개의 해',art:'a7',status:'in_progress',created:'2026-08-20',
+    direction:'백 일 동안 하루 하나씩 그린 해 중 스물다섯 점을 골라 하나의 큰 화면으로 엮습니다.',rewards:[{amt:10000,t:'작업노트 열람'}],active:64,total:70,funded:1840000,
+    ms:[{id:'m51',n:1,goal:'선별',due:'2026-09-10',st:'closed',sub:{at:'2026-09-10',note:'백 점 중 스물다섯 점을 골랐어요.',f:'wip'},dec:{c:66,l:4,p:0}},{id:'m52',n:2,goal:'배치',due:'2026-10-20',st:'upcoming'},{id:'m53',n:3,goal:'연결 채색',due:'2026-11-15',st:'upcoming'},{id:'m54',n:4,goal:'완성',due:'2026-12-10',st:'upcoming',final:true}]},
+  {id:'p3',a:'jiwoo',title:'늦은 오후의 방',art:'a1',status:'completed',linkedWork:'w1',closed:'2026-06-20',
+    direction:'기억 속 오후 네 시의 방 한 장면을 세 번의 과정으로 완성합니다.',rewards:[],active:49,total:52,funded:4410000,
+    ms:[{id:'m31',n:1,goal:'구도 스케치',due:'2026-03-12',st:'closed'},{id:'m32',n:2,goal:'붉은 층 쌓기',due:'2026-04-28',st:'closed'},{id:'m33',n:3,goal:'완성',due:'2026-06-20',st:'closed',final:true}]},
+  {id:'p4',a:'serin',title:'Tidal 12',art:'a4',status:'ended',endReason:'작업실 이전으로 일정을 지키기 어려워 6번째 마일스톤에서 마무리했어요.',closed:'2026-04-02',
+    direction:'열두 달의 썰물을 한 달에 한 점씩.',rewards:[],active:9,total:31,funded:1530000,
+    ms:Array.from({length:12},(_,i)=>({id:'m4'+i,n:i+1,goal:(i+1)+'월',due:'2026-01-01',st:i<6?'closed':'upcoming',final:i===11}))},
+];
+let backings=[
+  {id:'b1',p:'p1',u:'haneul',amt:30000,paid:60000,st:'active',dec:{m1:'continue',m2:'continue'}},
+  {id:'b2',p:'p3',u:'haneul',amt:10000,paid:30000,st:'finished',dec:{}},
+];
+let orders=[
+  {id:'o1',w:'w3',buyer:'haneul',seller:'serin',add:[{n:'원목 액자 맞춤',p:180000}],amt:{work:920000,add:180000,ful:45000},ful:'delivery',st:'delivered',date:'2026-09-27'},
+  {id:'o2',w:'w7',buyer:'haneul',seller:'ian',add:[],amt:{work:760000,add:0,ful:0},ful:'storage',months:3,st:'paid',date:'2026-10-09'},
+  {id:'o3',w:'w2',buyer:'serin',seller:'jiwoo',add:[],amt:{work:2400000,add:0,ful:0},ful:'storage',months:6,st:'stored',date:'2026-10-04'},
+  {id:'o4',w:'w5',buyer:'haneul',seller:'moss',add:[],amt:{work:680000,add:0,ful:45000},ful:'delivery',st:'confirmed',date:'2026-10-10'},
+];
+const ADDONS=[{id:'frame',ic:'frame',n:'원목 액자 맞춤',d:'작가 추천 오크 프레임 · 무반사 아크릴',p:180000},{id:'install',ic:'home',n:'설치 서비스',d:'수도권 방문 설치 · 벽 타공 포함',p:60000},{id:'care',ic:'care',n:'보존 관리 키트',d:'먼지 브러시 · 보관 커버 · 관리 안내서',p:28000}];
+const SHIP=45000, STORAGE=15000, FREE_MONTHS=3;
+const PERSONAS={guest:{label:'방문자 (비로그인)',u:null},member:{label:'회원 · 김하늘',u:'haneul'},artist:{label:'작가 · moss.studio (미인증)',u:'moss'},verified:{label:'인증 작가 · 한지우',u:'jiwoo'},admin:{label:'관리자 · 운영팀',u:'admin'}};
+const CAT={painting:'회화',drawing:'드로잉',print:'판화',photo:'사진',sculpture:'조각',ceramic:'도자',digital:'디지털',etc:'기타'};
+const CCAT={education:'학력',exhibition:'전시',award:'수상',affiliation:'소속·활동',support_project:'후원 프로젝트',etc:'기타'};
+const SALE={available:['판매중','accent'],reserved:['예약중','warn'],sold:['SOLD','line'],not_for_sale:['비매품','line']};
+const PST={recruiting:['모집 중','accent'],in_progress:['진행 중','patron'],delayed:['지연','warn'],awaiting_close:['종료 대기','danger'],completed:['완성','ok'],ended:['중도 종료','line']};
+const VST={unverified:['미인증','line'],pending:['심사 중','warn'],verified:['인증됨','ok'],rejected:['반려','danger']};
+
+/* =========================================================
+   State
+   ========================================================= */
+const store={get(k,d){try{const v=localStorage.getItem('atl-'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('atl-'+k,JSON.stringify(v))}catch(e){}}};
+const S={persona:store.get('persona','member'),view:store.get('view','post'),feedTab:'foryou',exCat:'all',q:'',notes:store.get('notes',true),
+  liked:new Set(['w1']),saved:new Set(['w4','w8']),following:new Set(['jiwoo','serin']),sim:'normal',elig:false,
+  histTab:'buy',supTab:'active',profTab:{},adminSel:null,msCount:4,co:null};
+
+/* =========================================================
+   Helpers
+   ========================================================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const won=n=>'₩'+Number(n).toLocaleString('ko-KR');
+const short=n=>n>=1e6?'₩'+(n/1e6).toFixed(1).replace('.0','')+'M':'₩'+Math.round(n/1e3)+'K';
+const kfmt=n=>n>=1000?(n/1000).toFixed(1).replace('.0','')+'k':String(n);
+const ic=(n,c='i')=>`<svg class="${c}"><use href="#i-${n}"/></svg>`;
+const md=d=>{const[,m,x]=d.split('-');return `${+m}월 ${+x}일`};
+const mdd=d=>{const[,m,x]=d.split('-');return `${m}.${x}`};
+const days=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
+const me=()=>PERSONAS[S.persona].u?users[PERSONAS[S.persona].u]:null;
+const U=k=>users[k];
+const go=h=>{location.hash='#/'+h};
+const vcount=u=>u.career.filter(c=>c.pub&&c.st==='verified').length;
+const isV=u=>!!u&&u.isArtist&&vcount(u)>=settings.verifiedBadgeThreshold;
+const vb=(u,s='')=>isV(u)?`<span class="verified ${s}" title="인증 작가 · 작가 소개 중 ${vcount(u)}개 항목을 atelier가 확인했어요" aria-label="인증 작가">${ic('check','i')}</span>`:'';
+const av=(u,size=36,extra='')=>`<div class="av ${extra}" style="width:${size}px;height:${size}px;font-size:${Math.round(size*.36)}px;background:${G[u.key]}" aria-hidden="true">${esc(u.name[0])}</div>`;
+const note=t=>`<div class="pnote">${t}</div>`;
+const pst=p=>{ if(p.id==='p1'&&p.status==='in_progress'){ if(S.sim==='delayed')return 'delayed'; if(S.sim==='no_backers')return 'awaiting_close'; } return p.status; };
+const activeOf=p=>pst(p)==='awaiting_close'?0:p.active;
+const msDone=p=>p.ms.filter(m=>m.st==='closed').length;
+const nextMs=p=>p.ms.find(m=>m.st==='upcoming');
+const decMs=p=>p.ms.find(m=>m.st==='deciding');
+const openProj=k=>projects.find(p=>p.a===k&&!['completed','ended'].includes(p.status));
+const myBack=pid=>{const u=me();return u&&backings.find(b=>b.p===pid&&b.u===u.key)};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2300)}
+function needLogin(){sheet(`<h3>로그인이 필요해요</h3><p class="desc">시안에서는 왼쪽 패널에서 보기 계정을 바꿔 확인할 수 있어요.</p><button class="btn dark block" onclick="setPersona('member');closeSheet()">회원(김하늘)으로 보기</button>`)}
+function steps(p){ const st=pst(p); const nm=nextMs(p);
+  return `<div class="steps">${p.ms.map(m=>`<i class="${m.st==='closed'?'on':m.st==='deciding'?'now':(st==='delayed'&&m===nm)?'late':''}"></i>`).join('')}</div>`; }
+function stepsL(p){ if(p.ms.length>6) return `<div class="steps-l"><span>1</span><span class="on">${msDone(p)} / ${p.ms.length}</span><span>${p.ms.length}</span></div>`;
+  const cur=(decMs(p)||nextMs(p)||{}).id; return `<div class="steps-l">${p.ms.map(m=>`<span class="${m.id===cur?'on':''}">${esc(m.goal)}</span>`).join('')}</div>`; }
+
+/* sheet */
+let lastFocus;
+function sheet(html){lastFocus=document.activeElement;$('#sheet').innerHTML=html;$('#sheet-back').classList.add('open');setTimeout(()=>{const f=$('#sheet').querySelector('input,textarea,button');f&&f.focus()},30)}
+function closeSheet(){$('#sheet-back').classList.remove('open');lastFocus&&lastFocus.focus&&lastFocus.focus()}
+$('#sheet-back').addEventListener('click',e=>{if(e.target.id==='sheet-back')closeSheet()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#sheet-back').classList.contains('open'))closeSheet()});
+
+/* actions */
+function like(id,e){e&&e.stopPropagation();if(!me())return needLogin();const w=works.find(x=>x.id===id);if(S.liked.has(id)){S.liked.delete(id);w.likes--}else{S.liked.add(id);w.likes++}render()}
+function save(id,e){e&&e.stopPropagation();if(!me())return needLogin();if(S.saved.has(id)){S.saved.delete(id);toast('저장을 취소했어요')}else{S.saved.add(id);toast('저장했어요')}render()}
+function follow(k,e){e&&e.stopPropagation();if(!me())return needLogin();if(S.following.has(k))S.following.delete(k);else{S.following.add(k);toast(U(k).name+' 작가를 팔로우해요')}render()}
+
+/* =========================================================
+   Screens — 각 함수는 {code,title,sub,tab,html,bar,notes} 반환
+   ========================================================= */
+// S01 피드
+function feedScore(w){return w.likes*(isV(U(w.a))?settings.verifiedFeedBoost:1)}
+function feedList(){
+  let l=works.slice();
+  if(S.feedTab==='following') return l.filter(w=>S.following.has(w.a)).sort((a,b)=>b.date.localeCompare(a.date));
+  if(S.feedTab==='popular') return l.sort((a,b)=>feedScore(b)-feedScore(a));
+  // 추천: 점수 - 경과일 패널티 (mock)
+  return l.sort((a,b)=>(feedScore(b)-days(b.date,today)*40)-(feedScore(a)-days(a.date,today)*40));
+}
+function post(w){
+  const u=U(w.a);const[sl,sc]=SALE[w.sale];const mine=me()&&me().key===u.key;
+  const boost=isV(u)&&S.feedTab!=='following'?`<span class="boost">노출 ×${settings.verifiedFeedBoost}</span>`:'';
+  return `<article class="post">
+    <div class="post-head"><a href="#/artist/${u.key}">${av(u,36)}</a><a class="who" href="#/artist/${u.key}"><b>${esc(u.name)}</b> ${vb(u,'s')}${boost}<small>${CAT[w.cat]} · ${esc(u.place)}</small></a>
+      ${mine?'':`<button class="follow ${S.following.has(u.key)?'on':''}" onclick="follow('${u.key}',event)">${S.following.has(u.key)?'팔로잉':'팔로우'}</button>`}</div>
+    <div class="art ${w.art} post-art" onclick="go('work/${w.id}')" role="img" aria-label="${esc(w.title)}"><span class="chip ${w.sale==='available'?'sale':'line'} tag" style="${w.sale!=='available'?'background:rgba(250,248,244,.92)':''}">${sl}${w.price&&w.sale==='available'?' · '+won(w.price):''}</span></div>
+    <div class="post-act">
+      <button class="${S.liked.has(w.id)?'liked':''}" onclick="like('${w.id}')" aria-label="좋아요" aria-pressed="${S.liked.has(w.id)}">${ic('heart')}${kfmt(w.likes)}</button>
+      <button onclick="toast('링크를 복사했어요')" aria-label="공유">${ic('share')}</button>
+      <span class="sp"></span>
+      <button class="${S.saved.has(w.id)?'saved':''}" onclick="save('${w.id}')" aria-label="저장" aria-pressed="${S.saved.has(w.id)}">${ic('bookmark')}</button>
+    </div>
+    <div class="post-meta"><h3>${esc(w.title)} <small>${w.year}</small></h3><div class="spec">${esc(w.mat)} · ${esc(w.size)}</div></div>
+    <div class="story-quote"><div class="k">${ic('pen','i xs')}제작 스토리</div>${esc(w.story.length>60?w.story.slice(0,58)+'…':w.story)} <a href="#/work/${w.id}">더보기</a></div>
+  </article>`;
+}
+function gridCell(w){const u=U(w.a);return `<div class="art ${w.art}" onclick="go('work/${w.id}')" role="img" aria-label="${esc(w.title)}">${w.sale==='sold'?'<span class="sold">SOLD</span>':w.sale==='reserved'?'<span class="sold">예약중</span>':''}${w.price&&w.sale==='available'?`<span class="px">${short(w.price)}</span>`:''}</div>`}
+function storyRings(){
+  const u=me();const live=projects.filter(p=>['in_progress','recruiting'].includes(p.status));
+  const mine=u&&u.isArtist?`<a class="story" href="#/${openProj(u.key)?'studio-support':'support-new'}"><div class="ring me"><div>${ic('plus')}</div></div><b>${openProj(u.key)?'결과물 올리기':'후원 열기'}</b></a>`:'';
+  return `<div class="stories">${mine}${live.map(p=>{const a=U(p.a);const pct=Math.round(msDone(p)/p.ms.length*100);
+    return `<a class="story" href="#/support/${p.id}"><div class="ring ${p.status==='recruiting'?'recruit':''}" style="--p:${pct}%"><div class="art ${p.art}"></div></div><b>${esc(a.name)}</b><em style="${p.status==='recruiting'?'color:var(--accent)':''}">${p.status==='recruiting'?'모집 중':`${msDone(p)}/${p.ms.length}단계`}</em></a>`}).join('')}</div>`;
+}
+function scrFeed(){
+  const l=feedList();
+  return {code:'01',title:'피드',sub:'홈',tab:'feed',html:`
+    <div class="appbar"><div class="logo">atelier<i>.</i></div><div class="icons"><a href="#/explore" aria-label="검색">${ic('search')}</a><button class="dot-badge" onclick="toast('알림 (MVP 후순위)')" aria-label="알림">${ic('bell')}</button></div></div>
+    <div class="seg">${[['foryou','추천'],['following','팔로잉'],['popular','인기']].map(([k,l])=>`<button class="${S.feedTab===k?'on':''}" onclick="S.feedTab='${k}';render()">${l}</button>`).join('')}
+      <span class="view"><button class="${S.view==='post'?'on':''}" onclick="setView('post')" aria-label="한 줄 보기">${ic('post','i sm')}</button><button class="${S.view==='grid'?'on':''}" onclick="setView('grid')" aria-label="그리드 보기">${ic('grid','i sm')}</button></span></div>
+    ${storyRings()}
+    ${note('상단 링 = 진행 중인 후원 프로젝트. 링 채움 = 마일스톤 진행률(울트라마린), 모집 중은 버밀리언 링.')}
+    ${S.feedTab==='following'&&!me()?`<div class="empty"><b>로그인하면 팔로우한 작가의 새 작품을 볼 수 있어요</b><button class="btn dark sm" onclick="needLogin()">로그인</button></div>`
+      :!l.length?`<div class="empty"><b>팔로우한 작가의 새 작품이 없어요</b>추천 탭에서 작가를 찾아보세요.</div>`
+      :S.view==='grid'?`<div class="grid3">${l.map(gridCell).join('')}</div>`:l.map(post).join('')}`,
+    notes:['탭: <b>추천 · 팔로잉 · 인기</b>. 추천·인기는 인증 작가 작품에 노출 가중치(관리자 설정, 기본 ×1.3), 팔로잉은 최신순','오른쪽 아이콘으로 <b>1열 포스트 ↔ 3열 그리드</b> 전환, 선택은 기기에 기억','상단 링은 진행 중인 후원 프로젝트. 누르면 프로젝트(S08)로 이동','캡션 대신 <b>제작 스토리</b> 블록을 기본 노출. 판매 상태·가격은 작품 위 칩 하나로만','댓글은 MVP에서 제외(좋아요·저장·공유만), 미결정']};
+}
+function setView(v){S.view=v;store.set('view',v);render()}
+// S01b 탐색
+function scrExplore(){
+  const q=S.q.toLowerCase();
+  let l=works.filter(w=>(S.exCat==='all'||w.cat===S.exCat)&&(!q||(w.title+U(w.a).name+w.mat+CAT[w.cat]).toLowerCase().includes(q)));
+  return {code:'01-2',title:'탐색 · 검색',sub:'탐색 탭',tab:'explore',html:`
+    <div class="appbar"><span class="title left">탐색</span></div>
+    <label class="search-box">${ic('search','i sm')}<input id="q" placeholder="작품, 작가, 재료" value="${esc(S.q)}" oninput="S.q=this.value;renderKeep()" aria-label="검색"></label>
+    <div class="filters">${[['all','전체'],...Object.entries(CAT).filter(([k])=>works.some(w=>w.cat===k))].map(([k,v])=>`<button class="chip ${S.exCat===k?'on':'line'}" onclick="S.exCat='${k}';render()">${v}</button>`).join('')}</div>
+    ${l.length?`<div class="grid3">${l.map(gridCell).join('')}</div>`:`<div class="empty"><b>조건에 맞는 작품이 없어요</b><button class="btn ghost sm" onclick="S.q='';S.exCat='all';render()">필터 초기화</button></div>`}`,
+    notes:['검색 대상: 작품명 · 작가 · 재료 · 유형','유형 칩 필터, 결과는 프로필과 같은 3열 그리드','가격대 필터 등은 피드백에 따라 추가']};
+}
+// S02 작품 상세
+function scrWork(id){
+  const w=works.find(x=>x.id===id); if(!w) return nf();
+  const u=U(w.a);const[sl,sc]=SALE[w.sale];const mine=me()&&me().key===u.key;const proj=w.fromProject&&projects.find(p=>p.id===w.fromProject);
+  const cnt=works.filter(x=>x.a===u.key).length, sold=works.filter(x=>x.a===u.key&&x.sale==='sold').length;
+  return {code:'02',title:'작품 상세',sub:'스토리 + 구매 진입',tab:null,html:`
+    <div class="art ${w.art} detail-hero"><div class="bar"><button class="circ" onclick="history.back()" aria-label="뒤로">${ic('back')}</button><span class="row"><button class="circ" onclick="toast('링크를 복사했어요')" aria-label="공유">${ic('share','i sm')}</button><button class="circ ${S.saved.has(w.id)?'liked':''}" style="${S.saved.has(w.id)?'color:var(--ink)':''}" onclick="save('${w.id}')" aria-label="저장">${ic('bookmark','i sm')}</button><button class="circ ${S.liked.has(w.id)?'liked':''}" onclick="like('${w.id}')" aria-label="좋아요">${ic('heart','i sm')}</button></span></div>
+      <div class="pager"><i class="on"></i><i></i><i></i></div></div>
+    <div class="d-pad">
+      <div class="row" style="margin-bottom:10px"><span class="chip ${sc}">${sl}</span>${proj?`<a class="chip patron" href="#/support/${proj.id}">${ic('sprout','i xs')}후원으로 완성된 작품</a>`:''}</div>
+      <h1 class="d-title">${esc(w.title)}</h1>
+      <a class="d-artist" href="#/artist/${u.key}">${av(u,22)}${esc(u.name)} ${vb(u,'s')} · 작품 ${cnt}점 · 판매 ${sold}점${ic('chev','i sm')}</a>
+      <div class="specs"><div><small>재료</small>${esc(w.mat)}</div><div><small>크기</small>${esc(w.size)}</div><div><small>제작</small>${esc(w.made)}</div><div><small>유형</small>${CAT[w.cat]}</div></div>
+      <div class="timeline"><div class="sec-t">작품 이야기</div><p class="prose">${esc(w.desc)}</p></div>
+      <div class="timeline"><div class="sec-t">제작 스토리${w.records.length?` · ${w.records.length}개의 기록`:''}</div>
+        <p class="prose" style="margin-bottom:14px">${esc(w.story)}</p>
+        ${w.records.map(r=>`<div class="tl"><div class="thumb art ${w.art} ${r.f}">${r.f==='wip'?'<div class="wip-grid"></div>':''}</div><div class="t"><b>${esc(r.t)}<small>${r.d}</small></b>${esc(r.x)}</div></div>`).join('')}</div>
+      ${note('댓글 없음(MVP). 판매 상태: 판매중 / 예약중 / SOLD / 비매품.')}
+      <div class="artist-card">${av(u,44)}<div style="flex:1;min-width:0"><b>${esc(u.name)}</b> ${vb(u,'s')}<div class="small muted" style="margin-top:2px">${esc(u.statement.slice(0,28))}…</div></div>${mine?'':`<button class="btn sm ${S.following.has(u.key)?'ghost':'dark'}" onclick="follow('${u.key}')">${S.following.has(u.key)?'팔로잉':'팔로우'}</button>`}</div>
+      <div style="height:20px"></div>
+    </div>`,
+    bar:mine?`<div class="bottombar"><a class="btn ghost" style="flex:1" href="#/upload">${ic('pen','i sm')}작품 정보 수정</a></div>`
+      :w.sale==='available'?`<div class="bottombar"><div class="price"><small>작품가 · 배송/보관 선택 가능</small><b class="won">${won(w.price)}</b></div><button class="btn accent" style="width:132px" onclick="${me()?`S.co=null;go('checkout/${w.id}')`:'needLogin()'}">구매하기</button></div>`
+      :`<div class="bottombar"><div class="price"><small>${w.sale==='not_for_sale'?'판매하지 않는 작품이에요':'이미 소장자가 있어요'}</small><b>${sl}</b></div><button class="btn ghost" onclick="follow('${u.key}')">작가 팔로우</button></div>`,
+    notes:['작품 이미지가 화면 위쪽 절반. 상단 원형 버튼: 뒤로 · 공유 · 저장 · 좋아요','스펙 2×2 표 아래로 <b>작품 이야기</b>와 <b>제작 스토리</b>(날짜별 기록)','하단 고정 바: 가격 + <b>구매하기</b>(버밀리언). 판매 완료·비매품이면 비활성','후원 프로젝트로 완성된 작품은 울트라마린 칩으로 프로젝트에 연결']};
+}
+// S03 프로필
+function careerHtml(u,self){
+  const items=u.career.filter(c=>self||c.pub).slice().sort((a,b)=>(a.st==='verified'?0:1)-(b.st==='verified'?0:1)||b.y1-a.y1);
+  if(!items.length) return `<div class="empty"><b>등록된 경력이 없어요</b></div>`;
+  return `<ul class="career">${items.map(c=>`<li><span class="yr">${c.y1}${c.y2?'–'+String(c.y2).slice(2):''}</span><div><span class="cat">${CCAT[c.cat]}</span>${esc(c.text)}${self&&!c.pub?` <span class="chip line" style="padding:1px 6px;font-size:10px">비공개</span>`:''}</div>
+    <div>${c.st==='verified'?`<span class="ok"><span class="verified">${ic('check')}</span>인증</span>`:self&&c.st==='pending'?'<span class="chip warn">심사 중</span>':self&&c.st==='rejected'?'<span class="chip danger">반려</span>':''}</div></li>`).join('')}</ul>`;
+}
+function scrArtist(k){
+  const u=U(k); if(!u||u.role==='admin') return nf();
+  const self=me()&&me().key===k; const ws=works.filter(w=>w.a===k); const ps=projects.filter(p=>p.a===k); const op=openProj(k);
+  const tab=S.profTab[k]||(u.isArtist?'works':'collection'); const vc=vcount(u);
+  const backers=ps.reduce((s,p)=>s+p.total,0);
+  let body='';
+  if(tab==='works') body=ws.length?`<div class="grid3">${ws.map(gridCell).join('')}</div>`:`<div class="empty"><b>아직 올린 작품이 없어요</b>${self?'<a class="btn dark sm" href="#/upload">첫 작품 올리기</a>':''}</div>`;
+  if(tab==='sale') body=`<div class="grid3">${ws.filter(w=>w.sale==='available').map(gridCell).join('')}</div>`;
+  if(tab==='projects') body=ps.length?`<div style="padding-top:12px">${ps.map(projCard).join('')}</div>${note('끝난 프로젝트(완성·중도 종료)도 이력으로 남아 작가 경력이 돼요. 완성한 프로젝트는 경력 항목에 자동 추가 + 자동 인증.')}`:`<div class="empty"><b>후원 프로젝트 이력이 없어요</b></div>`;
+  if(tab==='about') body=`<div class="pad" style="padding-bottom:6px"><div class="sec-t">작가 소개</div><p class="prose">${esc(u.statement)}</p></div>
+    ${u.isArtist?`<div class="pad" style="padding-bottom:10px;padding-top:6px" ><div class="row" style="justify-content:space-between"><div class="sec-t" style="margin:0">경력</div>${self?`<a class="small" href="#/career" style="font-weight:700">경력 · 인증 관리 ›</a>`:''}</div></div>
+      <div class="verify-box">${isV(u)?`<span class="verified">${ic('check')}</span><span>작가 소개 중 <b>${vc}개 항목</b>을 atelier가 서류로 확인했어요.</span>`:`${ic('shield','i sm')}<span>인증된 항목 ${vc}개 · 표시가 없는 항목은 작가가 직접 작성한 내용이에요.</span>`}</div>
+      ${careerHtml(u,self)}${note(`인증 항목 먼저, 미인증은 표시 없이. 심사 중·반려·비공개는 본인에게만 보여요. 공개+인증 ${settings.verifiedBadgeThreshold}개 이상이면 이름 옆 인증 마크.`)}`:''}<div style="height:16px"></div>`;
+  if(tab==='collection') body=`<div class="grid3">${orders.filter(o=>o.buyer===k).map(o=>gridCell(works.find(w=>w.id===o.w))).join('')}</div>${note('소장품 공개 여부는 미결정(§8)')}`;
+  const tabs=u.isArtist?[['works',`작품 ${ws.length}`],['sale',`판매중 ${ws.filter(w=>w.sale==='available').length}`],['projects','후원'],['about','소개']]:[['collection','소장품'],['about','소개']];
+  return {code:'03',title:'작가 프로필',sub:'개인 브랜딩 공간',tab:self?'profile':null,html:`
+    <div class="art ${u.cover} cover"><div class="bar">${self?'<span></span>':`<button class="circ" onclick="history.back()" aria-label="뒤로">${ic('back')}</button>`}<button class="circ" onclick="${self?'openMenu()':"toast('신고 · 공유 (시안)')"}" aria-label="메뉴">${ic(self?'menu':'more')}</button></div></div>
+    ${av(u,84,'p-av')}
+    <div class="p-head"><div class="nm">${esc(u.name)}${vb(u)}</div><div class="handle">@${u.handle}${u.place?' · '+esc(u.place):''}</div>
+      <p class="statement">“${esc(u.statement)}”</p>
+      ${u.tags.length?`<div class="p-tags">${u.tags.map(t=>`<span class="chip line">${esc(t)}</span>`).join('')}</div>`:''}</div>
+    ${u.isArtist?`<div class="p-stats"><div><b>${ws.length}</b>작품</div><div><b>${u.followers}</b>팔로워</div><div><b>${ws.filter(w=>w.sale==='sold').length}</b>판매</div><div><b>${backers}</b>후원자</div></div>`:''}
+    <div class="p-btns">${self?`<button class="btn ghost" onclick="editProfile()">프로필 편집</button>${u.isArtist?`<a class="btn ghost" href="#/career" style="color:${isV(u)?'var(--ink)':'var(--patron)'}">${ic('shield','i sm')}${isV(u)?'경력 · 인증':`인증 ${vc}/${settings.verifiedBadgeThreshold}`}</a>`:`<a class="btn ghost" href="#/history">${ic('receipt','i sm')}거래 내역</a>`}`
+      :`<button class="btn ${S.following.has(k)?'ghost':'dark'}" onclick="follow('${k}')">${S.following.has(k)?'팔로잉':'팔로우'}</button>${op?`<a class="btn ghost" style="color:var(--patron)" href="#/support/${op.id}">${ic('sprout','i sm')}후원하기</a>`:`<button class="btn ghost" disabled>${ic('sprout','i sm')}후원 없음</button>`}`}</div>
+    <div class="seg" style="justify-content:space-between;padding:0 24px">${tabs.map(([t,l])=>`<button class="${tab===t?'on':''}" onclick="S.profTab['${k}']='${t}';render()">${l}</button>`).join('')}</div>
+    ${body}`,
+    notes:['커버 + 작가노트(세리프) 한 줄로 작가 개성을 먼저 전달. 이름 옆 <b>인증 마크</b>는 공개 인증 항목 ≥ 기준(5)일 때만','통계: 작품 · 팔로워 · 판매 · 누적 후원자','탭: 작품 / 판매중 / <b>후원</b>(진행 + 지난 프로젝트 이력) / <b>소개</b>(작가 소개 + 경력, 항목별 인증 표시)','"후원하기"는 진행 중인 프로젝트가 있을 때만 활성','본인 프로필: 오른쪽 위 메뉴 → 거래 내역 · 저장 · 경력/인증 · 내 후원 프로젝트']};
+}
+function editProfile(){const u=me();sheet(`<h3>프로필 편집</h3><div class="field" style="margin-top:12px"><label for="pf-n">이름</label><input class="input" id="pf-n" value="${esc(u.name)}"></div>
+  <div class="field"><label for="pf-s">작가노트 (한 줄 소개)</label><textarea class="textarea" id="pf-s">${esc(u.statement)}</textarea><span class="hint">경력(학력·전시·수상)은 '경력 · 인증'에서 항목별로 관리해요.</span></div>
+  <div class="field"><label for="pf-t">태그 (쉼표로 구분)</label><input class="input" id="pf-t" value="${esc(u.tags.join(', '))}"></div>
+  <button class="btn dark block" onclick="const u=me();u.name=$('#pf-n').value||u.name;u.statement=$('#pf-s').value;u.tags=$('#pf-t').value.split(',').map(s=>s.trim()).filter(Boolean);closeSheet();render();toast('저장했어요')">저장</button>`)}
+function openMenu(){const u=me();sheet(`<h3>${esc(u.name)}</h3><div style="margin:8px -18px 0">
+  <a class="list-link" href="#/history" onclick="closeSheet()">${ic('receipt')}거래 내역${ic('chev','i sm')}</a>
+  <a class="list-link" href="#/saved" onclick="closeSheet()">${ic('bookmark')}저장한 작품<small>${S.saved.size}</small></a>
+  ${u.isArtist?`<a class="list-link" href="#/studio-support" onclick="closeSheet()">${ic('sprout')}내 후원 프로젝트${ic('chev','i sm')}</a><a class="list-link" href="#/career" onclick="closeSheet()">${ic('shield')}경력 · 인증<small>${vcount(u)}/${settings.verifiedBadgeThreshold}</small></a>`:''}
+  <button class="list-link" onclick="closeSheet();toast('설정 (시안)')">${ic('settings')}설정${ic('chev','i sm')}</button></div>`)}
+// S04 작품 올리기
+function scrUpload(){
+  if(!me()) return gate('작품을 올리려면 로그인해 주세요','04','작품 올리기');
+  return {code:'04',title:'작품 올리기',sub:'+ 탭',tab:'upload',html:`
+    <div class="appbar"><button onclick="history.back()" aria-label="닫기">${ic('back')}</button><span class="title">새 작품</span><span class="spacer"></span></div>
+    <form id="up" class="pad" novalidate onsubmit="submitUpload(event)">
+      <div class="field" id="f-img"><span class="lb">작품 이미지 <span class="req">*</span></span><label class="drop">${ic('upload')}<span>이미지 선택 · 최대 10장</span><small>첫 장이 대표 이미지</small><input type="file" accept="image/*" multiple hidden onchange="$('#f-img').classList.remove('invalid');$('#f-img .hint').textContent=[...this.files].map(f=>f.name).join(', ')"></label><span class="hint"></span><span class="err">이미지를 한 장 이상 선택해 주세요.</span></div>
+      <div class="field" id="f-t"><label for="u-t">작품 제목 <span class="req">*</span></label><input class="input" id="u-t"><span class="err">제목을 입력해 주세요.</span></div>
+      <div class="two"><div class="field"><label for="u-c">유형 <span class="req">*</span></label><select class="select" id="u-c">${Object.entries(CAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div><div class="field"><label for="u-y">제작연도</label><input class="input" id="u-y" type="number" value="2026"></div></div>
+      <div class="field"><label for="u-m">재료</label><input class="input" id="u-m" placeholder="예: Oil on canvas"></div>
+      <div class="field"><span class="lb">크기 (cm)</span><div class="two"><input class="input" id="u-w" placeholder="가로" aria-label="가로"><input class="input" id="u-h" placeholder="세로" aria-label="세로"></div></div>
+      <div class="field"><label for="u-d">작품 이야기</label><textarea class="textarea" id="u-d" placeholder="이 작품이 무엇을 담고 있는지 들려주세요."></textarea></div>
+      <div class="field"><label for="u-s">제작 스토리</label><textarea class="textarea" id="u-s" placeholder="어떻게 만들었는지, 과정에서 있었던 일을 적어 주세요."></textarea><span class="hint">날짜별 과정 기록(사진+메모)을 추가할 수 있어요.</span></div>
+      <div class="sec-t" style="margin-top:8px">판매</div>
+      <button type="button" class="opt on" id="o-sell" onclick="setSell(true)"><span class="radio"></span><span class="t"><b>판매하기</b>가격을 정하고 소장자를 찾아요</span></button>
+      <button type="button" class="opt" id="o-nfs" onclick="setSell(false)"><span class="radio"></span><span class="t"><b>판매하지 않기</b>비매품, 프로필에 전시만 해요</span></button>
+      <div class="field" id="f-p"><label for="u-p">판매 가격 (원) <span class="req">*</span></label><input class="input" id="u-p" inputmode="numeric" placeholder="예: 1800000"><span class="err">판매 가격을 입력해 주세요.</span></div>
+      ${note('에디션(한정판) 판매 여부는 미결정. 임시저장 지원.')}
+    </form>`,
+    bar:`<div class="bottombar"><button class="btn ghost" onclick="toast('임시저장했어요')">임시저장</button><button class="btn dark" style="flex:1" onclick="submitUpload(event)">작품 올리기</button></div>`,
+    notes:['하단 탭 가운데 <b>+</b> 버튼으로 진입','필수: 이미지 · 제목 · 유형 (판매 시 가격). 오류는 필드 아래에 표시','<b>작품 이야기</b>와 <b>제작 스토리</b>를 분리 입력 → 피드의 제작 스토리 블록, 상세의 기록 타임라인으로 노출','판매 / 비매품 선택']};
+}
+let sell=true;
+function setSell(v){sell=v;$('#o-sell').classList.toggle('on',v);$('#o-nfs').classList.toggle('on',!v);$('#f-p').style.display=v?'flex':'none'}
+function submitUpload(e){e&&e.preventDefault();let ok=true;const chk=(id,c)=>{$(id).classList.toggle('invalid',!c);if(!c)ok=false};
+  chk('#f-img',$('#up input[type=file]').files.length>0);chk('#f-t',$('#u-t').value.trim());chk('#f-p',!sell||+$('#u-p').value>0);
+  if(!ok){$('#up .invalid input, #up .invalid label')?.focus();return}
+  const id='w'+Date.now();works.unshift({id,a:me().key,title:$('#u-t').value.trim(),art:'a'+(1+Math.floor(Math.random()*9)),cat:$('#u-c').value,mat:$('#u-m').value||'—',size:($('#u-w').value&&$('#u-h').value)?`${$('#u-w').value} × ${$('#u-h').value} cm`:'—',year:+$('#u-y').value,made:String($('#u-y').value),price:sell?+$('#u-p').value:null,sale:sell?'available':'not_for_sale',likes:0,date:today,desc:$('#u-d').value||'작품 이야기가 아직 없어요.',story:$('#u-s').value||'제작 스토리가 아직 없어요.',records:[]});
+  toast('작품을 올렸어요');go('work/'+id)}
+// S05 결제
+function scrCheckout(id){
+  const w=works.find(x=>x.id===id); if(!w) return nf(); if(!me()) return gate('구매하려면 로그인해 주세요','05','구매하기');
+  if(!S.co||S.co.w!==id) S.co={w:id,ful:'delivery',months:3,add:new Set()};
+  const c=S.co; if(c.done) return {code:'05',title:'구매 완료',sub:'',tab:null,html:`<div class="empty" style="padding-top:120px"><div class="art ${w.art}" style="width:120px;height:150px;border-radius:12px;margin:0 auto 22px"></div><b style="font-size:20px">결제가 완료됐어요</b>작가가 주문을 확인하면 알려드릴게요.<br>배송·보관 진행 상황은 거래 내역에서 볼 수 있어요.<div style="display:flex;gap:8px;justify-content:center;margin-top:18px"><a class="btn dark sm" href="#/history" onclick="S.histTab='buy'">거래 내역</a><a class="btn ghost sm" href="#/feed">계속 둘러보기</a></div></div>`,notes:['결제 완료 → 주문 상태 "결제완료", 작품은 "예약중"으로 바뀜']};
+  const u=U(w.a); const addSum=[...c.add].reduce((s,k)=>s+ADDONS.find(a=>a.id===k).p,0);
+  const storFee=Math.max(0,c.months-FREE_MONTHS)*STORAGE; const ful=c.ful==='delivery'?SHIP:storFee; const total=w.price+addSum+ful;
+  return {code:'05',title:'구매하기',sub:'배송·보관·부가 서비스',tab:null,html:`
+    <div class="appbar"><button onclick="history.back()" aria-label="뒤로">${ic('back')}</button><span class="title">주문하기</span><span class="spacer"></span></div>
+    <div class="co-item"><div class="art ${w.art}"></div><div class="t"><b>${esc(w.title)}</b>${esc(u.name)} · ${esc(w.mat)}<br>${esc(w.size)}<span class="won">${won(w.price)}</span></div></div>
+    <div class="hr"></div>
+    <div class="co-sec"><div class="sec-t">수령 방식</div>
+      <button class="opt ${c.ful==='delivery'?'on':''}" onclick="S.co.ful='delivery';render()"><span class="radio"></span><span class="t"><b>${ic('truck','i sm')}집으로 배송</b>미술품 전문 운송 · 무진동 차량 · 3–5일</span><span class="r">${won(SHIP)}</span></button>
+      <button class="opt ${c.ful==='storage'?'on':''}" onclick="S.co.ful='storage';render()"><span class="radio"></span><span class="t"><b>${ic('archive','i sm')}아틀리에 수장고 보관</b>항온항습 · 보험 포함 · 언제든 배송 요청 가능
+        ${c.ful==='storage'?`<span class="months" onclick="event.stopPropagation()">${[3,6,12].map(m=>`<button class="${c.months===m?'on':''}" onclick="S.co.months=${m};render()">${m}개월</button>`).join('')}</span>`:''}</span><span class="r">월 ${won(STORAGE)}<br><small style="color:var(--ok);font-weight:600;font-size:11px">${FREE_MONTHS}개월 무료</small></span></button>
+      ${c.ful==='delivery'?`<div class="field" style="margin-top:6px"><label for="co-addr">배송지</label><input class="input" id="co-addr" placeholder="주소 검색"></div>`:''}
+    </div>
+    <div class="co-sec" style="padding-top:8px"><div class="sec-t">추가 옵션</div>
+      ${ADDONS.map(a=>`<button class="opt ${c.add.has(a.id)?'on':''}" onclick="S.co.add.has('${a.id}')?S.co.add.delete('${a.id}'):S.co.add.add('${a.id}');render()"><span class="box">${ic('check','i xs')}</span><span class="t"><b>${ic(a.ic,'i sm')}${a.n}</b>${a.d}</span><span class="r">${won(a.p)}</span></button>`).join('')}
+    </div>
+    <div class="sum"><div><span>작품가</span><span class="won">${won(w.price)}</span></div>
+      ${[...c.add].map(k=>{const a=ADDONS.find(x=>x.id===k);return `<div><span>${a.n}</span><span class="won">${won(a.p)}</span></div>`}).join('')}
+      ${c.ful==='delivery'?`<div><span>배송비</span><span class="won">${won(SHIP)}</span></div>`:`<div class="${storFee?'':'free'}"><span>수장고 보관 (${c.months}개월)</span><span>${storFee?won(storFee):'무료'}</span></div>`}
+      <div class="total"><span>합계</span><span class="won">${won(total)}</span></div></div>
+    ${note('"화구 지원" = 구매자용 부가 서비스(액자 · 설치 · 보관 · 관리 키트). 결제는 mock, PG 연동은 백엔드 단계.')}
+    <div style="height:20px"></div>`,
+    bar:`<div class="bottombar col"><small class="hint">${ic('shield','i xs')}작품 수령 확인 후 작가에게 정산돼요</small><button class="btn accent big" onclick="placeOrder(${total},${addSum},${ful})"><span class="won">${won(total)}</span> 결제하기</button></div>`,
+    notes:['수령 방식: <b>집으로 배송 / 아틀리에 수장고 보관</b>(보관은 3개월 무료, 이후 월 요금)','추가 옵션(구매자용 부가 서비스): 원목 액자 · 설치 · 보존 관리 키트','합계가 옵션 선택에 따라 즉시 계산되고, 결제 버튼에 금액 표시','에스크로 안내: 수령 확인 후 작가 정산']};
+}
+function placeOrder(total,addSum,ful){const c=S.co;const w=works.find(x=>x.id===c.w);
+  orders.unshift({id:'o'+Date.now(),w:w.id,buyer:me().key,seller:w.a,add:[...c.add].map(k=>{const a=ADDONS.find(x=>x.id===k);return {n:a.n,p:a.p}}),amt:{work:w.price,add:addSum,ful},ful:c.ful,months:c.months,st:'paid',date:today});
+  w.sale='reserved';c.done=true;render()}
+// S06 거래 내역
+const TRACK_D=[['paid','결제'],['confirmed','작가확인'],['shipping','운송중'],['delivered','배송완료'],['completed','구매확정']];
+const TRACK_S=[['paid','결제'],['confirmed','작가확인'],['stored','보관중'],['completed','구매확정']];
+function track(o){const t=o.ful==='storage'?TRACK_S:TRACK_D;const i=t.findIndex(x=>x[0]===o.st);
+  return `<div class="track">${t.map((x,j)=>`${j?`<s class="${j<=i?'on':''}"></s>`:''}<i class="${j<=i?'on':''}"></i>`).join('')}</div><div class="track-l">${t.map((x,j)=>`<span class="${j===i?'on':''}">${x[1]}</span>`).join('')}</div>`}
+const OCHIP={paid:['결제완료','warn'],confirmed:['작가확인','warn'],shipping:['운송중','warn'],delivered:['배송완료','warn'],stored:['수장고 보관','patron'],completed:['구매확정','ok']};
+function scrHistory(){
+  const u=me(); if(!u) return gate('거래 내역을 보려면 로그인해 주세요','06','거래 내역');
+  const tabs=[['buy','구매'],...(u.isArtist?[['sell','판매']]:[]),['support','후원']]; if(!tabs.find(t=>t[0]===S.histTab)) S.histTab='buy';
+  let body='';
+  if(S.histTab==='buy'){const l=orders.filter(o=>o.buyer===u.key);
+    body=l.length?l.map(o=>{const w=works.find(x=>x.id===o.w);const[cl,cc]=OCHIP[o.st];return `<div class="tx top"><div class="art ${w.art}"></div><div class="t"><b>${esc(w.title)}</b><small>${esc(U(o.seller).name)} · ${mdd(o.date)} · ${o.ful==='storage'?`보관 ${o.months}개월`:'배송'}</small>${o.st!=='completed'?track(o):''}</div>
+      <div class="r"><b class="won">${won(o.amt.work+o.amt.add+o.amt.ful)}</b><span class="chip ${cc}">${cl}</span>${o.st==='delivered'?`<button class="btn dark sm" onclick="setOrder('${o.id}','completed','구매를 확정했어요')">구매 확정</button>`:o.st==='stored'?`<button class="btn ghost sm" onclick="toast('배송 요청을 접수했어요')">배송 요청</button>`:''}</div></div>`}).join('')
+      :`<div class="empty"><b>아직 구매한 작품이 없어요</b><a class="btn dark sm" href="#/feed">작품 둘러보기</a></div>`;}
+  if(S.histTab==='sell'){const l=orders.filter(o=>o.seller===u.key);const fee=.1;const pend=l.filter(o=>o.st!=='completed').reduce((s,o)=>s+o.amt.work*(1-fee),0);
+    body=`<div class="settle"><small>10월 정산 예정 금액</small><div class="big won">${won(pend)}</div><div class="srow"><div>판매<b>${l.length}건</b></div><div>수수료<b>10%</b></div><div>정산일<b>10.25</b></div></div></div>
+    <div class="filters"><span class="chip on">전체</span><span class="chip line">진행중 ${l.filter(o=>!['completed','stored'].includes(o.st)).length}</span><span class="chip line">보관중 ${l.filter(o=>o.st==='stored').length}</span><span class="chip line">정산완료</span></div>
+    ${l.length?l.map(o=>{const w=works.find(x=>x.id===o.w);const[cl,cc]=OCHIP[o.st];return `<div class="tx top"><div class="art ${w.art}"></div><div class="t"><b>${esc(w.title)}</b><small>구매자 @${U(o.buyer).handle} · ${mdd(o.date)}</small>${['completed','stored'].includes(o.st)?'':track(o)}</div>
+      <div class="r"><b class="won">${won(o.amt.work)}</b><span class="chip ${cc}">${cl}</span>${o.st==='paid'?`<button class="btn dark sm" onclick="setOrder('${o.id}','confirmed','주문을 확인했어요')">주문 확인</button>`:o.st==='confirmed'&&o.ful==='delivery'?`<button class="btn ghost sm" onclick="setOrder('${o.id}','shipping','송장을 입력했어요')">송장 입력</button>`:o.st==='confirmed'?`<button class="btn ghost sm" onclick="setOrder('${o.id}','stored','수장고로 입고했어요')">수장고 입고</button>`:''}</div></div>`}).join(''):`<div class="empty"><b>판매 내역이 없어요</b></div>`}
+    ${note('수수료 10%는 임시값(미결정).')}`;}
+  if(S.histTab==='support'){const l=backings.filter(b=>b.u===u.key);const paid=l.reduce((s,b)=>s+b.paid,0);
+    body=`<div class="settle patron"><small>지금까지 후원한 금액</small><div class="big won">${won(paid)}</div><div class="srow"><div>후원 중<b>${l.filter(b=>b.st==='active').length}개</b></div><div>완성까지 함께함<b>${l.filter(b=>b.st==='finished').length}개</b></div></div></div><div style="height:8px"></div>
+    ${l.length?l.map(b=>{const p=projects.find(x=>x.id===b.p);const dm=decMs(p);const need=b.st==='active'&&dm&&!b.dec[dm.id];
+      return `<div class="tx"><div class="art ${p.art}"></div><div class="t"><b>${esc(p.title)}</b><small>${esc(U(p.a).name)} · 회당 ${won(b.amt)} · 누적 ${won(b.paid)}</small></div>
+      <div class="r">${need?`<a class="btn patron sm" href="#/support/${p.id}/m${dm.n}">지속/이탈 선택</a>`:`<span class="chip ${b.st==='active'?'patron':b.st==='finished'?'ok':'line'}">${{active:'후원 중',left:'이탈',finished:'완성'}[b.st]}</span>`}</div></div>`}).join(''):`<div class="empty"><b>후원한 프로젝트가 없어요</b><a class="btn patron sm" href="#/support">후원 둘러보기</a></div>`}`;}
+  return {code:'06',title:'거래 내역',sub:'구매 · 판매 · 후원',tab:'profile',html:`
+    <div class="appbar"><button onclick="history.back()" aria-label="뒤로">${ic('back')}</button><span class="title left" style="text-align:left;margin-left:4px">거래 내역</span></div>
+    <div class="toggle">${tabs.map(([k,l])=>`<button class="${S.histTab===k?'on':''}" onclick="S.histTab='${k}';render()">${l} ${k==='buy'?orders.filter(o=>o.buyer===u.key).length:k==='sell'?orders.filter(o=>o.seller===u.key).length:backings.filter(b=>b.u===u.key).length}</button>`).join('')}</div>
+    ${body}<div style="height:16px"></div>`,
+    notes:['구매 / 판매(작가만) / 후원을 한 화면에서 전환','판매 탭: 정산 예정 금액 카드가 가장 먼저. 행동 버튼: 주문 확인 → 송장 입력 / 수장고 입고','진행 중인 거래만 단계 표시(결제 → 작가확인 → 운송중 → 배송완료 → 구매확정, 보관은 보관중)','상태 칩 색: 진행(황토) · 보관(울트라마린) · 완료(그린)','후원 탭: 선택이 필요한 프로젝트에 <b>지속/이탈 선택</b> 버튼']};
+}
+function setOrder(id,st,m){orders.find(o=>o.id===id).st=st;render();toast(m)}
+// S07 후원 목록
+function projCard(p){const a=U(p.a);const st=pst(p);const[sl,sc]=PST[st];const nm=nextMs(p);const dm=decMs(p);
+  return `<a class="wip-card" href="#/support/${p.id}"><div class="art ${p.art} ${['completed'].includes(st)?'':'wip'}">${st==='completed'?'':'<div class="wip-grid"></div>'}<span class="chip ${sc} stage">${sl}${['in_progress','delayed'].includes(st)&&(dm||nm)?` · ${(dm||nm).n}단계 ${esc((dm||nm).goal)}`:''}</span></div>
+    <div class="wip-body"><div class="h">${av(a,24)}<b>${esc(p.title)}</b>${vb(a,'s')}<small>${['completed','ended'].includes(st)?`후원자 ${p.total}명`:`후원 중 ${activeOf(p)}명`}</small></div>
+      <p>${esc(p.direction.length>64?p.direction.slice(0,62)+'…':p.direction)}</p>${steps(p)}${stepsL(p)}</div></a>`}
+function scrSupport(){
+  const t=S.supTab;const l=projects.filter(p=>{const s=pst(p);return t==='active'?['in_progress','delayed','awaiting_close'].includes(s):t==='recruiting'?s==='recruiting':['completed','ended'].includes(s)});
+  return {code:'07',title:'후원',sub:'후원 탭 · 프로젝트 목록',tab:'support',html:`
+    <div class="appbar"><span class="title left">후원</span><a class="btn ghost sm" href="#/support-new">${ic('plus','i sm')}프로젝트 열기</a></div>
+    <div class="gate plain" style="margin-top:0"><div class="h">${ic('sprout','i sm')}완성보다 먼저, 과정을 만나요</div><p>인증 작가가 작품의 방향과 마일스톤을 제시하면, 회당 금액을 정해 후원해요. 결과물이 공개될 때마다 계속할지 정할 수 있어요.</p></div>
+    <div class="seg" style="margin-top:12px">${[['active','진행 중'],['recruiting','모집 중'],['closed','지난 프로젝트']].map(([k,v])=>`<button class="${t===k?'on':''}" onclick="S.supTab='${k}';render()">${v}</button>`).join('')}</div>
+    <div style="height:12px"></div>${l.length?l.map(projCard).join(''):`<div class="empty"><b>해당하는 프로젝트가 없어요</b></div>`}`,
+    notes:['크라우드 펀딩형 후원. <b>인증 작가만</b> 프로젝트를 열 수 있고, 작가당 진행 1개','카드: 작업 중 표현(채도 낮춤 + 격자) + 단계 칩, 마일스톤 막대(울트라마린), 현재 후원자 수','탭: 진행 중 / 모집 중 / 지난 프로젝트(완성 · 중도 종료)']};
+}
+// S08 프로젝트 상세
+function msList(p,b){const st=pst(p);const nm=nextMs(p);
+  return p.ms.length>6?`<div class="pad muted small">마일스톤 ${p.ms.length}개 중 ${msDone(p)}개 완료</div>`:p.ms.map((m,i)=>{const late=st==='delayed'&&m===nm;const cls=m.st==='closed'?'done':m.st==='deciding'?'now':late?'late':'';
+    const left=m.deadline?days(today,m.deadline):0;
+    return `<div class="ms"><div class="rail"><div class="dot ${cls}">${m.st==='closed'?ic('check','i xs'):m.n}</div>${i<p.ms.length-1?'<div class="line"></div>':''}</div>
+      <div class="t"><b>${m.n}단계 · ${esc(m.goal)}${m.final?' (완성)':''}</b><small>제시일 ${md(m.due)}${m.sub?` · ${md(m.sub.at)} 공개`:''}${m.dec?` · 지속 ${m.dec.c} · 이탈 ${m.dec.l}${m.dec.p?` · 대기 ${m.dec.p}`:''}`:''}</small>
+      ${m.sub?`<div style="margin-top:4px">${esc(m.sub.note)}</div><div class="thumbs"><div class="art ${p.art} ${m.sub.f}">${m.sub.f==='wip'?'<div class="wip-grid"></div>':''}</div></div>`:''}
+      ${m.st==='deciding'?`<div class="row" style="margin-top:8px"><span class="chip warn">${ic('clock','i xs')}선택 기간 ${left}일 남음</span>${b&&b.st==='active'?`<a class="btn patron sm" href="#/support/${p.id}/m${m.n}">${b.dec[m.id]?'내 선택 보기':'보고 선택하기'}</a>`:''}</div>`:''}
+      ${late?`<div style="margin-top:6px;color:var(--warn);font-weight:600">제시일이 지났지만 결과물이 아직 없어요. 올라오기 전까지 결제되지 않아요.</div>`:''}</div></div>`}).join('')}
+function scrProject(id){
+  const p=projects.find(x=>x.id===id); if(!p) return nf();
+  const a=U(p.a);const st=pst(p);const[sl,sc]=PST[st];const b=myBack(id);const mine=me()&&me().key===p.a;const dm=decMs(p);const nm=nextMs(p);const done=['completed','ended'].includes(st);
+  const amt=S.pickAmt||(b?b.amt:(p.rewards[1]||p.rewards[0]||{amt:30000}).amt);
+  let bar='';
+  if(mine) bar=`<div class="bottombar"><a class="btn dark" style="flex:1" href="#/studio-support">프로젝트 관리</a></div>`;
+  else if(done) bar=p.linkedWork?`<div class="bottombar"><a class="btn accent" style="flex:1" href="#/work/${p.linkedWork}">완성작 보기</a></div>`:'';
+  else if(st==='awaiting_close') bar=`<div class="bottombar"><button class="btn ghost" style="flex:1" disabled>작가의 종료를 기다리는 중</button></div>`;
+  else if(b&&b.st==='active') bar=`<div class="bottombar"><div class="price"><small>후원 중 · 누적 ${won(b.paid)}</small><b class="won" style="color:var(--patron)">회당 ${won(b.amt)}</b></div><button class="btn ghost" onclick="backSheet('${p.id}',true)">금액 변경</button></div>`;
+  else bar=`<div class="bottombar col"><small class="hint">${ic('sprout','i xs')}결과물이 공개되고 지속할 때마다 결제돼요</small><button class="btn patron big" onclick="${me()?`backSheet('${p.id}')`:'needLogin()'}">회당 ${won(amt)} 후원하기</button></div>`;
+  return {code:'08',title:'후원 프로젝트',sub:'방향 · 마일스톤 · 후원',tab:null,html:`
+    <div class="appbar"><button onclick="history.back()" aria-label="뒤로">${ic('back')}</button><span class="title">후원 프로젝트</span><button onclick="toast('링크를 복사했어요')" aria-label="공유">${ic('share')}</button></div>
+    ${st==='delayed'?`<div class="gate warn" style="margin-top:0;margin-bottom:12px"><div class="h">${ic('alert','i sm')}결과물이 지연되고 있어요</div><p>${md(nm.due)} 제시일이 지났어요. 결과물이 올라오기 전까지 다음 후원금은 결제되지 않아요.</p></div>`:''}
+    ${st==='awaiting_close'?`<div class="gate danger" style="margin-top:0;margin-bottom:12px"><div class="h">${ic('alert','i sm')}남은 후원자가 없어요</div><p>작가가 프로젝트를 종료하면 지난 프로젝트로 기록돼요.</p></div>`:''}
+    <div class="wip-card" style="cursor:default"><div class="art ${p.art} ${done?'':'wip'}">${done?'':'<div class="wip-grid"></div>'}<span class="chip ${sc} stage">${sl}</span>
+      ${dm?`<span class="cmp"><i class="art ${p.art} wip" style="filter:grayscale(1) brightness(1.2)"></i><i class="art ${p.art} wip-half"></i></span>`:''}</div>
+      <div class="wip-body"><a class="h" href="#/artist/${a.key}">${av(a,24)}<b>${esc(a.name)}</b>${vb(a,'s')}<small>${md(p.created||today)} 시작</small></a>
+        <div class="serif" style="font-size:19px;font-weight:600;margin-top:10px;letter-spacing:-.02em">${esc(p.title)}</div>${steps(p)}${stepsL(p)}</div></div>
+    <div class="fund"><div class="nums"><b class="won">${won(p.funded)}</b><span>누적 후원</span><em>${done?`${p.total}명`:`${activeOf(p)}명 후원 중`}</em></div>
+      <div class="meta"><span>마일스톤 ${msDone(p)} / ${p.ms.length}</span>${nm&&!done?`<span>다음 제시일 ${md(nm.due)}</span>`:''}${done?`<span>끝까지 함께한 후원자 ${Math.round(p.active/p.total*100)}%</span>`:''}</div></div>
+    <div class="pad" style="padding-bottom:4px"><div class="sec-t">이 작품이 나아갈 방향</div><p class="prose">${esc(p.direction)}</p>${p.endReason?`<p class="small muted" style="margin-top:10px">종료 사유 · ${esc(p.endReason)}</p>`:''}</div>
+    ${p.rewards.length&&!done?`<div class="pad" style="padding-bottom:0;padding-top:8px"><div class="sec-t" style="margin:0">회당 후원 금액 · 후원자 혜택</div></div><div class="tiers">${p.rewards.map(r=>`<button class="tier ${r.amt===amt?'on':''}" onclick="S.pickAmt=${r.amt};render()"><b>${won(r.amt)}</b>${esc(r.t)}</button>`).join('')}</div>`:''}
+    <div class="pad" style="padding-bottom:6px"><div class="sec-t" style="margin:0">마일스톤</div></div>
+    ${msList(p,b)}
+    ${note('작가가 마일스톤 횟수와 제시일을 정해요. 결과물을 올리지 않으면 다음 후원은 없어요. 후원자 0명이면 작가가 직접 종료해야 하고, 끝내지 않으면 새 프로젝트를 열 수 없어요.')}
+    <div style="height:10px"></div>`,bar,
+    notes:['상단 카드: 작업 중 표현 + 이전/현재 결과물 비교 썸네일, 마일스톤 막대','<b>이 작품이 나아갈 방향</b>(작가가 제시한 미래 방향)','금액 카드 = 회당 정기 후원 금액 + 혜택(가로 스크롤)','마일스톤 타임라인: 제시일 · 공개일 · 지속/이탈 인원 · 선택 기간 남은 일수','하단 바: <b>회당 ₩N 후원하기</b>(울트라마린). 후원 중이면 금액 변경','상태 배너: 지연(황토) / 후원자 0명 종료 대기(적색)']};
+}
+function backSheet(pid,change){const p=projects.find(x=>x.id===pid);const b=myBack(pid);let amt=S.pickAmt||(b?b.amt:30000);const rem=p.ms.filter(m=>m.st!=='closed').length;
+  sheet(`<h3>${change?'회당 후원 금액 변경':'정기 후원 시작'}</h3><p class="desc">결과물이 공개되고 <b>지속</b>을 선택(또는 7일 뒤 자동 지속)할 때마다 아래 금액이 결제돼요. 언제든 결과물을 보고 이탈할 수 있어요.</p>
+  <div class="tiers" style="padding:0;flex-wrap:wrap">${[10000,30000,50000,100000].map(v=>`<button class="tier amt ${v===amt?'on':''}" style="width:calc(50% - 4px)" onclick="pickAmt(${v},this)"><b>${won(v)}</b>회당</button>`).join('')}</div>
+  <div class="field" style="margin-top:12px"><label for="amt-c">직접 입력 (원)</label><input class="input" id="amt-c" inputmode="numeric" oninput="pickAmt(+this.value||0)"></div>
+  <div class="sum" style="margin:0"><div><span>남은 마일스톤</span><span>${rem}회</span></div><div class="total"><span>모두 지속하면 최대</span><span id="amt-max" class="won">${won(amt*rem)}</span></div></div>
+  ${note('정기 후원 단위 = 마일스톤 1회당(월 단위 대안은 미결정). 진행 중 참여 시 다음 마일스톤부터 적용.')}
+  <button class="btn patron block" style="margin-top:14px" onclick="confirmBack('${pid}')">${change?'변경하기':'후원 시작하기'}</button>`);window._amt=amt;window._rem=rem}
+function pickAmt(v,el){window._amt=v;document.querySelectorAll('.tier.amt').forEach(t=>t.classList.toggle('on',t===el));$('#amt-max').textContent=won(v*window._rem)}
+function confirmBack(pid){if(!(window._amt>=1000))return toast('1,000원 이상 입력해 주세요');const b=myBack(pid);const p=projects.find(x=>x.id===pid);
+  if(b){b.amt=window._amt;toast('다음 마일스톤부터 회당 '+won(window._amt))}else{backings.push({id:'b'+Date.now(),p:pid,u:me().key,amt:window._amt,paid:0,st:'active',dec:{}});p.active++;p.total++;toast('후원을 시작했어요. 결과물이 공개되면 알려드릴게요')}
+  S.pickAmt=null;closeSheet();render()}
+// S09 결과물 확인 · 지속/이탈
+function scrDecide(pid,mk){
+  const p=projects.find(x=>x.id===pid);const m=p&&p.ms.find(x=>'m'+x.n===mk); if(!m||!m.sub) return nf();
+  const a=U(p.a);const b=myBack(pid);const left=m.deadline?days(today,m.deadline):0;const ch=b&&b.dec[m.id];const nm=nextMs(p);const prev=p.ms.find(x=>x.n===m.n-1);
+  let bar='',action='';
+  if(!b) action=`<div class="gate plain"><div class="h">${ic('sprout','i sm')}후원자만 선택할 수 있어요</div><p>결과물은 누구나 볼 수 있어요. 후원하면 다음 결과물부터 지속/이탈을 선택할 수 있어요.</p></div>`;
+  else if(b.st==='left') action=`<div class="gate plain"><div class="h">이 프로젝트에서 이탈했어요</div><p>이후 결제는 없어요. 이미 결제된 ${won(b.paid)}은 유지돼요.</p></div>`;
+  else if(ch) action=`<div class="gate"><div class="h">${ic('check','i sm')}${ch==='continue'?'후원을 이어가기로 했어요':'이번 단계에서 이탈하기로 했어요'}</div><p>${ch==='continue'?`선택 기간이 끝나는 ${md(m.deadline)}에 회당 ${won(b.amt)}이 결제돼요.`:'이후 결제는 없어요.'} 선택 기간 안에는 바꿀 수 있어요.</p><button class="btn ghost sm" onclick="undoDecide('${pid}','${m.id}')">선택 바꾸기</button></div>`;
+  else { action=`<div class="gate warn"><div class="h">${ic('clock','i sm')}선택 기간 ${left}일 남음 · ${md(m.deadline)}까지</div><p>선택하지 않으면 자동으로 후원을 이어가요.</p></div>
+    <div class="co-sec"><button class="opt patron ${S.pick==='continue'?'on':''}" onclick="S.pick='continue';render()"><span class="radio"></span><span class="t"><b>계속 후원하기</b>회당 ${won(b.amt)}이 결제되고, ${nm?`${nm.n}단계 ${esc(nm.goal)} (${md(nm.due)})`:'다음 단계'}까지 함께해요.</span></button>
+    <button class="opt leave ${S.pick==='leave'?'on':''}" onclick="S.pick='leave';render()"><span class="radio"></span><span class="t"><b>여기까지 할게요</b>이후 결제는 없어요. 지금까지 결제된 ${won(b.paid)}은 유지돼요.</span></button></div>`;
+    bar=`<div class="bottombar"><button class="btn ${S.pick==='leave'?'dark':'patron'}" style="flex:1" ${S.pick?'':'disabled'} onclick="decide('${pid}','${m.id}')">${S.pick==='leave'?'이탈하기':S.pick==='continue'?'계속 후원하기':'선택해 주세요'}</button></div>`; }
+  return {code:'09',title:'결과물 · 지속/이탈',sub:'후원자 선택',tab:null,html:`
+    <div class="appbar"><button onclick="history.back()" aria-label="뒤로">${ic('back')}</button><span class="title">${m.n}단계 결과물</span><span class="spacer"></span></div>
+    <div class="wip-card" style="cursor:default"><div class="art ${p.art} ${m.sub.f}" style="height:220px">${m.sub.f==='wip'?'<div class="wip-grid"></div>':''}<span class="chip patron stage">${m.n}단계 · ${esc(m.goal)}</span>
+      ${prev?`<span class="cmp"><i class="art ${p.art} wip" style="filter:grayscale(1) brightness(1.2)" title="이전 단계"></i><i class="art ${p.art} ${m.sub.f}"></i></span>`:''}</div>
+      <div class="wip-body"><a class="h" href="#/artist/${a.key}">${av(a,24)}<b>${esc(p.title)}</b><small>${md(m.sub.at)} 공개</small></a><p style="font-size:13.5px">${esc(m.sub.note)}</p>${steps(p)}${stepsL(p)}</div></div>
+    ${action}
+    ${note('점수·평가 없음. 후원자 개인 단위로 지속/이탈만 선택. 7일 무응답 시 자동 지속, 선택 기간이 끝나면 지속한 후원자 금액을 일괄 결제.')}
+    <div style="height:10px"></div>`,bar,
+    notes:['제시일에 올라온 결과물(이전 단계와 비교 썸네일) + 작업 노트','점수·별점 없이 <b>계속 후원하기 / 여기까지 할게요</b> 두 가지만','선택 기간 7일, 남은 일수 표시. <b>미선택 시 자동 지속</b>','선택 후에도 기간 안에는 바꿀 수 있음','이탈해도 이미 결제된 금액은 유지']};
+}
+function decide(pid,mid){const b=myBack(pid);const p=projects.find(x=>x.id===pid);const m=p.ms.find(x=>x.id===mid);b.dec[mid]=S.pick;m.dec.p--;
+  if(S.pick==='continue'){m.dec.c++;toast('후원을 이어가요')}else{m.dec.l++;b.st='left';p.active--;toast('이탈했어요. 함께해 주셔서 고마워요')}S.pick=null;render()}
+function undoDecide(pid,mid){const b=myBack(pid);const p=projects.find(x=>x.id===pid);const m=p.ms.find(x=>x.id===mid);if(b.dec[mid]==='leave'){m.dec.l--;b.st='active';p.active++}else m.dec.c--;m.dec.p++;delete b.dec[mid];render()}
+// S10 프로젝트 열기
+function scrSupportNew(){
+  const u=me();let block='';
+  if(!u) return gate('후원 프로젝트를 열려면 로그인해 주세요','10','후원 프로젝트 열기');
+  const vc=u.isArtist?vcount(u):0;const op=u.isArtist&&openProj(u.key);
+  const ok=u.isArtist&&(S.elig||(isV(u)&&!op));
+  const head=`<div class="appbar"><button onclick="history.back()" aria-label="뒤로">${ic('back')}</button><span class="title">후원 프로젝트 열기</span><span class="spacer"></span></div>`;
+  const notes=['개설 조건: <b>인증 작가</b> + <b>끝나지 않은 프로젝트 없음</b>','조건 체크리스트로 왜 열 수 없는지 투명하게 보여줌','왼쪽 "S10 개설 조건 충족으로 보기"를 켜면 개설 폼 확인 가능','폼: 제목 · <b>작품이 나아갈 방향</b> · 마일스톤 횟수(2~10) · 회차별 목표와 제시일 · 회당 금액별 혜택'];
+  if(!ok){ return {code:'10',title:'후원 프로젝트 열기',sub:'개설 조건',tab:null,html:head+`
+    <div class="gate ${u.isArtist?'':'plain'}" style="margin-top:4px"><div class="h">${ic('sprout','i sm')}후원 프로젝트 개설 조건</div><ul>
+      <li><span class="ck ${u.isArtist?'':'no'}">${ic('check','i xs')}</span>작가 정보 등록<b>${u.isArtist?'완료':'필요'}</b></li>
+      <li><span class="ck ${isV(u)?'':'no'}">${ic('check','i xs')}</span>인증 작가 (공개 인증 항목 ${settings.verifiedBadgeThreshold}개 이상)<b>${vc}/${settings.verifiedBadgeThreshold}</b></li>
+      <li><span class="ck ${u.isArtist&&!op?'':'no'}">${ic('check','i xs')}</span>끝나지 않은 프로젝트 없음<b>${op?'진행 중 1':'없음'}</b></li></ul></div>
+    ${!u.isArtist?`<div class="empty"><b>작가만 후원 프로젝트를 열 수 있어요</b>작품을 올리고 작가 정보를 등록해 주세요.</div>`
+     :!isV(u)?`<div class="pad"><div class="sec-t">인증까지</div><div class="progress patron"><i style="width:${Math.min(100,vc/settings.verifiedBadgeThreshold*100)}%"></i></div><p class="small muted" style="margin-top:8px">경력 항목 ${settings.verifiedBadgeThreshold-vc}개가 더 인증되면 후원 프로젝트를 열 수 있어요.</p><a class="btn dark block" style="margin-top:14px" href="#/career">경력 · 인증 관리</a></div>`
+     :`<div class="pad"><p class="prose">작가당 한 번에 하나의 후원 프로젝트만 운영할 수 있어요. 〈${esc(op.title)}〉을 완성하거나 종료하면 새 후원을 모집할 수 있어요.</p><a class="btn dark block" style="margin-top:14px" href="#/studio-support">진행 중인 프로젝트 관리</a></div>`}`,notes}; }
+  const n=S.msCount;
+  return {code:'10',title:'후원 프로젝트 열기',sub:'개설 폼',tab:null,html:head+`<form class="pad" onsubmit="event.preventDefault()">
+    <div class="field"><label for="np-t">프로젝트 제목 <span class="req">*</span></label><input class="input" id="np-t" placeholder="예: 〈물가의 오후〉 연작"></div>
+    <div class="field"><label for="np-d">이 작품이 나아갈 방향 <span class="req">*</span></label><textarea class="textarea" id="np-d" style="min-height:120px" placeholder="어떤 작품이 될지, 무엇을 시도하려는지, 완성된 모습을 상상할 수 있게 적어 주세요."></textarea></div>
+    <div class="field"><span class="lb">대표 · 참고 이미지</span><label class="drop" style="height:90px">${ic('upload')}<span>이미지 선택</span><input type="file" hidden multiple></label></div>
+    <div class="field"><span class="lb">완성까지 마일스톤 횟수 <span class="req">*</span></span><div class="row"><div class="stepper"><button type="button" onclick="S.msCount=Math.max(2,${n}-1);render()" aria-label="줄이기">−</button><span>${n}회</span><button type="button" onclick="S.msCount=Math.min(10,${n}+1);render()" aria-label="늘리기">+</button></div><span class="small muted">마지막 회차가 완성</span></div></div>
+    <div class="field"><span class="lb">회차별 목표와 제시일</span>${Array.from({length:n},(_,i)=>`<div class="ms-row"><span class="n">${i+1}</span><input class="input" aria-label="${i+1}단계 목표" placeholder="${i===n-1?'완성':['구상','스케치','채색','디테일'][i]||'목표'}" ${i===n-1?'value="완성"':''}><input class="input" type="date" aria-label="${i+1}단계 제시일" value="${new Date(Date.parse(today)+(i+1)*21*864e5).toISOString().slice(0,10)}"></div>`).join('')}<span class="hint">제시일에 결과물을 올리지 않으면 다음 후원금이 결제되지 않아요.</span></div>
+    <div class="field"><span class="lb">회당 금액별 혜택</span>${[10000,30000,50000].map(v=>`<div class="ms-row" style="grid-template-columns:84px 1fr"><b class="small">${won(v)}</b><input class="input" placeholder="예: 작업노트 열람, 이름 기록"></div>`).join('')}</div>
+    <div class="gate plain" style="margin:4px 0 0"><div class="h">운영 규칙</div><p>결과물 공개 후 7일 동안 후원자가 지속/이탈을 선택해요(미선택 시 자동 지속). 후원자가 모두 이탈하면 직접 종료해야 하고, 끝내기 전에는 새 후원을 모집할 수 없어요. 완성한 프로젝트는 경력에 자동 인증돼 남아요.</p></div>
+  </form>`,bar:`<div class="bottombar"><button class="btn patron" style="flex:1" onclick="S.elig=false;renderSide();toast('프로젝트를 열었어요 (시안: 목록에 반영하지 않음)');go('studio-support')">프로젝트 열기</button></div>`,notes};
+}
+// S11 내 후원 프로젝트 관리
+function scrStudio(){
+  const u=me(); if(!u||!u.isArtist) return gate('작가만 볼 수 있는 화면이에요','11','내 후원 프로젝트');
+  const p=openProj(u.key);const past=projects.filter(x=>x.a===u.key&&['completed','ended'].includes(x.status));
+  const head=`<div class="appbar"><button onclick="history.back()" aria-label="뒤로">${ic('back')}</button><span class="title">내 후원 프로젝트</span><span class="spacer"></span></div>`;
+  const notes=['작가 관리 화면: 다음 마일스톤 결과물 올리기, 후원자 현황, 중도 종료','<b>지연</b>: 제시일이 지나면 업로드 유도, 업로드 전까지 결제 없음','<b>후원자 0명</b>: 종료 외의 행동 불가. 종료해야 다음 후원 모집 가능','왼쪽 "상태 시뮬레이션"으로 지연 / 후원자 0명 상태 확인'];
+  if(!p) return {code:'11',title:'내 후원 프로젝트',sub:'작가 관리',tab:'profile',html:head+`<div class="empty"><b>진행 중인 후원 프로젝트가 없어요</b>${isV(u)?'작품의 방향을 제시하고 후원을 모집해 보세요.':'인증 작가가 되면 후원 프로젝트를 열 수 있어요.'}<br><a class="btn patron sm" href="#/support-new">후원 프로젝트 열기</a></div>${past.length?`<div class="pad" style="padding-bottom:0"><div class="sec-t">지난 프로젝트</div></div>${past.map(projCard).join('')}`:''}`,notes};
+  const st=pst(p);const dm=decMs(p);const nm=nextMs(p);const act=activeOf(p);
+  let banner='';
+  if(st==='awaiting_close') banner=`<div class="gate danger"><div class="h">${ic('alert','i sm')}남은 후원자가 없어요</div><p>프로젝트를 더 진행할 수 없어요. 종료해야 다음 후원을 모집할 수 있어요.</p><button class="btn danger sm" onclick="closeProj('${p.id}')">프로젝트 종료하기</button></div>`;
+  else if(st==='delayed') banner=`<div class="gate warn"><div class="h">${ic('alert','i sm')}${nm.n}단계 제시일(${md(nm.due)})이 지났어요</div><p>결과물을 올려야 다음 후원금이 결제돼요. 후원자에게 지연으로 보여요.</p><button class="btn dark sm" onclick="uploadMs('${p.id}','${nm.id}')">${nm.n}단계 결과물 올리기</button></div>`;
+  else if(dm) banner=`<div class="gate"><div class="h">${ic('clock','i sm')}${dm.n}단계 · 후원자 선택 기간 ${days(today,dm.deadline)}일 남음</div><ul><li>지속<b>${dm.dec.c}명</b></li><li>이탈<b>${dm.dec.l}명</b></li><li>선택 대기 (${md(dm.deadline)} 자동 지속)<b>${dm.dec.p}명</b></li></ul></div>`;
+  return {code:'11',title:'내 후원 프로젝트',sub:'작가 관리',tab:'profile',html:head+`
+    <div class="settle patron" style="margin-top:4px"><small>${esc(p.title)} · ${PST[st][0]}</small><div class="big won">${won(p.funded)}</div><div class="srow"><div>후원 중<b>${act}명</b></div><div>누적 참여<b>${p.total}명</b></div><div>마일스톤<b>${msDone(p)}/${p.ms.length}</b></div></div></div>
+    ${banner}
+    <div class="pad" style="padding-bottom:6px"><div class="sec-t" style="margin:0">마일스톤</div></div>
+    ${p.ms.map(m=>{const late=st==='delayed'&&m===nm;const canUp=m===nm&&!dm&&st!=='awaiting_close';
+      return `<div class="tx"><div style="width:30px;font-family:var(--display);font-style:italic;font-size:22px;color:${m.st==='closed'?'var(--patron)':'var(--muted)'}">${m.n}</div><div class="t"><b>${esc(m.goal)}${m.final?' · 완성':''}</b><small>제시일 ${md(m.due)}${m.sub?` · ${md(m.sub.at)} 공개`:''}${m.dec?` · 지속 ${m.dec.c}/이탈 ${m.dec.l}`:''}</small></div>
+      <div class="r">${m.st==='closed'?'<span class="chip ok">완료</span>':m.st==='deciding'?'<span class="chip warn">선택 기간</span>':canUp?`<button class="btn ${late?'dark':'ghost'} sm" onclick="uploadMs('${p.id}','${m.id}')">결과물 올리기</button>`:'<span class="chip line">예정</span>'}</div></div>`}).join('')}
+    <div class="pad"><a class="btn ghost block" href="#/support/${p.id}">공개 페이지 보기</a>${st!=='awaiting_close'?`<button class="btn danger block" style="margin-top:8px" onclick="closeProj('${p.id}')">중도 종료</button>`:''}</div>
+    ${past.length?`<div class="pad" style="padding-bottom:0;padding-top:0"><div class="sec-t">지난 프로젝트</div></div>${past.map(projCard).join('')}`:''}`,notes};
+}
+function uploadMs(pid,mid){const m=projects.find(x=>x.id===pid).ms.find(x=>x.id===mid);
+  sheet(`<h3>${m.n}단계 결과물 올리기</h3><p class="desc">목표: ${esc(m.goal)} · 제시일 ${md(m.due)}</p><div class="field"><span class="lb">결과물 사진 <span class="req">*</span></span><label class="drop" style="height:96px">${ic('upload')}<span>사진 선택</span><input type="file" hidden multiple></label></div>
+  <div class="field"><label for="ms-n">작업 노트</label><textarea class="textarea" id="ms-n" placeholder="이번 단계에서 한 일, 다음 단계 계획"></textarea></div><p class="small muted" style="margin-bottom:12px">올리면 후원자에게 알림이 가고, 7일 동안 지속/이탈을 선택해요.</p><button class="btn dark block" onclick="doUpload('${pid}','${mid}')">올리기</button>`)}
+function doUpload(pid,mid){const p=projects.find(x=>x.id===pid);const m=p.ms.find(x=>x.id===mid);p.ms.filter(x=>x.st==='deciding').forEach(x=>x.st='closed');
+  m.sub={at:today,note:$('#ms-n').value||'작업 노트',f:'wip-half'};m.st='deciding';m.deadline=new Date(Date.parse(today)+7*864e5).toISOString().slice(0,10);m.dec={c:0,l:0,p:p.active};delete m._stash;
+  if(S.sim==='delayed')S.sim='normal';closeSheet();renderSide();render();toast('결과물을 올렸어요. 선택 기간이 시작돼요')}
+function closeProj(pid){const p=projects.find(x=>x.id===pid);sheet(`<h3>프로젝트를 종료할까요?</h3><p class="desc">종료하면 이후 결제는 없고, 〈${esc(p.title)}〉은 '중도 종료'로 프로필 이력에 남아요. 종료 후 새 후원 프로젝트를 열 수 있어요.</p>
+  <div class="field"><label for="cl-r">종료 사유 (후원자에게 공개)</label><textarea class="textarea" id="cl-r"></textarea></div><button class="btn danger block" onclick="doClose('${pid}')">종료하기</button>`)}
+function doClose(pid){const p=projects.find(x=>x.id===pid);p.status='ended';p.endReason=$('#cl-r').value||'작가가 프로젝트를 종료했어요.';applySim('normal');renderSide();closeSheet();render();toast('종료했어요. 이제 새 후원 프로젝트를 열 수 있어요')}
+// S12 저장
+function scrSaved(){if(!me())return gate('저장한 작품을 보려면 로그인해 주세요','12','저장한 작품');const l=works.filter(w=>S.saved.has(w.id));
+  return {code:'12',title:'저장한 작품',sub:'',tab:'profile',html:`<div class="appbar"><button onclick="history.back()" aria-label="뒤로">${ic('back')}</button><span class="title">저장한 작품</span><span class="spacer"></span></div>
+    ${l.length?`<div class="grid3">${l.map(gridCell).join('')}</div>`:`<div class="empty"><b>마음이 가는 작품을 저장해 보세요</b><a class="btn dark sm" href="#/feed">피드로</a></div>`}`,
+    notes:['피드·상세의 북마크로 저장한 작품 모음 (3열 그리드)','가격 변경·판매 완료 알림은 MVP 후순위']}}
+// S13 경력 · 인증
+function scrCareer(){
+  const u=me(); if(!u||!u.isArtist) return gate('작가만 볼 수 있는 화면이에요','13','경력 · 인증');
+  const vc=vcount(u),th=settings.verifiedBadgeThreshold;
+  return {code:'13',title:'경력 · 인증',sub:'항목별 인증',tab:'profile',html:`
+    <div class="appbar"><button onclick="history.back()" aria-label="뒤로">${ic('back')}</button><span class="title">경력 · 인증</span><button onclick="careerForm()" aria-label="경력 추가">${ic('plus')}</button></div>
+    <div class="settle" style="margin-top:4px"><small>${isV(u)?'인증 작가예요':'인증 마크까지'}</small><div class="big">${vc} <span style="font-size:16px;opacity:.7">/ ${th} 공개 인증 항목</span></div>
+      <div class="srow"><div>${isV(u)?'프로필 인증 마크 · 피드 노출 우대 · 후원 프로젝트 개설 가능':`${th-vc}개 더 인증되면 인증 마크가 붙어요`}</div></div></div>
+    ${note('인증된 항목을 수정하면 즉시 미인증. 비공개 항목은 인증돼 있어도 개수에서 빠져요. 기준 개수는 관리자 설정값.')}
+    <div style="height:6px"></div>
+    ${u.career.map(c=>{const[vl,vcl]=VST[c.st];return `<div class="tx top"><div style="width:52px;font-size:12px;color:var(--muted);line-height:1.4">${c.y1}<br>${CCAT[c.cat]}</div>
+      <div class="t"><b style="white-space:normal">${esc(c.text)}</b><div class="row" style="margin-top:6px;flex-wrap:wrap;gap:4px"><span class="chip ${vcl}">${vl}</span>${c.pub?'':'<span class="chip line">비공개 · 개수 제외</span>'}${c.auto?'<span class="chip patron">플랫폼 기록 · 자동 인증</span>':''}</div>
+      ${c.st==='rejected'?`<p class="small" style="color:var(--danger);margin-top:6px">반려 사유 · ${esc(c.reason)}</p>`:''}
+      <div class="row" style="margin-top:8px;flex-wrap:wrap">${['unverified','rejected'].includes(c.st)?`<button class="btn dark sm" onclick="verifyReq('${c.id}')">${c.st==='rejected'?'보완해서 재신청':'인증 신청'}</button>`:''}${c.auto?'':`<button class="btn ghost sm" onclick="careerForm('${c.id}')">수정</button>`}<button class="btn ghost sm" onclick="togglePub('${c.id}')">${c.pub?'비공개로':'공개로'}</button></div></div></div>`}).join('')}
+    <div style="height:16px"></div>`,
+    notes:['경력은 <b>항목 단위</b>로 작성, 항목마다 서류로 인증 신청','상단 카드: 공개 인증 항목 수 / 기준(5). 기준 이상이면 인증 작가','<b>인증된 항목을 수정하면 미인증으로 돌아감</b> (확인창으로 경고)','비공개 항목은 인증돼 있어도 개수 제외. 비공개 전환으로 마크가 빠지면 경고','완성한 후원 프로젝트는 자동 추가 + 자동 인증']};
+}
+function careerForm(id){const u=me();const c=id?u.career.find(x=>x.id===id):{cat:'exhibition',y1:2026,text:'',pub:true,st:'unverified'};const lose=id&&c.st==='verified'&&isV(u)&&c.pub&&vcount(u)-1<settings.verifiedBadgeThreshold;
+  sheet(`<h3>${id?'경력 수정':'경력 추가'}</h3>${id&&c.st==='verified'?`<div class="gate warn" style="margin:8px 0 14px"><div class="h">${ic('alert','i sm')}수정하면 인증이 해제돼요</div><p>내용을 바꾸면 미인증으로 돌아가고 다시 신청해야 해요.${lose?' <b>인증 마크도 함께 해제</b>돼요.':''}</p></div>`:''}
+  <div class="field"><label for="cf-c">분류</label><select class="select" id="cf-c">${Object.entries(CCAT).filter(([k])=>k!=='support_project').map(([k,v])=>`<option value="${k}" ${c.cat===k?'selected':''}>${v}</option>`).join('')}</select></div>
+  <div class="two"><div class="field"><label for="cf-1">시작 연도</label><input class="input" id="cf-1" type="number" value="${c.y1}"></div><div class="field"><label for="cf-2">종료 연도</label><input class="input" id="cf-2" type="number" value="${c.y2||''}"></div></div>
+  <div class="field"><label for="cf-t">내용 (프로필에 그대로 보여요)</label><input class="input" id="cf-t" value="${esc(c.text)}" placeholder="예: 개인전 〈빛의 체류〉, 아트스페이스 휴"></div>
+  <label class="check-row" style="margin-bottom:14px"><input type="checkbox" id="cf-p" ${c.pub?'checked':''}>프로필에 공개</label>
+  <button class="btn dark block" onclick="saveCareer('${id||''}')">저장</button>`)}
+function saveCareer(id){const u=me();const d={cat:$('#cf-c').value,y1:+$('#cf-1').value,y2:+$('#cf-2').value||undefined,text:$('#cf-t').value.trim(),pub:$('#cf-p').checked};if(!d.text)return toast('내용을 입력해 주세요');
+  if(id){const c=u.career.find(x=>x.id===id);const ch=c.text!==d.text||c.y1!==d.y1||c.y2!==d.y2||c.cat!==d.cat;Object.assign(c,d);if(ch&&c.st!=='unverified'){c.st='unverified';toast('수정했어요. 인증이 해제됐어요')}else toast('저장했어요')}
+  else{u.career.push({id:'c'+Date.now(),...d,st:'unverified'});toast('경력을 추가했어요')}closeSheet();render()}
+function togglePub(id){const u=me();const c=u.career.find(x=>x.id===id);const lose=c.pub&&c.st==='verified'&&isV(u)&&vcount(u)-1<settings.verifiedBadgeThreshold;
+  const doit=()=>{c.pub=!c.pub;closeSheet();render();toast(c.pub?'공개로 바꿨어요':'비공개로 바꿨어요')};window._doit=doit;
+  if(lose) sheet(`<h3>비공개로 바꿀까요?</h3><p class="desc">공개된 인증 항목이 ${settings.verifiedBadgeThreshold}개 아래로 줄어 <b>인증 마크가 해제</b>되고, 후원 프로젝트를 새로 열 수 없어요. 항목의 인증 상태는 유지돼요.</p><button class="btn dark block" onclick="_doit()">비공개로 바꾸기</button>`); else doit()}
+function verifyReq(id){const c=me().career.find(x=>x.id===id);sheet(`<h3>인증 신청</h3><p class="desc">“${esc(c.text)}”</p><div class="field"><span class="lb">증빙 서류 <span class="req">*</span></span><label class="drop" style="height:96px">${ic('upload')}<span>졸업증명서 · 전시 도록 · 상장 등</span><input type="file" hidden multiple></label><span class="hint">서류는 관리자만 볼 수 있어요.</span></div>
+  <div class="field"><label for="vr-m">관리자에게 메모</label><textarea class="textarea" id="vr-m" placeholder="예: 도록 12쪽에 이름이 있어요"></textarea></div><button class="btn dark block" onclick="me().career.find(x=>x.id==='${id}').st='pending';closeSheet();render();toast('인증을 신청했어요')">신청하기</button>`)}
+// S14 관리자 심사
+const pending=()=>Object.values(users).flatMap(u=>u.career.filter(c=>c.st==='pending').map(c=>({u,c})));
+function scrAdmin(){
+  if(!me()||me().role!=='admin') return gate('관리자만 볼 수 있는 화면이에요','14','관리자 · 인증 심사');
+  const q=pending();const sel=q.find(x=>x.c.id===S.adminSel);
+  const head=`<div class="appbar">${sel?`<button onclick="S.adminSel=null;render()" aria-label="목록">${ic('back')}</button>`:''}<span class="title ${sel?'':'left'}">${sel?'항목 심사':'경력 인증 심사'}</span>${sel?'<span class="spacer"></span>':`<a href="#/admin-settings" aria-label="운영 설정">${ic('settings')}</a>`}</div>`;
+  const notes=['관리자는 <b>경력 항목 단위</b>로 서류를 확인','목록: 작가별로 묶은 심사 대기 항목 + 작가의 현재 공개 인증 수','상세: 항목 문구 ↔ 제출 서류, 체크리스트, 내부 메모','<b>인증 / 반려(사유 필수)</b>, 인증된 항목 <b>취소(사유 필수)</b>. 모든 처리는 이력으로 남김','기준 개수에 도달하면 인증 마크가 즉시 붙음'];
+  if(!sel) return {code:'14',title:'관리자 · 인증 심사',sub:'운영',tab:'profile',html:head+`<div class="pad" style="padding-top:4px;padding-bottom:6px"><span class="small muted">심사 대기 ${q.length}건</span></div>
+    ${q.length?Object.values(q.reduce((g,x)=>((g[x.u.key]=g[x.u.key]||[]).push(x),g),{})).map(items=>{const u=items[0].u;return `<div class="pad" style="padding-bottom:4px"><div class="row">${av(u,26)}<b style="font-size:14px">${esc(u.name)}</b>${vb(u,'s')}<span class="small muted" style="margin-left:auto">공개 인증 ${vcount(u)}/${settings.verifiedBadgeThreshold}</span></div></div>
+      ${items.map(({c})=>`<button class="list-link" style="font-weight:500;font-size:13.5px" onclick="S.adminSel='${c.id}';render()"><span class="chip line">${CCAT[c.cat]}</span><span style="flex:1;min-width:0">${esc(c.text)}</span>${ic('chev','i sm')}</button>`).join('')}`}).join(''):`<div class="empty"><b>심사 대기 항목이 없어요</b></div>`}`,notes};
+  const {u,c}=sel;
+  return {code:'14',title:'관리자 · 인증 심사',sub:'항목 상세',tab:'profile',html:head+`<div class="pad" style="padding-top:4px">
+    <div class="row">${av(u,36)}<div><b>${esc(u.name)}</b> ${vb(u,'s')}<div class="small muted">@${u.handle} · 공개 인증 ${vcount(u)}/${settings.verifiedBadgeThreshold}</div></div><span class="chip warn" style="margin-left:auto">심사 중</span></div>
+    <div class="sec-t" style="margin-top:20px">신청 항목</div><div class="small muted">${CCAT[c.cat]} · ${c.y1}${c.y2?'–'+c.y2:''}</div><div class="serif" style="font-size:18px;font-weight:600;margin-top:2px">${esc(c.text)}</div>
+    <div class="sec-t" style="margin-top:20px">제출 서류</div>${(c.cat==='education'?['졸업증명서.pdf']:['전시 도록 스캔.jpg','전시 포스터.png']).map(f=>`<div class="doc-item"><div class="ph">PDF</div><div style="flex:1"><b class="small">${f}</b><div class="small muted">10.09 제출</div></div><button class="btn ghost sm" onclick="toast('원본 보기 (시안)')">열기</button></div>`).join('')}
+    <div class="sec-t" style="margin-top:20px">확인 체크리스트</div><label class="check-row"><input type="checkbox">서류의 이름이 작가 실명과 일치</label><label class="check-row"><input type="checkbox">항목 문구(기관·연도·제목)와 서류 일치</label><label class="check-row"><input type="checkbox">위변조 흔적 없음</label>
+    <div class="field" style="margin-top:14px"><label for="ad-m">관리자 메모 (내부용)</label><textarea class="textarea" id="ad-m" style="min-height:60px"></textarea></div>
+    <div class="sec-t" style="margin-top:6px">이 작가의 다른 항목</div>${u.career.filter(x=>x.id!==c.id).map(x=>`<div class="row" style="padding:7px 0;border-bottom:1px solid var(--line);font-size:12.5px"><span style="flex:1">${esc(x.text)}${x.pub?'':' (비공개)'}</span><span class="chip ${VST[x.st][1]}">${VST[x.st][0]}</span>${x.st==='verified'?`<button class="btn ghost sm" style="height:26px;padding:0 8px" onclick="adminReason('${u.key}','${x.id}','revoke')">취소</button>`:''}</div>`).join('')}
+  </div>`,bar:`<div class="bottombar"><button class="btn danger" onclick="adminReason('${u.key}','${c.id}','reject')">반려</button><button class="btn dark" style="flex:1" onclick="adminAct('${u.key}','${c.id}','verify')">${ic('check','i sm')}인증</button></div>`,notes};
+}
+function adminReason(k,id,act){sheet(`<h3>${act==='reject'?'반려 사유':'인증 취소 사유'}</h3><div class="field" style="margin-top:12px"><label for="rs">작가에게 전달돼요 <span class="req">*</span></label><textarea class="textarea" id="rs"></textarea></div><button class="btn danger block" onclick="if(!$('#rs').value.trim())return toast('사유를 입력해 주세요');adminAct('${k}','${id}','${act}',$('#rs').value)">${act==='reject'?'반려하기':'인증 취소'}</button>`)}
+function adminAct(k,id,act,reason){const u=U(k);const c=u.career.find(x=>x.id===id);const before=isV(u);
+  if(act==='verify')c.st='verified';if(act==='reject'){c.st='rejected';c.reason=reason}if(act==='revoke')c.st='unverified';
+  const after=isV(u);S.adminSel=null;closeSheet();render();
+  toast(act==='verify'?(after&&!before?`인증했어요 · ${u.name}에게 인증 마크가 붙었어요`:'인증했어요'):act==='reject'?'반려했어요':(before&&!after?'인증을 취소했어요 · 인증 마크 해제':'인증을 취소했어요'))}
+// S15 운영 설정
+function scrAdminSettings(){
+  if(!me()||me().role!=='admin') return gate('관리자만 볼 수 있는 화면이에요','15','관리자 · 운영 설정');
+  return {code:'15',title:'관리자 · 운영 설정',sub:'운영',tab:'profile',html:`<div class="appbar"><button onclick="history.back()" aria-label="뒤로">${ic('back')}</button><span class="title">운영 설정</span><span class="spacer"></span></div>
+    <div class="pad"><div class="field"><label for="st-t">인증 마크 기준 개수</label><input class="input" id="st-t" type="number" min="1" value="${settings.verifiedBadgeThreshold}"><span class="hint">공개 + 인증된 경력 항목이 이 개수 이상이면 인증 작가</span></div>
+    <div class="field"><label for="st-b">인증 작가 피드 노출 가중치</label><input class="input" id="st-b" type="number" step="0.1" min="1" value="${settings.verifiedFeedBoost}"><span class="hint">추천·인기 탭 점수에 곱해요. 1.0이면 우대 없음</span></div>
+    <div class="gate plain" style="margin:0"><div class="h">현재 인증 작가</div><p>${Object.values(users).filter(isV).map(u=>u.name).join(', ')||'없음'}</p></div></div>`,
+    bar:`<div class="bottombar"><button class="btn dark" style="flex:1" onclick="settings.verifiedBadgeThreshold=Math.max(1,+$('#st-t').value);settings.verifiedFeedBoost=Math.max(1,+$('#st-b').value);render();toast('저장했어요 · 인증 마크와 피드에 바로 반영')">저장</button></div>`,
+    notes:['인증 마크 기준 개수(기본 5)와 피드 가중치(기본 1.3)는 코드에 고정하지 않고 관리자 설정','기준을 바꾸면 모든 작가의 인증 마크가 즉시 다시 계산됨 → 피드·프로필에서 확인']};
+}
+function gate(msg,code,title){return {code,title,sub:'접근 제한',tab:null,html:`<div class="appbar"><button onclick="history.back()" aria-label="뒤로">${ic('back')}</button><span class="spacer"></span></div><div class="empty" style="padding-top:100px"><b>${msg}</b>왼쪽 패널에서 보기 계정을 바꿀 수 있어요.<br><button class="btn dark sm" onclick="openSide()">보기 계정 바꾸기</button></div>`,notes:['권한이 없는 계정으로 접근했을 때의 화면']}}
+function nf(){return {code:'—',title:'찾을 수 없음',sub:'',tab:null,html:`<div class="empty" style="padding-top:120px"><b>페이지를 찾을 수 없어요</b><a class="btn dark sm" href="#/feed">피드로</a></div>`,notes:[]}}
+
+/* =========================================================
+   Shell
+   ========================================================= */
+const SCREENS=[['01','피드','feed'],['01-2','탐색','explore'],['02','작품 상세','work/w1'],['03','작가 프로필','artist/jiwoo'],['04','작품 올리기','upload'],['05','구매하기','checkout/w1'],
+  ['06','거래 내역','history'],['07','후원 목록','support'],['08','후원 프로젝트','support/p1'],['09','지속/이탈 선택','support/p1/m3'],['10','프로젝트 열기','support-new'],['11','내 후원 관리','studio-support'],
+  ['12','저장한 작품','saved'],['13','경력 · 인증','career'],['14','인증 심사','admin-reviews'],['15','운영 설정','admin-settings']];
+const NEED={upload:'artist',history:'member','support/p1/m3':'member','support-new':'verified','studio-support':'verified',career:'artist','admin-reviews':'admin','admin-settings':'admin',saved:'member'};
+function goScreen(h){const p=NEED[h];if(p&&p!==S.persona)setPersona(p,true);if(h.startsWith('checkout'))S.co=null;go(h);closeSideMobile()}
+function setPersona(p,silent){S.persona=p;store.set('persona',p);renderSide();render();if(!silent)toast(PERSONAS[p].label+'(으)로 보는 중')}
+function applySim(v){const m3=projects.find(x=>x.id==='p1').ms.find(m=>m.id==='m3');
+  if(v==='delayed'&&m3.st==='deciding'){m3._stash={sub:m3.sub,dec:m3.dec,deadline:m3.deadline};delete m3.sub;delete m3.dec;delete m3.deadline;m3.st='upcoming'}
+  if(v!=='delayed'&&m3._stash){Object.assign(m3,m3._stash);delete m3._stash;m3.st='deciding'}S.sim=v}
+let cur={};
+function renderSide(){
+  const route=(location.hash.replace(/^#\/?/,'')||'feed');
+  $('#side').innerHTML=`
+    <div class="eyebrow">Clickable Prototype · DESIGN.md v0.8 · 2026.10.11</div>
+    <h1>atelier<em>.</em></h1>
+    <p class="lead">작품이 주인공이 되도록 UI는 종이처럼 물러나 있고, 색은 <b style="color:var(--accent)">구매·좋아요(버밀리언)</b>와 <b style="color:var(--patron)">후원(울트라마린)</b> 두 가지 행동에만 씁니다. 오른쪽 폰 화면을 직접 눌러 보세요.</p>
+    <div class="label"><span class="n">${cur.code||''}</span><h2>${esc(cur.title||'')}</h2><small>${esc(cur.sub||'')}</small></div>
+    <ul class="notes">${(cur.notes||[]).map(n=>`<li>${n}</li>`).join('')}</ul>
+    <div class="ctrl">
+      <div><h4>보기 계정</h4><select id="persona" aria-label="보기 계정">${Object.entries(PERSONAS).map(([k,v])=>`<option value="${k}" ${k===S.persona?'selected':''}>${v.label}</option>`).join('')}</select>
+        <label class="sw"><input type="checkbox" id="sw-notes" ${S.notes?'checked':''}>폰 안에 설계 메모 표시</label></div>
+      <div><h4>상태 시뮬레이션</h4><select id="sim" aria-label="프로젝트 상태"><option value="normal">한지우 프로젝트 · 정상</option><option value="delayed">제시일 지남 · 미업로드</option><option value="no_backers">후원자 0명 · 종료 대기</option></select>
+        <label class="sw"><input type="checkbox" id="sw-elig" ${S.elig?'checked':''}>S10 개설 조건 충족으로 보기</label></div>
+    </div>
+    <div class="label" style="margin-top:26px"><h2 style="font-size:14px">화면 목록</h2><small>누르면 필요한 계정으로 자동 전환</small></div>
+    <div class="scr-list">${SCREENS.map(([c,t,h])=>`<button class="${route===h?'on':''}" onclick="goScreen('${h}')"><b>${c}</b>${t}</button>`).join('')}</div>
+    <p class="small muted" style="margin-top:18px">데이터는 메모리에만 있어 새로고침하면 처음 상태로 돌아가요.</p>`;
+  $('#sim').value=S.sim;
+  $('#persona').onchange=e=>setPersona(e.target.value);
+  $('#sw-notes').onchange=e=>{S.notes=e.target.checked;store.set('notes',S.notes);document.body.classList.toggle('show-notes',S.notes)};
+  $('#sim').onchange=e=>{applySim(e.target.value);render()};
+  $('#sw-elig').onchange=e=>{S.elig=e.target.checked;render()};
+}
+function renderTabbar(tab){
+  const u=me();
+  const t=(k,href,icn,l)=>`<a class="tab ${tab===k?'on':''}" href="${href}">${ic(icn)}${l}</a>`;
+  $('#tabbar').innerHTML=t('feed','#/feed','home','피드')+t('explore','#/explore','search','탐색')
+    +`<a class="tab" href="${u?'#/upload':'javascript:needLogin()'}" aria-label="작품 올리기"><div class="plus">${ic('plus')}</div></a>`
+    +t('support','#/support','sprout','후원')
+    +(u?t('profile',u.role==='admin'?'#/admin-reviews':'#/artist/'+u.key,'user',u.role==='admin'?'관리':'프로필'):`<a class="tab" href="javascript:needLogin()">${ic('user')}로그인</a>`);
+}
+function route(){
+  const r=(location.hash.replace(/^#\/?/,'')||'feed');const [a,b,c]=r.split('/');
+  switch(a){
+    case 'feed':return scrFeed();case 'explore':return scrExplore();case 'work':return scrWork(b);case 'artist':return scrArtist(b);
+    case 'upload':return scrUpload();case 'checkout':return scrCheckout(b);case 'history':return scrHistory();
+    case 'support':return c?scrDecide(b,c):b?scrProject(b):scrSupport();case 'support-new':return scrSupportNew();case 'studio-support':return scrStudio();
+    case 'saved':return scrSaved();case 'career':return scrCareer();case 'admin-reviews':return scrAdmin();case 'admin-settings':return scrAdminSettings();
+    default:return nf();
+  }
+}
+function render(keepScroll=true){
+  const body=$('#body');const top=body.scrollTop;
+  cur=route();
+  body.innerHTML=cur.html; body.classList.toggle('has-bar',!!cur.bar);
+  $('#bar-slot').innerHTML=cur.bar||'';
+  $('#tabbar').style.display=cur.tab===null?'none':'flex';
+  renderTabbar(cur.tab);renderSide();
+  if(keepScroll) body.scrollTop=top;
+  if(location.hash.startsWith('#/upload')) sell=true;
+}
+function renderKeep(){const q=document.activeElement&&document.activeElement.id;const pos=document.activeElement&&document.activeElement.selectionStart;render();if(q){const el=document.getElementById(q);if(el){el.focus();try{el.setSelectionRange(pos,pos)}catch(e){}}}}
+window.addEventListener('hashchange',()=>{S.pick=null;S.pickAmt=null;render(false);$('#body').scrollTop=0});
+function openSide(){$('#side').classList.add('open')}
+function closeSideMobile(){$('#side').classList.remove('open')}
+$('#side-fab').onclick=()=>$('#side').classList.toggle('open');
+document.body.classList.toggle('show-notes',S.notes);
+render(false);
+</script>
+</body>
+</html>

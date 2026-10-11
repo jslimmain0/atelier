@@ -1,0 +1,42 @@
+/* 스토리 링 (atelier-mockup 01) */
+.stories { display: flex; gap: 14px; padding: 12px 18px 10px; overflow-x: auto; scrollbar-width: none; }
+.stories::-webkit-scrollbar { display: none; }
+.story { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; color: var(--ink-2); width: 62px; flex: none; }
+.ring { width: 58px; height: 58px; border-radius: 50%; padding: 2.5px; background: conic-gradient(var(--patron) 0 var(--p), var(--line) var(--p) 100%); }
+.ring > div { width: 100%; height: 100%; border-radius: 50%; border: 2.5px solid var(--paper); }
+.recruit { background: var(--accent); }
+.me { background: var(--line); }
+.me > div { display: grid; place-items: center; background: var(--paper-2); color: var(--ink); }
+.story b { font-weight: 500; max-width: 62px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.story em { font-style: normal; font-size: 9.5px; color: var(--patron); font-weight: 600; margin-top: -4px; }
+.story .emRecruit { color: var(--accent); }
+
+/* 후원 프로젝트 카드 (atelier-mockup 06) */
+.card { display: block; margin: 6px 18px 14px; border-radius: 18px; overflow: hidden; background: #fff; border: 1px solid var(--line); }
+.cardArt { height: 150px; }
+.stage { position: absolute; left: 12px; top: 12px; z-index: 3; backdrop-filter: blur(6px); }
+.cardBody { padding: 14px; }
+.cardHead { display: flex; align-items: center; gap: 8px; }
+.cardHead b { font-size: 14px; }
+.cardHead small { color: var(--muted); font-size: 12px; margin-left: auto; white-space: nowrap; }
+.cardBody p { font-size: 12.5px; line-height: 1.55; color: var(--ink-2); margin-top: 8px; }
+
+/* 마일스톤 타임라인 */
+.ms { list-style: none; padding: 0 18px; }
+.msItem { display: flex; gap: 12px; }
+.rail { display: flex; flex-direction: column; align-items: center; width: 22px; flex: none; }
+.dot { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--paper); display: grid; place-items: center; font-size: 10.5px; font-weight: 800; color: var(--muted); }
+.dotDone { background: var(--patron); border-color: var(--patron); color: #fff; }
+.dotNow { border-color: var(--patron); color: var(--patron); box-shadow: 0 0 0 4px var(--patron-soft); }
+.dotLate { border-color: var(--warn); color: var(--warn); }
+.line { flex: 1; width: 1.5px; background: var(--line); min-height: 16px; }
+.msBody { flex: 1; min-width: 0; padding-bottom: 18px; font-size: 12.5px; color: var(--ink-2); line-height: 1.5; }
+.msBody b { display: block; font-size: 14px; color: var(--ink); }
+.msBody small { font-size: 11.5px; color: var(--muted); }
+.msBody p { margin-top: 4px; }
+.msThumbs { display: flex; gap: 6px; margin-top: 8px; }
+.msThumb { width: 64px; height: 64px; border-radius: 10px; }
+.msAct { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.msLink { font-size: 12.5px; font-weight: 700; color: var(--patron); }
+.msLate { color: var(--warn); font-weight: 600; margin-top: 6px; }
+.msMany { padding: 0 18px 12px; font-size: 13px; color: var(--muted); }

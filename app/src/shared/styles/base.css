@@ -1,0 +1,28 @@
+@import './tokens.css';
+@import './art.css';
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -.01em;
+}
+button, input, select, textarea { font: inherit; color: inherit; letter-spacing: inherit; background: none; border: 0; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+:focus-visible { outline: 2px solid var(--patron); outline-offset: 2px; }
+
+.serif { font-family: var(--serif); }
+.display { font-family: var(--display); font-style: italic; }
+.won { font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.sec-t { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; }
+.prose { font-family: var(--serif); font-size: 14.5px; line-height: 1.8; letter-spacing: -.02em; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

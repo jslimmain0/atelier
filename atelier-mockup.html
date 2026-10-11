@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier 핵심 화면 시안</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#E9E6DF;
+  --paper:#FAF8F4;
+  --paper-2:#F2EFE8;
+  --ink:#1B1A17;
+  --ink-2:#4A4740;
+  --muted:#8C877D;
+  --line:#E3DED4;
+  --accent:#C2412A;      /* vermilion: 구매·좋아요 */
+  --accent-soft:#F6E2DC;
+  --patron:#2F3E8F;      /* ultramarine: 후원 */
+  --patron-soft:#E4E7F5;
+  --ok:#3E7A55;
+  --ok-soft:#E1EEE5;
+  --warn:#B07A1C;
+  --warn-soft:#F5EBD6;
+  --serif:"Noto Serif KR","Fraunces",serif;
+  --display:"Fraunces","Noto Serif KR",serif;
+  --sans:"Pretendard",-apple-system,"Apple SD Gothic Neo",sans-serif;
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--canvas);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+svg.i.sm{width:16px;height:16px}
+svg.i.xs{width:13px;height:13px;stroke-width:2}
+
+/* ---------- 문서 레이아웃 ---------- */
+.doc{max-width:1480px;margin:0 auto;padding:56px 32px 96px}
+.doc-head{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:end;padding-bottom:40px;border-bottom:1px solid #D6D1C6;margin-bottom:48px}
+.doc-head .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.doc-head h1{font-family:var(--display);font-weight:400;font-size:56px;line-height:1;letter-spacing:-.02em}
+.doc-head h1 em{color:var(--accent)}
+.doc-head p{color:var(--ink-2);font-size:15px;line-height:1.7;margin-top:16px;max-width:560px}
+.tokens{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.tokens h4{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:600}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.sw{display:flex;flex-direction:column;gap:6px;font-size:10.5px;color:var(--ink-2)}
+.sw i{width:44px;height:44px;border-radius:10px;border:1px solid rgba(0,0,0,.06)}
+.type-spec div{font-size:13px;color:var(--ink-2);margin-bottom:6px}
+.type-spec b{font-family:var(--serif);font-weight:600;font-size:17px;color:var(--ink);margin-right:8px}
+.type-spec span.d{font-family:var(--display);font-style:italic;font-size:18px;color:var(--ink);margin-right:8px}
+
+.screens{display:grid;grid-template-columns:repeat(auto-fill,minmax(390px,1fr));gap:64px 40px;justify-items:center}
+.screen-wrap{width:390px}
+.label{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+.label .n{font-family:var(--display);font-style:italic;font-size:28px;color:var(--accent);line-height:1}
+.label h2{font-size:17px;font-weight:700}
+.label small{font-size:12px;color:var(--muted);margin-left:auto}
+.notes{margin-top:18px;padding:0 4px;font-size:13px;line-height:1.65;color:var(--ink-2)}
+.notes li{list-style:none;padding-left:14px;position:relative;margin-bottom:4px}
+.notes li::before{content:"";position:absolute;left:0;top:.7em;width:6px;height:1px;background:var(--muted)}
+
+/* ---------- 폰 프레임 ---------- */
+.phone{width:390px;height:844px;background:var(--paper);border-radius:46px;overflow:hidden;position:relative;
+  box-shadow:0 0 0 10px #151412,0 0 0 11px #3a3833,0 40px 80px -20px rgba(40,30,20,.35),0 18px 30px -12px rgba(40,30,20,.25);display:flex;flex-direction:column}
+.status{height:50px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 30px 0 34px;font-size:15px;font-weight:600;position:relative;z-index:5}
+.status::after{content:"";position:absolute;left:50%;top:11px;transform:translateX(-50%);width:120px;height:34px;background:#0d0d0c;border-radius:20px}
+.status .sys{display:flex;gap:6px;align-items:center}
+.status .bat{width:25px;height:12px;border:1.5px solid currentColor;border-radius:4px;position:relative;opacity:.9}
+.status .bat::after{content:"";position:absolute;inset:1.5px;right:5px;background:currentColor;border-radius:1.5px}
+.status.light{color:#fff}
+.body{flex:1;overflow:hidden;position:relative}
+.tabbar{height:84px;flex:none;border-top:1px solid var(--line);background:rgba(250,248,244,.96);display:flex;justify-content:space-around;padding:10px 12px 0}
+.tab{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:var(--muted);width:60px}
+.tab.on{color:var(--ink);font-weight:600}
+.tab .plus{width:42px;height:32px;border-radius:11px;background:var(--ink);color:var(--paper);display:grid;place-items:center;margin-top:-2px}
+.home-ind{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--ink);z-index:10}
+
+/* 공통 컴포넌트 */
+.appbar{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.appbar .title{font-size:17px;font-weight:700}
+.icons{display:flex;gap:18px;align-items:center}
+.logo{font-family:var(--display);font-style:italic;font-size:27px;letter-spacing:-.03em}
+.logo i{color:var(--accent);font-style:normal}
+.dot-badge{position:relative}
+.dot-badge::after{content:"";position:absolute;top:1px;right:0;width:7px;height:7px;background:var(--accent);border-radius:50%;border:1.5px solid var(--paper)}
+.av{border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:600;font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.chip.sale{background:var(--ink);color:var(--paper)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.patron{background:var(--patron-soft);color:var(--patron)}
+.chip.accent{background:var(--accent-soft);color:var(--accent)}
+.chip.line{border:1px solid var(--line);color:var(--ink-2);font-weight:500}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:46px;border-radius:12px;font-weight:700;font-size:15px;padding:0 18px}
+.btn.dark{background:var(--ink);color:var(--paper)}
+.btn.accent{background:var(--accent);color:#fff}
+.btn.patron{background:var(--patron);color:#fff}
+.btn.ghost{border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.btn.sm{height:34px;font-size:13px;border-radius:10px;padding:0 14px}
+.seg{display:flex;gap:22px;padding:0 18px;border-bottom:1px solid var(--line)}
+.seg span{padding:10px 0 11px;font-size:14.5px;color:var(--muted);font-weight:500;position:relative}
+.seg span.on{color:var(--ink);font-weight:700}
+.seg span.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink)}
+.serif{font-family:var(--serif)}
+.sec-t{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.hr{height:8px;background:var(--paper-2)}
+.won{font-variant-numeric:tabular-nums}
+
+/* ---------- 작품 (CSS로 그린 가상의 작품) ---------- */
+.art{position:relative;overflow:hidden;background-color:#ccc}
+.art::after{content:"";position:absolute;inset:0;opacity:.32;mix-blend-mode:multiply;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .4 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.a1{background:
+  radial-gradient(ellipse 78% 26% at 50% 27%,#C7472E 62%,transparent 70%),
+  radial-gradient(ellipse 78% 30% at 50% 70%,#E0A43A 60%,transparent 69%),
+  linear-gradient(#3B231C,#2B1915)}
+.a2{background:
+  radial-gradient(circle at 36% 38%,#F2E7D0 0 21%,transparent 21.6%),
+  radial-gradient(circle at 63% 60%,#203C74 0 27%,transparent 27.6%),
+  linear-gradient(160deg,#D8C7A8,#C9B48F)}
+.a3{background:
+  radial-gradient(circle at 70% 34%,#F4E9D4 0 9%,transparent 9.5%),
+  linear-gradient(180deg,#E9C9A8 0 52%,#A9B9A6 52% 63%,#6E8A80 63% 76%,#3F5A55 76%)}
+.a4{background:conic-gradient(from 210deg at 28% 72%,#E2725B,#F3C98B,#9FB4B6,#2D3E50,#5A3A4A,#E2725B)}
+.a5{background:
+  linear-gradient(90deg,transparent 0 58%,#1B1A17 58% 59.4%,transparent 59.4%),
+  linear-gradient(0deg,transparent 0 34%,#1B1A17 34% 35.2%,transparent 35.2%),
+  linear-gradient(90deg,#EFE8DA 0 58%,#D9462F 58%),
+  #EFE8DA}
+.a5::before{content:"";position:absolute;left:0;bottom:0;width:58%;height:34%;background:#2E4E8F}
+.a6{background:
+  radial-gradient(ellipse 40% 60% at 30% 55%,rgba(20,20,18,.85),transparent 70%),
+  radial-gradient(ellipse 30% 20% at 70% 30%,rgba(20,20,18,.55),transparent 70%),
+  repeating-linear-gradient(115deg,rgba(0,0,0,.06) 0 2px,transparent 2px 9px),
+  #E8E2D6}
+.a7{background:
+  radial-gradient(circle at 50% 50%,transparent 0 30%,#7A9A8C 30.5% 33%,transparent 33.5%),
+  radial-gradient(circle at 50% 50%,#E9B44C 0 18%,transparent 18.5%),
+  linear-gradient(135deg,#1F2B2A,#33463F)}
+.a8{background:
+  linear-gradient(180deg,rgba(255,255,255,.0),rgba(255,255,255,.0)),
+  repeating-linear-gradient(90deg,#B9C7D6 0 18px,#C9D3DE 18px 30px,#A8B8CB 30px 41px),
+  #B9C7D6}
+.a8::before{content:"";position:absolute;inset:22% 18%;background:radial-gradient(ellipse at 50% 60%,#F5EFE3,#E8D9C0);border-radius:50% 50% 46% 54%/60% 55% 45% 40%;filter:blur(1px)}
+.a9{background:
+  linear-gradient(170deg,#F2C6B4 0 30%,transparent 30%),
+  linear-gradient(10deg,#7C4A3A 0 25%,transparent 25%),
+  linear-gradient(180deg,#F5DCC6,#E6A98F)}
+.wip{filter:saturate(.35) contrast(.92) brightness(1.05)}
+.wip-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(27,26,23,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(27,26,23,.13) 1px,transparent 1px);background-size:33.33% 33.33%}
+
+/* ================= 1. 피드 ================= */
+.stories{display:flex;gap:14px;padding:12px 18px 10px;overflow:hidden}
+.story{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:var(--ink-2);width:62px}
+.story .ring{width:58px;height:58px;border-radius:50%;padding:2.5px;background:conic-gradient(var(--patron) 0 var(--p),var(--line) var(--p) 100%)}
+.story .ring > div{width:100%;height:100%;border-radius:50%;border:2.5px solid var(--paper)}
+.story .ring.me{background:var(--line)}
+.story .ring.me > div{display:grid;place-items:center;background:var(--paper-2);color:var(--ink)}
+.story b{font-weight:500;max-width:62px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.story em{font-style:normal;font-size:9.5px;color:var(--patron);font-weight:600;margin-top:-4px}
+.post-head{display:flex;align-items:center;gap:10px;padding:12px 18px}
+.post-head .who{flex:1;line-height:1.25}
+.post-head .who b{font-size:14px;font-weight:700}
+.post-head .who small{display:block;font-size:12px;color:var(--muted)}
+.follow{font-size:13px;font-weight:700;color:var(--accent)}
+.post-art{height:250px;margin:0}
+.post-art .tag{position:absolute;left:14px;bottom:14px;z-index:2}
+.post-act{display:flex;align-items:center;gap:16px;padding:12px 18px 6px}
+.post-act span{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600}
+.post-act .sp{flex:1}
+.post-meta{padding:2px 18px 0}
+.post-meta h3{font-family:var(--serif);font-weight:600;font-size:18px;letter-spacing:-.02em}
+.post-meta h3 small{font-family:var(--display);font-style:italic;font-weight:400;color:var(--muted);font-size:15px;margin-left:4px}
+.post-meta .spec{font-size:12px;color:var(--muted);margin-top:3px}
+.story-quote{margin:12px 18px 0;padding:12px 14px;background:var(--paper-2);border-radius:12px;font-size:13px;line-height:1.6;color:var(--ink-2)}
+.story-quote .k{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--ink);margin-bottom:4px;letter-spacing:.02em}
+.story-quote a{color:var(--ink);font-weight:600;text-decoration:none}
+
+/* ================= 2. 작품 상세 ================= */
+.detail-hero{height:360px;position:relative}
+.detail-hero .bar{position:absolute;top:50px;left:0;right:0;display:flex;justify-content:space-between;padding:4px 14px;z-index:3}
+.circ{width:38px;height:38px;border-radius:50%;background:rgba(250,248,244,.86);backdrop-filter:blur(8px);display:grid;place-items:center;color:var(--ink)}
+.detail-hero .ar{position:absolute;right:14px;bottom:14px;z-index:3;background:rgba(27,26,23,.72);color:#fff;backdrop-filter:blur(6px);font-weight:500}
+.detail-hero .pager{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:5px;z-index:3}
+.detail-hero .pager i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5)}
+.detail-hero .pager i.on{background:#fff;width:16px;border-radius:3px}
+.d-pad{padding:18px 20px 0}
+.d-title{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:-.03em;line-height:1.3}
+.d-artist{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13.5px;color:var(--ink-2)}
+.specs{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:16px}
+.specs div{background:var(--paper);padding:10px 12px;font-size:13px;font-weight:600}
+.specs div small{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-bottom:2px}
+.timeline{margin-top:22px}
+.tl{display:flex;gap:12px;margin-bottom:4px}
+.tl .thumb{width:58px;height:58px;border-radius:10px;flex:none}
+.tl .t{flex:1;padding-bottom:14px;font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.tl .t b{display:block;font-size:13.5px;color:var(--ink);margin-bottom:1px}
+.tl .t small{color:var(--muted);font-size:11px;margin-left:6px;font-weight:500}
+.buybar{position:absolute;left:0;right:0;bottom:0;background:rgba(250,248,244,.97);border-top:1px solid var(--line);padding:12px 18px 34px;display:flex;align-items:center;gap:10px;z-index:4}
+.buybar .price{flex:1;line-height:1.2}
+.buybar .price small{font-size:11px;color:var(--muted);display:block}
+.buybar .price b{font-size:19px;font-weight:800}
+.fade-b{position:absolute;left:0;right:0;bottom:96px;height:40px;background:linear-gradient(transparent,var(--paper));z-index:3}
+
+/* ================= 3. 프로필 ================= */
+.cover{height:150px;position:relative}
+.p-av{width:84px;height:84px;border:4px solid var(--paper);margin:-42px 0 0 18px;position:relative;z-index:2;font-size:26px;font-family:var(--serif)}
+.p-head{padding:10px 18px 0}
+.p-head .nm{display:flex;align-items:center;gap:6px;font-size:21px;font-weight:800;letter-spacing:-.03em}
+.verified{width:17px;height:17px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center}
+.p-head .handle{font-size:13px;color:var(--muted);margin-top:2px}
+.statement{font-family:var(--serif);font-size:14.5px;line-height:1.7;color:var(--ink);margin-top:12px;letter-spacing:-.02em}
+.p-tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.p-stats{display:flex;margin-top:16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.p-stats div{flex:1;text-align:center;padding:11px 0;font-size:11.5px;color:var(--muted)}
+.p-stats b{display:block;font-size:16px;color:var(--ink);font-weight:800}
+.p-stats div+div{border-left:1px solid var(--line)}
+.p-btns{display:grid;grid-template-columns:1fr 1fr 44px;gap:8px;padding:14px 18px}
+.p-btns .btn{height:38px;font-size:13.5px;border-radius:10px}
+.hl{display:flex;gap:12px;padding:0 18px 14px;overflow:hidden}
+.hl div{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:var(--ink-2);width:64px;text-align:center;flex:none}
+.hl .c{width:58px;height:58px;border-radius:16px;border:1px solid var(--line);padding:3px;overflow:hidden}
+.hl .c > i{display:block;width:100%;height:100%;border-radius:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px}
+.grid3 .art{aspect-ratio:4/5}
+.grid3 .sold{position:absolute;top:7px;right:7px;z-index:2;font-size:9.5px;font-weight:800;letter-spacing:.08em;background:rgba(250,248,244,.9);padding:2px 6px;border-radius:4px}
+.grid3 .px{position:absolute;left:7px;bottom:7px;z-index:2;font-size:10.5px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.4)}
+
+/* ================= 4. 결제 ================= */
+.co-item{display:flex;gap:14px;padding:16px 18px}
+.co-item .art{width:72px;height:90px;border-radius:8px;flex:none}
+.co-item .t{flex:1;font-size:12.5px;color:var(--muted);line-height:1.55}
+.co-item .t b{display:block;font-family:var(--serif);font-size:16px;color:var(--ink);font-weight:600;margin-bottom:2px}
+.co-item .t .won{color:var(--ink);font-weight:800;font-size:15px;margin-top:6px;display:block;font-family:var(--sans)}
+.co-sec{padding:18px 18px 4px}
+.opt{display:flex;gap:12px;border:1.5px solid var(--line);border-radius:var(--r);padding:13px 14px;margin-bottom:10px;align-items:flex-start;background:var(--paper)}
+.opt.on{border-color:var(--ink);background:#fff}
+.radio{width:20px;height:20px;border-radius:50%;border:1.5px solid #C9C3B7;flex:none;margin-top:1px}
+.opt.on .radio{border:6px solid var(--ink)}
+.box{width:20px;height:20px;border-radius:6px;border:1.5px solid #C9C3B7;flex:none;display:grid;place-items:center;margin-top:1px}
+.opt.on .box{background:var(--ink);border-color:var(--ink);color:#fff}
+.opt .t{flex:1;font-size:12.5px;color:var(--muted);line-height:1.5}
+.opt .t b{display:flex;align-items:center;gap:6px;font-size:14.5px;color:var(--ink);margin-bottom:2px}
+.opt .r{font-size:13px;font-weight:700;white-space:nowrap}
+.opt.support{border-style:dashed;border-color:#C9C3B7}
+.opt.support.on{border-style:solid;border-color:var(--patron);background:#F7F8FD}
+.opt.support.on .box{background:var(--patron);border-color:var(--patron)}
+.opt .note{margin-top:8px;display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--patron);font-weight:600}
+.sum{margin:6px 18px 0;padding:14px 0 0;border-top:1px dashed #D6D0C4;font-size:13px}
+.sum div{display:flex;justify-content:space-between;padding:3px 0;color:var(--ink-2)}
+.sum div.free span:last-child{color:var(--ok);font-weight:600}
+.paybar{position:absolute;left:0;right:0;bottom:0;padding:12px 18px 34px;background:var(--paper);border-top:1px solid var(--line);z-index:4}
+.paybar .btn{width:100%;height:52px;font-size:16px}
+.paybar small{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;color:var(--muted);margin-bottom:9px}
+
+/* ================= 5. 거래 내역 ================= */
+.toggle{margin:4px 18px 0;background:var(--paper-2);border-radius:12px;padding:4px;display:grid;grid-template-columns:1fr 1fr}
+.toggle span{text-align:center;padding:8px 0;font-size:14px;font-weight:600;color:var(--muted);border-radius:9px}
+.toggle span.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.settle{margin:16px 18px 0;padding:18px;border-radius:18px;background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+.settle::before{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,#C2412A 0 40%,transparent 41%);opacity:.9}
+.settle::after{content:"";position:absolute;right:30px;top:40px;width:90px;height:90px;border-radius:50%;background:#E0A43A;mix-blend-mode:screen;opacity:.55}
+.settle small{font-size:12px;opacity:.7;position:relative;z-index:1}
+.settle .big{font-size:28px;font-weight:800;letter-spacing:-.02em;margin-top:4px;position:relative;z-index:1}
+.settle .row{display:flex;gap:18px;margin-top:16px;font-size:12px;position:relative;z-index:1}
+.settle .row div{opacity:.75}
+.settle .row b{display:block;font-size:15px;opacity:1;margin-top:2px}
+.filters{display:flex;gap:6px;padding:16px 18px 6px}
+.filters .chip{font-size:12.5px;padding:6px 12px}
+.filters .chip.on{background:var(--ink);color:var(--paper)}
+.tx{display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);align-items:center}
+.tx .art{width:54px;height:66px;border-radius:7px;flex:none}
+.tx .t{flex:1;min-width:0;line-height:1.4}
+.tx .t b{display:block;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx .t small{font-size:12px;color:var(--muted)}
+.tx .r{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.tx .r b{font-size:14px;font-weight:800}
+.track{display:flex;align-items:center;margin-top:9px;gap:0}
+.track i{width:7px;height:7px;border-radius:50%;background:var(--line);flex:none}
+.track i.on{background:var(--ink)}
+.track s{flex:1;height:2px;background:var(--line);text-decoration:none}
+.track s.on{background:var(--ink)}
+.track-l{display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted);margin-top:4px}
+.track-l .on{color:var(--ink);font-weight:700}
+
+/* ================= 6. 후원 ================= */
+.wip-card{margin:6px 18px 0;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--line)}
+.wip-card .art{height:140px}
+.wip-card .stage{position:absolute;left:12px;top:12px;z-index:3;background:rgba(250,248,244,.92);backdrop-filter:blur(6px)}
+.wip-card .cmp{position:absolute;right:12px;top:12px;z-index:3;display:flex;gap:4px}
+.wip-card .cmp i{width:28px;height:34px;border-radius:5px;border:2px solid rgba(255,255,255,.9);display:block;overflow:hidden}
+.wip-body{padding:14px}
+.wip-body .h{display:flex;align-items:center;gap:8px}
+.wip-body .h b{font-size:14px}
+.wip-body .h small{color:var(--muted);font-size:12px;margin-left:auto}
+.wip-body p{font-size:12.5px;line-height:1.55;color:var(--ink-2);margin-top:8px}
+.steps{display:flex;gap:4px;margin-top:12px}
+.steps i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.steps i.on{background:var(--patron)}
+.steps-l{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:5px}
+.eval{margin:12px 18px 0}
+.eval-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:10px}
+.eval-head .score{font-family:var(--display);font-size:34px;line-height:1}
+.eval-head .score small{font-family:var(--sans);font-size:12px;color:var(--muted);margin-left:4px}
+.crit{display:grid;grid-template-columns:76px 1fr auto;align-items:center;gap:10px;font-size:12.5px;margin-bottom:5px}
+.stars{display:flex;gap:3px}
+.stars i{width:18px;height:18px;border-radius:5px;background:var(--line)}
+.stars i.on{background:var(--patron)}
+.stars i.half{background:linear-gradient(90deg,var(--patron) 50%,var(--line) 50%)}
+.crit .avg{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.gate{margin:10px 18px 0;padding:11px 14px;border-radius:14px;background:var(--patron-soft)}
+.gate .h{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--patron)}
+.gate ul{list-style:none;margin-top:8px}
+.gate li{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);padding:2px 0}
+.gate li .ck{width:16px;height:16px;border-radius:50%;background:var(--patron);color:#fff;display:grid;place-items:center;flex:none}
+.gate li b{margin-left:auto;color:var(--ink);font-variant-numeric:tabular-nums}
+.fund{margin:12px 18px 0}
+.fund .nums{display:flex;align-items:baseline;gap:6px}
+.fund .nums b{font-size:22px;font-weight:800}
+.fund .nums span{font-size:12px;color:var(--muted)}
+.fund .nums em{margin-left:auto;font-style:normal;font-weight:800;color:var(--patron);font-size:15px}
+.fbar{height:6px;border-radius:3px;background:var(--line);margin-top:8px;overflow:hidden}
+.fbar i{display:block;height:100%;width:71%;background:var(--patron);border-radius:3px}
+.fund .meta{display:flex;gap:12px;font-size:11.5px;color:var(--muted);margin-top:7px}
+.tiers{display:flex;gap:8px;padding:10px 18px 0;overflow:hidden}
+.tier{flex:none;width:140px;border:1px solid var(--line);border-radius:12px;padding:9px 12px;background:#fff;font-size:11.5px;color:var(--muted);line-height:1.45}
+.tier b{display:block;font-size:15px;color:var(--ink);font-weight:800;margin-bottom:3px}
+.tier.on{border-color:var(--patron);box-shadow:inset 0 0 0 1px var(--patron)}
+
+@media (max-width:860px){
+  .doc{padding:32px 16px 64px}
+  .doc-head{grid-template-columns:1fr;gap:28px}
+  .doc-head h1{font-size:40px}
+  .screens{grid-template-columns:1fr}
+  .screen-wrap{width:100%;max-width:390px}
+  .phone{transform-origin:top left}
+}
+@media (max-width:420px){
+  .screen-wrap{zoom:.86}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-9.2-9.3C1.7 7.5 3.9 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.1 0 5.3 3 4.2 6.2C19.5 15.4 12 20 12 20z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4 4.3-6 8-6s6.8 2 8 6"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10 14"/><path d="m21 3-7 18-4-7-7-4z"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></symbol>
+    <symbol id="i-comment" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.7A8 8 0 1 1 21 12z"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v13M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-brush" viewBox="0 0 24 24"><path d="M14 4.5 19.5 10 11 18.5 5.5 13z"/><path d="M5.5 13C3 13 3 16 2.5 19.5 6 19 9 19 11 18.5"/><path d="m16.5 2.5 5 5"/></symbol>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 21v-9"/><path d="M12 12C12 7 8 4 3 4c0 5 4 8 9 8z"/><path d="M12 14c0-4 3-7 8-7 0 4-3 7-8 7z"/></symbol>
+    <symbol id="i-archive" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></symbol>
+    <symbol id="i-frame" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><rect x="7" y="7" width="10" height="10"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></symbol>
+  </defs>
+</svg>
+
+<div class="doc">
+  <header class="doc-head">
+    <div>
+      <div class="eyebrow">Design Draft v0.1 · 2026.10.11 · 핵심 화면 6종</div>
+      <h1>atelier<em>.</em></h1>
+      <p>작가가 스스로를 브랜딩하고, 작품과 제작 이야기를 함께 보여주며, 판매·보관·후원까지 한 곳에서 이어지는 미술 플랫폼. 작품이 주인공이 되도록 UI는 종이처럼 물러나 있고, 색은 <b style="color:var(--accent)">구매·좋아요(버밀리언)</b>와 <b style="color:var(--patron)">후원(울트라마린)</b> 두 가지 행동에만 씁니다.</p>
+    </div>
+    <div class="tokens">
+      <div>
+        <h4>Color</h4>
+        <div class="swatches">
+          <div class="sw"><i style="background:#FAF8F4"></i>Paper</div>
+          <div class="sw"><i style="background:#1B1A17"></i>Ink</div>
+          <div class="sw"><i style="background:#C2412A"></i>Vermilion</div>
+          <div class="sw"><i style="background:#2F3E8F"></i>Ultramarine</div>
+        </div>
+      </div>
+      <div class="type-spec">
+        <h4>Type</h4>
+        <div><b>작품 제목</b>Noto Serif KR</div>
+        <div><span class="d">Display</span>Fraunces Italic</div>
+        <div><span style="font-weight:700;color:var(--ink);margin-right:8px">UI 본문</span>Pretendard</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="screens">
+
+  <!-- ================= 1. 피드 ================= -->
+  <section class="screen-wrap">
+    <div class="label"><span class="n">01</span><h2>피드</h2><small>홈 · 인기 탭</small></div>
+    <div class="phone">
+      <div class="status"><span>9:41</span><span class="sys">●●● <span class="bat"></span></span></div>
+      <div class="body">
+        <div class="appbar">
+          <div class="logo">atelier<i>.</i></div>
+          <div class="icons"><svg class="i"><use href="#i-search"/></svg><svg class="i dot-badge"><use href="#i-bell"/></svg><svg class="i"><use href="#i-send"/></svg></div>
+        </div>
+        <div class="seg"><span>팔로잉</span><span class="on">인기</span><span>큐레이션</span><span>근처 전시</span></div>
+        <div class="stories">
+          <div class="story"><div class="ring me"><div><svg class="i"><use href="#i-plus"/></svg></div></div><b>작업 올리기</b></div>
+          <div class="story"><div class="ring" style="--p:80%"><div class="art a3"></div></div><b>한지우</b><em>4/5단계</em></div>
+          <div class="story"><div class="ring" style="--p:40%"><div class="art a7"></div></div><b>moss.studio</b><em>2/5단계</em></div>
+          <div class="story"><div class="ring" style="--p:60%"><div class="art a9"></div></div><b>오세린</b><em>3/5단계</em></div>
+          <div class="story"><div class="ring" style="--p:20%"><div class="art a6"></div></div><b>김도윤</b><em>1/5단계</em></div>
+        </div>
+
+        <article>
+          <div class="post-head">
+            <div class="av" style="width:36px;height:36px;background:linear-gradient(135deg,#C2412A,#E0A43A)">지</div>
+            <div class="who"><b>한지우</b><small>회화 · 서울 성수 작업실</small></div>
+            <span class="follow">팔로우</span>
+            <svg class="i" style="color:var(--muted)"><use href="#i-more"/></svg>
+          </div>
+          <div class="art a1 post-art"><span class="chip sale tag">판매중 · ₩1,800,000</span></div>
+          <div class="post-act">
+            <span style="color:var(--accent)"><svg class="i" style="fill:var(--accent);stroke:var(--accent)"><use href="#i-heart"/></svg>2.4k</span>
+            <span><svg class="i"><use href="#i-comment"/></svg>86</span>
+            <span><svg class="i"><use href="#i-share"/></svg></span>
+            <span class="sp"></span>
+            <svg class="i"><use href="#i-bookmark"/></svg>
+          </div>
+          <div class="post-meta">
+            <h3>늦은 오후의 방 <small>2026</small></h3>
+            <div class="spec">Oil on canvas · 72.7 × 60.6 cm · 원화 1점</div>
+          </div>
+          <div class="story-quote">
+            <div class="k"><svg class="i xs"><use href="#i-pen"/></svg>제작 스토리</div>
+            할머니 집 거실에 오후 네 시쯤 들던 빛을 기억하며 그렸어요. 붉은 층은 열두 번 덧칠했고… <a>더보기</a>
+          </div>
+        </article>
+      </div>
+      <nav class="tabbar">
+        <div class="tab on"><svg class="i"><use href="#i-home"/></svg>피드</div>
+        <div class="tab"><svg class="i"><use href="#i-search"/></svg>탐색</div>
+        <div class="tab"><div class="plus"><svg class="i"><use href="#i-plus"/></svg></div></div>
+        <div class="tab"><svg class="i"><use href="#i-sprout"/></svg>후원</div>
+        <div class="tab"><svg class="i"><use href="#i-user"/></svg>프로필</div>
+      </nav>
+      <div class="home-ind"></div>
+    </div>
+    <ul class="notes">
+      <li>상단 링 = 진행 중인 작업(WIP). 링 채움 정도가 제작 단계라서 후원 화면(06)으로 바로 이어짐</li>
+      <li>판매 여부와 가격은 작품 위 칩 하나로만 표시해서 작품 감상을 방해하지 않음</li>
+      <li>캡션 대신 '제작 스토리' 블록을 기본으로 노출 — 일반 SNS와 다른 점</li>
+    </ul>
+  </section>
+
+  <!-- ================= 2. 작품 상세 ================= -->
+  <section class="screen-wrap">
+    <div class="label"><span class="n">02</span><h2>작품 상세</h2><small>스토리 + 구매 진입</small></div>
+    <div class="phone">
+      <div class="body" style="margin-top:0">
+        <div class="art a1 detail-hero">
+          <div class="status light" style="position:relative"><span>9:41</span><span class="sys">●●● <span class="bat"></span></span></div>
+          <div class="bar"><span class="circ"><svg class="i"><use href="#i-back"/></svg></span><span style="display:flex;gap:8px"><span class="circ"><svg class="i sm"><use href="#i-share"/></svg></span><span class="circ"><svg class="i sm" style="color:var(--accent);fill:var(--accent)"><use href="#i-heart"/></svg></span></span></div>
+          <span class="chip ar"><svg class="i xs"><use href="#i-cube"/></svg>내 벽에 걸어보기</span>
+          <div class="pager"><i class="on"></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="d-pad">
+          <div style="display:flex;gap:6px;margin-bottom:10px"><span class="chip accent">판매중</span><span class="chip line"><svg class="i xs"><use href="#i-shield"/></svg>보증서 발급</span></div>
+          <h1 class="d-title">늦은 오후의 방</h1>
+          <div class="d-artist"><div class="av" style="width:22px;height:22px;font-size:10px;background:linear-gradient(135deg,#C2412A,#E0A43A)">지</div>한지우 · 작품 48점 · 판매 31점<svg class="i sm" style="margin-left:auto;color:var(--muted)"><use href="#i-chev"/></svg></div>
+          <div class="specs">
+            <div><small>재료</small>Oil on canvas</div>
+            <div><small>크기</small>72.7 × 60.6 cm (20호)</div>
+            <div><small>제작</small>2026.03 – 06</div>
+            <div><small>에디션</small>원화 1/1</div>
+          </div>
+          <div class="timeline">
+            <div class="sec-t">제작 스토리 · 3개의 기록</div>
+            <div class="tl"><div class="thumb art a1 wip"><div class="wip-grid"></div></div><div class="t"><b>구도 스케치<small>3월 12일</small></b>창틀 그림자를 대각선으로 두고 방을 둘로 나눴습니다.</div></div>
+            <div class="tl"><div class="thumb art a1" style="filter:saturate(.6)"></div><div class="t"><b>붉은 층 쌓기<small>4월 28일</small></b>카드뮴 레드를 얇게 열두 번. 마른 뒤 다시 긁어냈어요.</div></div>
+          </div>
+        </div>
+        <div class="fade-b"></div>
+      </div>
+      <div class="buybar">
+        <div class="price"><small>작품가 · 배송/보관 선택 가능</small><b class="won">₩1,800,000</b></div>
+        <span class="btn ghost" style="width:46px;padding:0"><svg class="i"><use href="#i-msg"/></svg></span>
+        <span class="btn accent" style="width:132px">구매하기</span>
+      </div>
+      <div class="home-ind"></div>
+    </div>
+    <ul class="notes">
+      <li>작품 이미지가 화면의 절반 이상. 'AR로 걸어보기'로 크기를 체감하게 함</li>
+      <li>스펙은 2×2 표로 정리, 아래에 제작 과정을 날짜별 타임라인으로 보여줌</li>
+      <li>하단 고정 바: 가격 + 작가 문의 + 구매 (주요 행동은 버밀리언)</li>
+    </ul>
+  </section>
+
+  <!-- ================= 3. 작가 프로필 ================= -->
+  <section class="screen-wrap">
+    <div class="label"><span class="n">03</span><h2>작가 프로필</h2><small>개인 브랜딩 공간</small></div>
+    <div class="phone">
+      <div class="body">
+        <div class="art a3 cover">
+          <div class="status light" style="position:relative"><span>9:41</span><span class="sys">●●● <span class="bat"></span></span></div>
+          <div style="position:absolute;top:50px;left:14px;right:14px;display:flex;justify-content:space-between;z-index:3"><span class="circ"><svg class="i"><use href="#i-back"/></svg></span><span class="circ"><svg class="i"><use href="#i-more"/></svg></span></div>
+        </div>
+        <div class="av p-av" style="background:linear-gradient(135deg,#C2412A,#E0A43A)">지</div>
+        <div class="p-head">
+          <div class="nm">한지우<span class="verified"><svg class="i xs" style="width:10px;height:10px;stroke-width:3"><use href="#i-check"/></svg></span></div>
+          <div class="handle">@jiwoo.han · 서울 성수 작업실</div>
+          <p class="statement">“지나간 빛이 방에 남기는 온도를 그립니다. 기억 속 오후 네 시를 캔버스 위에 오래 머물게 하고 싶어요.”</p>
+          <div class="p-tags"><span class="chip line">유화</span><span class="chip line">추상 풍경</span><span class="chip line">2026 개인전 〈빛의 체류〉</span></div>
+        </div>
+        <div class="p-stats" style="margin-top:14px">
+          <div><b>48</b>작품</div><div><b>12.4k</b>팔로워</div><div><b>31</b>판매</div><div><b>214</b>후원자</div>
+        </div>
+        <div class="p-btns">
+          <span class="btn dark">팔로우</span>
+          <span class="btn ghost" style="color:var(--patron)"><svg class="i sm"><use href="#i-sprout"/></svg>후원하기</span>
+          <span class="btn ghost" style="padding:0"><svg class="i sm"><use href="#i-msg"/></svg></span>
+        </div>
+        <div class="hl">
+          <div><span class="c"><i class="art a1"></i></span>대표작</div>
+          <div><span class="c"><i class="art a6"></i></span>작업노트</div>
+          <div><span class="c"><i class="art a9"></i></span>전시 이력</div>
+          <div><span class="c"><i class="art a4"></i></span>수상</div>
+          <div><span class="c" style="display:grid;place-items:center;color:var(--muted)"><svg class="i"><use href="#i-plus"/></svg></span>추가</div>
+        </div>
+        <div class="seg" style="justify-content:space-between;padding:0 28px"><span class="on">작품 48</span><span>판매중 9</span><span>작업노트</span><span>컬렉션</span></div>
+        <div class="grid3">
+          <div class="art a1"><span class="px">₩1.8M</span></div>
+          <div class="art a3"><span class="sold">SOLD</span></div>
+          <div class="art a9"><span class="px">₩920K</span></div>
+          <div class="art a4"><span class="sold">SOLD</span></div>
+          <div class="art a2"><span class="px">₩2.4M</span></div>
+          <div class="art a8"></div>
+        </div>
+      </div>
+      <div class="home-ind"></div>
+    </div>
+    <ul class="notes">
+      <li>커버 이미지 + 작가노트(세리프체) 한 줄로 작가 개성을 먼저 전달</li>
+      <li>하이라이트: 대표작·작업노트·전시·수상 등을 작가가 직접 구성하는 포트폴리오 섹션</li>
+      <li>그리드에서 판매중(가격)/판매완료(SOLD)를 바로 구분</li>
+    </ul>
+  </section>
+
+  <!-- ================= 4. 구매 / 결제 ================= -->
+  <section class="screen-wrap">
+    <div class="label"><span class="n">04</span><h2>구매하기</h2><small>배송·보관·화구 지원</small></div>
+    <div class="phone">
+      <div class="status"><span>9:41</span><span class="sys">●●● <span class="bat"></span></span></div>
+      <div class="body">
+        <div class="appbar"><svg class="i"><use href="#i-back"/></svg><span class="title">주문하기</span><span style="width:22px"></span></div>
+        <div class="co-item">
+          <div class="art a1"></div>
+          <div class="t"><b>늦은 오후의 방</b>한지우 · Oil on canvas<br>72.7 × 60.6 cm · 원화 1/1<span class="won">₩1,800,000</span></div>
+        </div>
+        <div class="hr"></div>
+        <div class="co-sec">
+          <div class="sec-t">수령 방식</div>
+          <div class="opt">
+            <span class="radio"></span>
+            <div class="t"><b><svg class="i sm"><use href="#i-truck"/></svg>집으로 배송</b>미술품 전문 운송 · 무진동 차량 · 3–5일</div>
+            <span class="r">₩45,000</span>
+          </div>
+          <div class="opt on">
+            <span class="radio"></span>
+            <div class="t"><b><svg class="i sm"><use href="#i-archive"/></svg>아틀리에 수장고 보관</b>항온항습 · 보험 포함 · 언제든 배송 요청 가능</div>
+            <span class="r" style="text-align:right">월 ₩15,000<br><small style="color:var(--ok);font-weight:600;font-size:11px">3개월 무료</small></span>
+          </div>
+        </div>
+        <div class="co-sec" style="padding-top:8px">
+          <div class="sec-t">추가 옵션</div>
+          <div class="opt on">
+            <span class="box"><svg class="i xs"><use href="#i-check"/></svg></span>
+            <div class="t"><b><svg class="i sm"><use href="#i-frame"/></svg>원목 액자 맞춤</b>작가 추천 오크 프레임 · 무반사 아크릴</div>
+            <span class="r">₩180,000</span>
+          </div>
+          <div class="opt support on">
+            <span class="box"><svg class="i xs"><use href="#i-check"/></svg></span>
+            <div class="t"><b><svg class="i sm"><use href="#i-brush"/></svg>작가에게 화구 선물</b>물감·캔버스 키트가 작가 작업실로 바로 전달돼요
+              <div class="note"><svg class="i xs"><use href="#i-sprout"/></svg>다음 작품 제작 기록에 후원자로 표시</div>
+            </div>
+            <span class="r">₩30,000</span>
+          </div>
+        </div>
+        <div class="sum">
+          <div><span>작품가</span><span class="won">₩1,800,000</span></div>
+          <div><span>액자</span><span class="won">₩180,000</span></div>
+          <div><span>화구 선물</span><span class="won">₩30,000</span></div>
+          <div class="free"><span>수장고 보관 (3개월)</span><span>무료</span></div>
+        </div>
+      </div>
+      <div class="paybar">
+        <small><svg class="i xs"><use href="#i-shield"/></svg>작품 수령 확인 후 작가에게 정산돼요 · 진품 보증서 포함</small>
+        <span class="btn accent"><span class="won">₩2,010,000</span> 결제하기</span>
+      </div>
+      <div class="home-ind"></div>
+    </div>
+    <ul class="notes">
+      <li>수령 방식을 '배송 / 플랫폼 보관' 중에서 선택. 보관을 고르면 작품은 수장고에 두고 소유권만 이전</li>
+      <li>'화구 선물'은 후원 색(울트라마린)과 점선 테두리로 일반 옵션과 구분</li>
+      <li>에스크로 안내 문구로 고가 구매의 불안을 줄임</li>
+    </ul>
+  </section>
+
+  <!-- ================= 5. 거래 내역 ================= -->
+  <section class="screen-wrap">
+    <div class="label"><span class="n">05</span><h2>거래 내역</h2><small>판매 탭 (작가 시점)</small></div>
+    <div class="phone">
+      <div class="status"><span>9:41</span><span class="sys">●●● <span class="bat"></span></span></div>
+      <div class="body">
+        <div class="appbar"><span class="title" style="font-size:22px;letter-spacing:-.03em">거래 내역</span><svg class="i"><use href="#i-sliders"/></svg></div>
+        <div class="toggle"><span>구매 6</span><span class="on">판매 31</span></div>
+        <div class="settle">
+          <small>10월 정산 예정 금액</small>
+          <div class="big won">₩3,240,000</div>
+          <div class="row">
+            <div>판매<b>4건</b></div>
+            <div>화구 선물<b>₩90,000</b></div>
+            <div>정산일<b>10.25</b></div>
+          </div>
+        </div>
+        <div class="filters"><span class="chip on">전체</span><span class="chip line">진행중 2</span><span class="chip line">보관중 3</span><span class="chip line">정산완료</span></div>
+
+        <div class="tx" style="align-items:flex-start">
+          <div class="art a1"></div>
+          <div class="t">
+            <b>늦은 오후의 방</b><small>구매자 @collector.min · 10.09</small>
+            <div class="track"><i class="on"></i><s class="on"></s><i class="on"></i><s class="on"></s><i class="on"></i><s></s><i></i></div>
+            <div class="track-l"><span>결제</span><span>포장</span><span class="on">운송중</span><span>정산</span></div>
+          </div>
+          <div class="r"><b class="won">₩1,800,000</b><span class="chip warn">운송중</span></div>
+        </div>
+        <div class="tx">
+          <div class="art a2"></div>
+          <div class="t"><b>두 개의 정오</b><small>구매자 @seoyeon.k · 10.04</small></div>
+          <div class="r"><b class="won">₩2,400,000</b><span class="chip patron"><svg class="i xs"><use href="#i-archive"/></svg>수장고 보관</span></div>
+        </div>
+        <div class="tx">
+          <div class="art a9"></div>
+          <div class="t"><b>복숭아 껍질의 시간</b><small>구매자 @hyun_art · 09.27</small></div>
+          <div class="r"><b class="won">₩920,000</b><span class="chip ok"><svg class="i xs"><use href="#i-check"/></svg>정산완료</span></div>
+        </div>
+        <div class="tx">
+          <div class="art a4"></div>
+          <div class="t"><b>Dusk, Tidal</b><small>구매자 @gallery_ohm · 09.15</small></div>
+          <div class="r"><b class="won">₩1,350,000</b><span class="chip ok"><svg class="i xs"><use href="#i-check"/></svg>정산완료</span></div>
+        </div>
+      </div>
+      <nav class="tabbar">
+        <div class="tab"><svg class="i"><use href="#i-home"/></svg>피드</div>
+        <div class="tab"><svg class="i"><use href="#i-search"/></svg>탐색</div>
+        <div class="tab"><div class="plus"><svg class="i"><use href="#i-plus"/></svg></div></div>
+        <div class="tab"><svg class="i"><use href="#i-sprout"/></svg>후원</div>
+        <div class="tab on"><svg class="i"><use href="#i-user"/></svg>프로필</div>
+      </nav>
+      <div class="home-ind"></div>
+    </div>
+    <ul class="notes">
+      <li>구매/판매를 한 화면에서 전환. 작가에게는 정산 예정 금액이 가장 먼저 보임</li>
+      <li>진행 중인 거래만 단계 표시(결제→포장→운송→정산)를 펼쳐서 보여줌</li>
+      <li>상태 칩 색: 진행(황토) · 보관(울트라마린) · 완료(그린)</li>
+    </ul>
+  </section>
+
+  <!-- ================= 6. 후원 · 중간평가 ================= -->
+  <section class="screen-wrap">
+    <div class="label"><span class="n">06</span><h2>후원 · 중간평가</h2><small>조건 충족 시 후원 오픈</small></div>
+    <div class="phone">
+      <div class="status"><span>9:41</span><span class="sys">●●● <span class="bat"></span></span></div>
+      <div class="body">
+        <div class="appbar"><svg class="i"><use href="#i-back"/></svg><span class="title">진행 중인 작업</span><svg class="i"><use href="#i-share"/></svg></div>
+        <div class="wip-card">
+          <div class="art a3 wip"><div class="wip-grid"></div>
+            <span class="chip patron stage">3단계 · 채색 시작</span>
+            <span class="cmp"><i class="art a3 wip" style="filter:grayscale(1) brightness(1.2)"></i><i class="art a3 wip"></i></span>
+          </div>
+          <div class="wip-body">
+            <div class="h"><div class="av" style="width:24px;height:24px;font-size:10px;background:linear-gradient(135deg,#C2412A,#E0A43A)">지</div><b>〈물가의 오후〉 연작 3번</b><small>2시간 전</small></div>
+            <p>하늘과 물의 경계를 두 단계로 나눌지 고민 중이에요. 색 대비에 대한 의견을 주세요.</p>
+            <div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+            <div class="steps-l"><span>구상</span><span>스케치</span><span style="color:var(--patron);font-weight:700">채색</span><span>디테일</span><span>완성</span></div>
+          </div>
+        </div>
+
+        <div class="eval">
+          <div class="eval-head">
+            <div><div class="sec-t" style="margin-bottom:4px">내 평가</div></div>
+            <div class="score">4.6<small>평균 · 128명</small></div>
+          </div>
+          <div class="crit"><span>구성</span><span class="stars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="avg">4.7</span></div>
+          <div class="crit"><span>색감</span><span class="stars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="avg">4.5</span></div>
+          <div class="crit"><span>완성 기대</span><span class="stars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="half"></i></span><span class="avg">4.6</span></div>
+        </div>
+
+        <div class="gate">
+          <div class="h"><svg class="i sm"><use href="#i-sprout"/></svg>후원 오픈 조건 달성</div>
+          <ul>
+            <li><span class="ck"><svg class="i xs" style="width:10px;height:10px;stroke-width:3"><use href="#i-check"/></svg></span>평가 참여 100명 이상<b>128명</b></li>
+            <li><span class="ck"><svg class="i xs" style="width:10px;height:10px;stroke-width:3"><use href="#i-check"/></svg></span>평균 평점 4.0 이상<b>4.6</b></li>
+            <li><span class="ck"><svg class="i xs" style="width:10px;height:10px;stroke-width:3"><use href="#i-check"/></svg></span>진행 기록 2회 이상<b>3회</b></li>
+          </ul>
+        </div>
+
+        <div class="fund">
+          <div class="nums"><b class="won">₩2,140,000</b><span>/ ₩3,000,000</span><em>71%</em></div>
+          <div class="fbar"><i></i></div>
+          <div class="meta"><span>후원자 86명</span><span>D-12</span><span>완성 예정 11월</span></div>
+        </div>
+        <div class="tiers">
+          <div class="tier"><b>₩10,000</b>작업노트 전체 열람</div>
+          <div class="tier on"><b>₩50,000</b>완성작 한정 프린트 + 이름 기록</div>
+          <div class="tier"><b>₩300,000</b>원화 우선 구매권</div>
+        </div>
+      </div>
+      <div class="paybar">
+        <span class="btn patron">₩50,000 후원하기</span>
+      </div>
+      <div class="home-ind"></div>
+    </div>
+    <ul class="notes">
+      <li>중간 결과물에 항목별(구성·색감·완성 기대) 평가 → 조건을 채우면 후원 펀딩이 열림</li>
+      <li>조건 체크리스트를 공개해서 '왜 후원이 열렸는지' 투명하게 보여줌</li>
+      <li>후원 단계별 보상의 최고 단계는 '원화 우선 구매권' → 판매(04)로 연결</li>
+    </ul>
+  </section>
+
+  </main>
+</div>
+</body>
+</html>

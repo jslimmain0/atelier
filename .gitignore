@@ -1,0 +1,6 @@
+.DS_Store
+node_modules/
+dist/
+*.local
+# 다른 결과물 (사용하지 않음, DESIGN.md §1.2)
+atelier/

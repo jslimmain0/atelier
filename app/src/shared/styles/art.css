@@ -1,0 +1,19 @@
+/* mock 작품: CSS로 그린 가상의 작품 (atelier-mockup.html) — 실제 이미지 업로드 전까지 사용 */
+.art { position: relative; overflow: hidden; background-color: #ccc; }
+.art::after { content: ""; position: absolute; inset: 0; opacity: .32; mix-blend-mode: multiply; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .4 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.a1 { background: radial-gradient(ellipse 78% 26% at 50% 27%,#C7472E 62%,transparent 70%), radial-gradient(ellipse 78% 30% at 50% 70%,#E0A43A 60%,transparent 69%), linear-gradient(#3B231C,#2B1915); }
+.a2 { background: radial-gradient(circle at 36% 38%,#F2E7D0 0 21%,transparent 21.6%), radial-gradient(circle at 63% 60%,#203C74 0 27%,transparent 27.6%), linear-gradient(160deg,#D8C7A8,#C9B48F); }
+.a3 { background: radial-gradient(circle at 70% 34%,#F4E9D4 0 9%,transparent 9.5%), linear-gradient(180deg,#E9C9A8 0 52%,#A9B9A6 52% 63%,#6E8A80 63% 76%,#3F5A55 76%); }
+.a4 { background: conic-gradient(from 210deg at 28% 72%,#E2725B,#F3C98B,#9FB4B6,#2D3E50,#5A3A4A,#E2725B); }
+.a5 { background: linear-gradient(90deg,transparent 0 58%,#1B1A17 58% 59.4%,transparent 59.4%), linear-gradient(0deg,transparent 0 34%,#1B1A17 34% 35.2%,transparent 35.2%), linear-gradient(90deg,#EFE8DA 0 58%,#D9462F 58%), #EFE8DA; }
+.a5::before { content: ""; position: absolute; left: 0; bottom: 0; width: 58%; height: 34%; background: #2E4E8F; }
+.a6 { background: radial-gradient(ellipse 40% 60% at 30% 55%,rgba(20,20,18,.85),transparent 70%), radial-gradient(ellipse 30% 20% at 70% 30%,rgba(20,20,18,.55),transparent 70%), repeating-linear-gradient(115deg,rgba(0,0,0,.06) 0 2px,transparent 2px 9px), #E8E2D6; }
+.a7 { background: radial-gradient(circle at 50% 50%,transparent 0 30%,#7A9A8C 30.5% 33%,transparent 33.5%), radial-gradient(circle at 50% 50%,#E9B44C 0 18%,transparent 18.5%), linear-gradient(135deg,#1F2B2A,#33463F); }
+.a8 { background: repeating-linear-gradient(90deg,#B9C7D6 0 18px,#C9D3DE 18px 30px,#A8B8CB 30px 41px), #B9C7D6; }
+.a8::before { content: ""; position: absolute; inset: 22% 18%; background: radial-gradient(ellipse at 50% 60%,#F5EFE3,#E8D9C0); border-radius: 50% 50% 46% 54%/60% 55% 45% 40%; filter: blur(1px); }
+.a9 { background: linear-gradient(170deg,#F2C6B4 0 30%,transparent 30%), linear-gradient(10deg,#7C4A3A 0 25%,transparent 25%), linear-gradient(180deg,#F5DCC6,#E6A98F); }
+/* 작업 중(WIP) 표현 */
+.wip { filter: saturate(.35) contrast(.92) brightness(1.05); }
+.wip-half { filter: saturate(.65); }
+.wip-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(27,26,23,.13) 1px,transparent 1px), linear-gradient(90deg,rgba(27,26,23,.13) 1px,transparent 1px); background-size: 33.33% 33.33%; }

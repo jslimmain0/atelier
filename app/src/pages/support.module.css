@@ -1,0 +1,34 @@
+/* 후원 (atelier-mockup 06) */
+.hero { margin: 6px 18px 0; border-radius: 18px; overflow: hidden; background: #fff; border: 1px solid var(--line); }
+.heroArt { height: 160px; }
+.stage { position: absolute; left: 12px; top: 12px; z-index: 3; backdrop-filter: blur(6px); }
+.cmp { position: absolute; right: 12px; top: 12px; z-index: 3; display: flex; gap: 4px; }
+.cmpI { width: 28px; height: 34px; border-radius: 5px; border: 2px solid rgba(255,255,255,.9); }
+.heroBody { padding: 14px; }
+.who { display: flex; align-items: center; gap: 8px; }
+.who b { font-size: 14px; }
+.who small { color: var(--muted); font-size: 12px; margin-left: auto; white-space: nowrap; }
+.title { font-family: var(--serif); font-size: 19px; font-weight: 600; margin-top: 10px; letter-spacing: -.02em; }
+.note { font-size: 13.5px; line-height: 1.6; color: var(--ink-2); margin-top: 8px; }
+.fund { margin: 14px 18px 0; }
+.nums { display: flex; align-items: baseline; gap: 6px; }
+.nums b { font-size: 22px; font-weight: 800; }
+.nums span { font-size: 12px; color: var(--muted); }
+.nums em { margin-left: auto; font-style: normal; font-weight: 800; color: var(--patron); font-size: 15px; }
+.meta { display: flex; gap: 12px; font-size: 11.5px; color: var(--muted); margin-top: 7px; flex-wrap: wrap; }
+.sec { padding: 18px 18px 6px; }
+.endReason { font-size: 12px; color: var(--muted); margin-top: 10px; }
+.price { flex: 1; line-height: 1.2; }
+.price small { font-size: 11px; color: var(--muted); display: block; }
+.price b { font-size: 18px; font-weight: 800; color: var(--patron); }
+.hint { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 11px; color: var(--muted); }
+.amounts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.amounts button { border: 1px solid var(--line); border-radius: 12px; padding: 9px 12px; background: #fff; font-size: 11.5px; color: var(--muted); text-align: left; }
+.amounts b { display: block; font-size: 15px; color: var(--ink); font-weight: 800; margin-bottom: 2px; }
+.amounts button[aria-checked="true"] { border-color: var(--patron); box-shadow: inset 0 0 0 1px var(--patron); }
+.msRow { display: grid; grid-template-columns: 22px minmax(0, 1fr) 132px; gap: 8px; align-items: center; margin-bottom: 8px; }
+.msN { font-family: var(--display); font-style: italic; color: var(--patron); font-size: 16px; text-align: center; }
+.msRow input { padding: 9px 10px; font-size: 13px; }
+.rewardRow { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 8px; align-items: center; margin-bottom: 8px; font-size: 13px; font-weight: 700; }
+.msNum { width: 30px; font-family: var(--display); font-style: italic; font-size: 22px; color: var(--muted); flex: none; }
+.msNumDone { color: var(--patron); }

@@ -1,0 +1,17 @@
+/* 모바일 앱형 셸: 폰 폭 컬럼을 가운데 두고, 넓은 화면에서는 캔버스 배경 위에 놓는다 */
+.shell { width: min(100%, var(--shell-w)); min-height: 100dvh; margin: 0 auto; background: var(--paper); display: flex; flex-direction: column; position: relative; }
+@media (min-width: 600px) { .shell { box-shadow: 0 0 0 1px rgba(0,0,0,.04), 0 20px 60px -20px rgba(40,30,20,.25); } }
+.main { flex: 1; }
+
+.tabbar { position: sticky; bottom: 0; z-index: 20; height: calc(var(--tabbar-h) + var(--safe-b)); padding: 8px 12px var(--safe-b); border-top: 1px solid var(--line); background: rgba(250,248,244,.96); backdrop-filter: blur(8px); display: flex; justify-content: space-around; align-items: flex-start; }
+.tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10.5px; color: var(--muted); width: 60px; }
+.tab[aria-current="page"] { color: var(--ink); font-weight: 600; }
+.plus { width: 42px; height: 32px; border-radius: 11px; background: var(--ink); color: var(--paper); display: grid; place-items: center; margin-top: 2px; }
+
+.dev { position: fixed; left: max(12px, calc(50% - var(--shell-w) / 2 + 12px)); bottom: calc(var(--tabbar-h) + 16px + var(--safe-b)); z-index: 40; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.dev-btn { height: 30px; padding: 0 10px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: 11px; font-weight: 800; letter-spacing: .08em; opacity: .75; }
+.dev-panel { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.12); display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; }
+.dev-panel select { border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; font-weight: 500; }
+.dev-panel small { font-weight: 500; color: var(--muted); font-size: 11px; }
+.dev-action { border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; font-size: 12px; font-weight: 600; text-align: left; }
+.loading { height: 52px; }
